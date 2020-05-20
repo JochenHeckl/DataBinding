@@ -1,0 +1,14 @@
+{
+    "name": "UnityJochen.DeJochenhecklUnityDatabinding.Editor.Tests",
+    "references": [
+        "UnityJochen.DeJochenhecklUnityDatabinding.Editor",
+        "UnityJochen.DeJochenhecklUnityDatabinding"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

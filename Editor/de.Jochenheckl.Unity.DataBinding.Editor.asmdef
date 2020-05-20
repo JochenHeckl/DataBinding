@@ -1,0 +1,17 @@
+{
+    "name": "de.Jochenheckl.Unity.DataBinding.Editor",
+    "references": [
+        "GUID:1ac1bd0cf575cfe4b8d295c36f1e0edd"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
