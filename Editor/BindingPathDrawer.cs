@@ -31,6 +31,12 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 EditorGUI.BeginProperty( position, label, property );
 
                 var selectedIndex = Array.IndexOf( bindableProperties, property.stringValue );
+
+                if ( selectedIndex == -1 )
+                {
+                    GUI.backgroundColor = Color.red;
+                }
+
                 var newSelectedIndex = EditorGUI.Popup( position, label.text, selectedIndex, bindableProperties );
 
                 if (newSelectedIndex != -1)
