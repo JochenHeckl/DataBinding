@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -18,7 +20,6 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 x => x.enabled 
                 && (string.IsNullOrEmpty( x.sourcePath ) || SourcePathMissmatch( x ) || IsUnboundPropertyBindingBuilder( x )) );
 
-            
             if ( unboundBinding == null )
             {
                 EditorUtility.DisplayDialog( 
@@ -27,6 +28,13 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                     "OK");
 
                 return;
+            }
+            else
+            {
+                EditorUtility.DisplayDialog(
+                    "Data Binding",
+                    $"{unboundBinding.name} is not properly bound.",
+                    "OK" );
             }
 
             Selection.activeObject = unboundBinding;
@@ -56,7 +64,12 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         {
             var componentPropertyBindingBuilder = bindingBuilder as ComponentPropertyBindingBuilder;
 
-            return (componentPropertyBindingBuilder == null) || string.IsNullOrEmpty( componentPropertyBindingBuilder.targetPath );
+            if ( componentPropertyBindingBuilder != null )
+            {
+                return string.IsNullOrEmpty( componentPropertyBindingBuilder.targetPath );
+            }
+
+            return false;
         }
     }
 }
