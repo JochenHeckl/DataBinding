@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Improved the TwoWayBinding example to include a more elegant and less intrusive way (keeping the view model clean and simple) of feeding input back into the application.
 
+### Fixed
+- Fixed a bug where Tools -> Find Unbound BindingBuilders would report false positives.
+
+
 ## [1.1.1] - 2020-05-29
 ### Added
 - Tool Menu to find unbound property binding builders.
