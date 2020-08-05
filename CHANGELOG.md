@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2020-08-05
+### Added
+- Condensed format for validated property binding builders. Enabled by check box in ViewBehaviour.
+### Fixed
+- Improved performance for selecting DataSource types.
+
 ## [1.2.1] - 2020-06-06
 ### Added
 - DropdownValueDatabindingBuilder to enable binding the selected index of a Dropdown control to an int in the ViewModel.

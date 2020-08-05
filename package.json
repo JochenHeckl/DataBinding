@@ -1,7 +1,7 @@
 {
   "name": "de.jochenheckl.unity.databinding",
   "displayName": "Data Binding",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "unity": "2019.3",
   "description": "Data Binding is a unity library that supports binding user interface elements to custom data type (=ViewModel) properties.\n\nData Binding is easy to use and comes with some simple examples to get started.",
   "type": "library",

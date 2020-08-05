@@ -14,6 +14,8 @@ namespace de.JochenHeckl.Unity.DataBinding
         [TypeFilter( typeof( IDataSource ) )]
         public SerializableType dataSourceType;
 
+        public bool condenseValidBuilders;
+
 #endif // UNITY_EDITOR
 
         private static IEnumerable<IBindingBuilder> GatherBindingBuilders( GameObject gameobject )
