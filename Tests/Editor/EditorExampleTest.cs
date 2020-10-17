@@ -1,17 +1,16 @@
-using UnityEngine;
-using UnityEditor;
-using UnityEngine.TestTools;
-using NUnit.Framework;
 using System.Collections;
 
-namespace UnityJochen.DeJochenhecklUnityDatabinding.Editor.Tests 
+using NUnit.Framework;
+
+using UnityEngine.TestTools;
+
+namespace de.JochenHeckl.Unity.DataBinding.Editor.Tests
 {
-	
-	class EditorExampleTest 
+	internal class EditorExampleTest
 	{
 
 		[Test]
-		public void EditorSampleTestSimplePasses() 
+		public void EditorSampleTestSimplePasses()
 		{
 			// Use the Assert class to test conditions.
 		}
@@ -19,7 +18,7 @@ namespace UnityJochen.DeJochenhecklUnityDatabinding.Editor.Tests
 		// A UnityTest behaves like a coroutine in PlayMode
 		// and allows you to yield null to skip a frame in EditMode
 		[UnityTest]
-		public IEnumerator EditorSampleTestWithEnumeratorPasses() 
+		public IEnumerator EditorSampleTestWithEnumeratorPasses()
 		{
 			// Use the Assert class to test conditions.
 			// yield to skip a frame
