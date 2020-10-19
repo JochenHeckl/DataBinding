@@ -24,7 +24,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             {
                 var bindableProperties =
                     dataSourceType
-                    .GetProperties( BindingFlags.Public | BindingFlags.Instance ).Select( x => x.Name )
+                    .GetProperties( BindingFlags.Public | BindingFlags.Instance )
+                    .Select( x => x.Name )
                     .OrderBy( x => x )
                     .ToArray();
 

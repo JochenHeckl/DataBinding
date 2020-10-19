@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace de.JochenHeckl.Unity.DataBinding
 {
+    [Obsolete( "User ComponentPropertyBindingBuilders for options and value instead." )]
     public class DropdownAdapterBindingBuilder : PropertyBindingBuilder, IBindingBuilder
     {
         public Dropdown dropdown;

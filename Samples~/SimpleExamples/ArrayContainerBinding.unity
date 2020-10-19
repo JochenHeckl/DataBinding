@@ -43,7 +43,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 12
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -118,6 +118,8 @@ NavMeshSettings:
     manualTileSize: 0
     tileSize: 256
     accuratePlacement: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
@@ -245,7 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePath: Elements
   targetGameObject: {fileID: 583117646}
-  elementPrefab: {fileID: -5182294578414524024, guid: cbf1a13309e275147afc57035f5b8f2b,
+  elementPrefab: {fileID: 2272044944953630455, guid: cbf1a13309e275147afc57035f5b8f2b,
     type: 3}
   targetTransform: {fileID: 583117649}
 --- !u!114 &583117648
@@ -263,6 +265,7 @@ MonoBehaviour:
   dataSourceType:
     assemblyQualifiedName: de.JochenHeckl.Unity.DataBinding.Example.ArrayContainerDataBindingViewModel,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  condenseValidBuilders: 1
 --- !u!4 &583117649
 Transform:
   m_ObjectHideFlags: 0
