@@ -1,0 +1,11 @@
+.componentPropertyBinding {
+    border-width: 1px;
+    border-radius: 2px;
+    margin: 2px;
+    padding: 1px;
+    border-color: rgb(0, 0, 0);
+}
+
+.componentPropertyBindingHeader {
+    flex-direction: row-reverse;
+}
