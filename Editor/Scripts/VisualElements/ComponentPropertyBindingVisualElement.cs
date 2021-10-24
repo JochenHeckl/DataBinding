@@ -18,9 +18,10 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 		private DropdownField targetPathElement;
 		private Button removeBindingButton;
 
+		public ComponentPropertyBinding _binding;
+
 		private Type _dataSourceType;
 		private PropertyInfo[] _bindableDataSourceProperties;
-		public ComponentPropertyBinding _binding;
 		private Action _bindingChanged;
 
 		public ComponentPropertyBindingVisualElement(
@@ -59,7 +60,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 			targetObjectSelectionElement = new ObjectField( "Target GameObject" );
 			targetObjectSelectionElement.allowSceneObjects = true;
 			targetObjectSelectionElement.objectType = typeof( UnityEngine.GameObject );
-			targetObjectSelectionElement.value = _binding.targetGameObject;
+			targetObjectSelectionElement.value = _binding.TargetGameObject;
 
 			targetObjectSelectionElement.RegisterValueChangedCallback( HandleTargetObjectSelectionChanged );
 
@@ -90,7 +91,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
 		private void HandleTargetObjectSelectionChanged( ChangeEvent<UnityEngine.Object> changeEvent)
 		{
-			_binding.targetGameObject = changeEvent.newValue as GameObject;
+			_binding.TargetGameObject = changeEvent.newValue as GameObject;
 
 			UpdateTargetComponentChoices();
 
@@ -100,7 +101,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
 		private void HandleTargetComponentChanged( ChangeEvent<string> changeEvent )
 		{
-			_binding.targetComponent = _binding.targetGameObject.GetComponentsInChildren<Component>()
+			_binding.TargetComponent = _binding.TargetGameObject?.GetComponentsInChildren<Component>()
 				.FirstOrDefault( ( x ) => MakeTargetComponentDisplayValue( x ) == changeEvent.newValue );
 
 			UpdateTargetPathChoises();
@@ -121,12 +122,12 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 		{
 			var componentsOfGameObject = Array.Empty<Component>();
 
-			if ( _binding.targetGameObject != null )
+			if ( _binding.TargetGameObject != null )
 			{
-				componentsOfGameObject = _binding.targetGameObject.GetComponentsInChildren<Component>( true );
+				componentsOfGameObject = _binding.TargetGameObject.GetComponentsInChildren<Component>( true );
 
 				targetComponentSelectionElement.choices = componentsOfGameObject.Select( MakeTargetComponentDisplayValue ).ToList();
-				targetComponentSelectionElement.value = MakeTargetComponentDisplayValue( _binding.targetComponent );
+				targetComponentSelectionElement.value = MakeTargetComponentDisplayValue( _binding.TargetComponent );
 
 			}
 		}
@@ -137,9 +138,9 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 				_dataSourceType.GetProperties(),
 				x => x.Name == _binding.SourcePath );
 
-			if ( (sourceProperty != null) && (_binding.targetComponent != null) )
+			if ( (sourceProperty != null) && (_binding.TargetComponent != null) )
 			{
-				var targetProperties = _binding.targetComponent.GetType().GetProperties();
+				var targetProperties = _binding.TargetComponent.GetType().GetProperties();
 				var targetProperty = Array.Find( targetProperties, ( x ) => x.Name == _binding.TargetPath );
 
 				targetPathElement.choices = targetProperties
