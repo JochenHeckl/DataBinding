@@ -4,12 +4,19 @@
             <ui:Label text="ViewModelType" name="ViewModelTypeLabel" style="align-items: auto; justify-content: flex-start;" />
             <ui:DropdownField name="ViewModelTypeValue" style="flex-grow: initial; flex-shrink: 1;" />
         </ui:VisualElement>
-        <ui:VisualElement name="BindingArea" style="padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px;">
-            <ui:Label text="Component Property Bindings" display-tooltip-when-elided="true" class="bindingGroupLabel" />
-            <ui:VisualElement name="PropertyBindingContainer" />
-            <ui:VisualElement name="Controls" style="align-items: center; justify-content: center;">
+        <ui:VisualElement name="ComponentPropertyBindingArea" style="padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px;">
+            <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+                <ui:Label text="Component Property Bindings" display-tooltip-when-elided="true" class="bindingGroupLabel" />
                 <ui:Button text="Add Binding" display-tooltip-when-elided="true" name="AddPropertyBindingButton" style="font-size: 12px;" />
             </ui:VisualElement>
+            <ui:VisualElement name="PropertyBindingContainer" />
+        </ui:VisualElement>
+        <ui:VisualElement name="ContainerPropertyBindingArea" style="padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px;">
+            <ui:VisualElement style="flex-direction: row; justify-content: space-between;">
+                <ui:Label text="Container Property Bindings" display-tooltip-when-elided="true" class="bindingGroupLabel" />
+                <ui:Button text="Add Binding" display-tooltip-when-elided="true" name="AddContainerBindingButton" style="font-size: 12px;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="ContainerBindingContainer" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

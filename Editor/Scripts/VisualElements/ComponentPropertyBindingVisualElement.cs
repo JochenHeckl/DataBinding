@@ -11,74 +11,141 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
 	public class ComponentPropertyBindingVisualElement : VisualElement
 	{
-		private VisualElement headerElement;
-		private DropdownField sourcePathElement;
-		private ObjectField targetObjectSelectionElement;
-		private DropdownField targetComponentSelectionElement;
-		private DropdownField targetPathElement;
-		private Button removeBindingButton;
+		private readonly VisualElement headerElement;
+		private readonly DropdownField sourcePathElement;
+		private readonly ObjectField targetObjectSelectionElement;
+		private readonly DropdownField targetComponentSelectionElement;
+		private readonly DropdownField targetPathElement;
+        private readonly Button togglePropertyExpansionButton;
+        private readonly Button removeBindingButton;
 
 		public ComponentPropertyBinding _binding;
 
-		private Type _dataSourceType;
-		private PropertyInfo[] _bindableDataSourceProperties;
-		private Action _bindingChanged;
+		private readonly Type _dataSourceType;
+		private readonly PropertyInfo[] _bindableDataSourceProperties;
+		private readonly Action _bindingChanged;
 
 		public ComponentPropertyBindingVisualElement(
 			Type dataSourceTypeIn,
 			ComponentPropertyBinding bindingIn,
 			Action bindingChangedIn,
-			Action removeBindingIn )
+            bool forcedShowExpanded,
+            Action<ComponentPropertyBinding> moveBindingUp,
+            Action<ComponentPropertyBinding> moveBindingDown,
+            Action togglePropertyExpansion,
+            Action removeBindingIn )
 		{
 			_dataSourceType = dataSourceTypeIn;
 			_binding = bindingIn;
 			_bindingChanged = bindingChangedIn;
 
-			_bindableDataSourceProperties =
+            if ( _dataSourceType == null )
+            {
+                return;
+            }
+			
+            _bindableDataSourceProperties =
 				_dataSourceType.GetProperties()
 				.Where( x => x.CanRead )
 				.ToArray();
 
-			AddToClassList( "componentPropertyBinding" );
+            AddToClassList("bindingDefinition");
 
-			headerElement = new VisualElement();
-			headerElement.AddToClassList( "componentPropertyBindingHeader" );
+            headerElement = new VisualElement();
+            headerElement.AddToClassList("bindingDefinitionHeader");
 
-			removeBindingButton = new Button( removeBindingIn );
-			removeBindingButton.text = "✕";
-			headerElement.Add( removeBindingButton );
+            var isBindingValid = IsBindingValid(_binding);
+            var renderCondensed = isBindingValid && !forcedShowExpanded;
 
-			Add( headerElement );
+            removeBindingButton = new Button(removeBindingIn);
+            removeBindingButton.text = "✕";
+            AddHeaderButton(removeBindingButton);
 
-			sourcePathElement = new DropdownField( "Source Path" );
-			sourcePathElement.choices = _bindableDataSourceProperties.Select( x => x.Name ).ToList();
-			sourcePathElement.value = _binding.SourcePath;
-			sourcePathElement.RegisterValueChangedCallback( HandleSourcePathChanged );
+            togglePropertyExpansionButton = new Button(isBindingValid ? togglePropertyExpansion : null);
+            togglePropertyExpansionButton.text = renderCondensed ? "…" : "↸";
+            AddHeaderButton(togglePropertyExpansionButton);
 
-			Add( sourcePathElement );
+            var moveBindingDownButton = new Button(moveBindingDown != null ? () => moveBindingDown(_binding) : (Action)null);
+            moveBindingDownButton.text = "▼";
+            AddHeaderButton(moveBindingDownButton);
 
-			targetObjectSelectionElement = new ObjectField( "Target GameObject" );
-			targetObjectSelectionElement.allowSceneObjects = true;
-			targetObjectSelectionElement.objectType = typeof( UnityEngine.GameObject );
-			targetObjectSelectionElement.value = _binding.TargetGameObject;
+            var moveBindingUpButton = new Button(moveBindingUp != null ? () => moveBindingUp(_binding) : (Action)null);
+            moveBindingUpButton.text = "▲";
+            AddHeaderButton(moveBindingUpButton);
 
-			targetObjectSelectionElement.RegisterValueChangedCallback( HandleTargetObjectSelectionChanged );
+            Add(headerElement);
 
-			Add( targetObjectSelectionElement );
+            if ( renderCondensed )
+            {
+                var condensedLabel = new Label(MakeCondensedLabel(_binding));
+                condensedLabel.AddToClassList("unity-text-element");
+                condensedLabel.AddToClassList("unity-label");
+                condensedLabel.AddToClassList("condensedBindingLabel");
 
-			targetComponentSelectionElement = new DropdownField( "Target Component" );
-			targetComponentSelectionElement.RegisterValueChangedCallback( HandleTargetComponentChanged );
+                Add(condensedLabel);
+            }
+            else
+            {
+                sourcePathElement = new DropdownField("Source Path");
+                sourcePathElement.choices = _bindableDataSourceProperties.Select(x => x.Name).ToList();
+                sourcePathElement.value = _binding.SourcePath;
+                sourcePathElement.RegisterValueChangedCallback(HandleSourcePathChanged);
 
-			Add( targetComponentSelectionElement );
+                Add(sourcePathElement);
 
-			targetPathElement = new DropdownField( "Target Path" );
-			targetPathElement.RegisterValueChangedCallback( HandleTargetPathChanged );
+                targetObjectSelectionElement = new ObjectField("Target GameObject");
+                targetObjectSelectionElement.allowSceneObjects = true;
+                targetObjectSelectionElement.objectType = typeof(UnityEngine.GameObject);
+                targetObjectSelectionElement.value = _binding.TargetGameObject;
 
-			Add( targetPathElement );
+                targetObjectSelectionElement.RegisterValueChangedCallback(HandleTargetObjectSelectionChanged);
 
-			UpdateTargetComponentChoices();
-			UpdateTargetPathChoises();
-		}
+                Add(targetObjectSelectionElement);
+
+                targetComponentSelectionElement = new DropdownField("Target Component");
+                targetComponentSelectionElement.RegisterValueChangedCallback(HandleTargetComponentChanged);
+
+                Add(targetComponentSelectionElement);
+
+                targetPathElement = new DropdownField("Target Path");
+                targetPathElement.RegisterValueChangedCallback(HandleTargetPathChanged);
+
+                Add(targetPathElement);
+
+                UpdateTargetComponentChoices();
+                UpdateTargetPathChoises();
+            }
+        }
+
+        private void AddHeaderButton(Button button)
+        {
+            button.AddToClassList("bindingActionButton");
+            headerElement.Add(button);
+        }
+
+        private string MakeCondensedLabel( ComponentPropertyBinding binding )
+		{
+            var sourceProperty = _bindableDataSourceProperties.Single( x => x.Name == _binding.SourcePath );
+            var friendlySourceTypeName = sourceProperty.PropertyType.GetTypeInfo().GetFriendlyName();
+
+            return $"<color=blue>{friendlySourceTypeName}</color> <b>{_binding.SourcePath}</b> binds to <b>{_binding.TargetComponent.GetType().Name}.{binding.TargetPath}</b> ({_binding.TargetComponent.name})";
+        }
+
+		private bool IsBindingValid( ComponentPropertyBinding binding )
+		{
+            var sourceProperty = _bindableDataSourceProperties
+                .FirstOrDefault( x => x.Name == binding.SourcePath );
+
+            var targetProperty = _binding.TargetComponent?
+                .GetType()
+                .GetProperties()
+                .FirstOrDefault( x => x.Name == binding.TargetPath );
+
+            return
+                sourceProperty != null
+                && targetProperty != null
+                && targetProperty.PropertyType.IsAssignableFrom( sourceProperty.PropertyType );
+        }
 
 		private void HandleSourcePathChanged( ChangeEvent<string> change )
 		{

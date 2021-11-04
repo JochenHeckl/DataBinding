@@ -18,8 +18,9 @@ namespace de.JochenHeckl.Unity.DataBinding
 #endif // UNITY_EDITOR
 
         public ComponentPropertyBinding[] componentPropertyBindings = Array.Empty<ComponentPropertyBinding>();
+        public ContainerPropertyBinding[] containerPropertyBindings = Array.Empty<ContainerPropertyBinding>();
 
-		public void OnEnable()
+        public void OnEnable()
 		{
             BindBindingDataSources( dataSource );
             UpdateBindings();
@@ -42,7 +43,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
                 if ( parent != null )
                 {
-                    var parentViewBehaviour = parent.GetComponent<ViewBehaviour>();
+                    var parentViewBehaviour = parent.GetComponent<View>();
 
                     if ( parentViewBehaviour != null )
                     {
@@ -55,21 +56,21 @@ namespace de.JochenHeckl.Unity.DataBinding
 
             set
             {
-                var oldDataSource = DataSource as IDataSource;
+                var oldDataSource = DataSource as INotifyDataSourceChanged;
 
                 if ( oldDataSource != null )
                 {
-                    oldDataSource.ViewModelChanged -= OnDataSourceChanged;
+                    oldDataSource.DataSourceChanged -= OnDataSourceChanged;
                 }
 
                 dataSource = value;
                 BindBindingDataSources( dataSource );
 
-                var newDataSource = DataSource as IDataSource;
+                var newDataSource = DataSource as INotifyDataSourceChanged;
 
                 if ( newDataSource != null )
                 {
-                    newDataSource.ViewModelChanged += OnDataSourceChanged;
+                    newDataSource.DataSourceChanged += OnDataSourceChanged;
                 }
 
                 UpdateBindings();
@@ -92,16 +93,21 @@ namespace de.JochenHeckl.Unity.DataBinding
             {
                 binding.DataSource = dataSource;
             }
+
+            foreach ( var binding in containerPropertyBindings )
+            {
+                binding.DataSource = dataSource;
+            }
         }
 
         private void UpdateBindings()
         {
-            if ( componentPropertyBindings == null )
+            foreach ( var binding in componentPropertyBindings )
             {
-                return;
+                binding.UpdateBinding();
             }
 
-            foreach ( var binding in componentPropertyBindings )
+            foreach ( var binding in containerPropertyBindings )
             {
                 binding.UpdateBinding();
             }

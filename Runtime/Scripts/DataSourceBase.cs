@@ -2,8 +2,8 @@ using System;
 
 namespace de.JochenHeckl.Unity.DataBinding
 {
-    public class DataSource<DataSourceType>
-		where DataSourceType : DataSource<DataSourceType>
+    public class DataSourceBase<DataSourceType> : INotifyDataSourceChanged
+		where DataSourceType : DataSourceBase<DataSourceType>
 	{
 		public event Action DataSourceChanged = delegate { };
 

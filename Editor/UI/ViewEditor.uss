@@ -1,13 +1,19 @@
-.componentPropertyBinding {
+.bindingDefinition {
     border-width: 1px;
-    border-radius: 2px;
+    border-radius: 4px;
     margin: 2px;
     padding: 1px;
     border-color: rgb(0, 0, 0);
 }
 
-.componentPropertyBindingHeader {
+.bindingDefinitionHeader {
     flex-direction: row-reverse;
+    flex-wrap: wrap-reverse;
+    background-color: var(--unity-colors-app_toolbar_button-background-hover);
+}
+
+.bindingActionButton {
+    margin: 0;
 }
 
 .bindingGroupLabel {
@@ -17,4 +23,10 @@
     margin-top: 1px;
     margin-bottom: 1px;
     font-size: 14px;
+}
+
+.condensedBindingLabel {
+    -unity-text-align: middle-left;
+    white-space: normal;
+    margin: 2px;
 }

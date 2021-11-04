@@ -8,6 +8,11 @@ namespace de.JochenHeckl.Unity.DataBinding
     [Serializable]
     public class ComponentPropertyBinding
     {
+
+#if UNITY_EDITOR
+        [SerializeField] public bool expandView;
+#endif
+
         [SerializeField] private GameObject targetGameObject;
         [SerializeField] private Component targetComponent;
         [SerializeField] private string sourcePath;
