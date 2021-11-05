@@ -2,7 +2,7 @@
 
 ## What is Unity DataBinding?
 
-Unity DataBinding brings data binding to unity game objects. DataBinding aiming to minimize the effort required to create dynamic, performant user interfaces.
+Unity DataBinding brings data binding to unity game objects. DataBinding is aiming to minimize the effort required to create dynamic, performant user interfaces.
 
 With DataBinding you will always have your application logic separated from your User interface logic.
 
@@ -14,7 +14,7 @@ With DataBinding you will always have your application logic separated from your
 
   It does not matter which kind of Unity project you choose DataBinding works with all flavours of Unity. For simplicity we will choose 3D Core.
 
-  ![Create Project](/Documentation~/images/CreateProject.png)
+  ![Create Project](Documentation~/images/CreateProject.png)
 
 - Install the data binding package using the Unity Package Manager [Installing a package from a Git URL](https://docs.unity3d.com/Manual/upm-ui-giturl.html) from here:
   
@@ -22,7 +22,7 @@ With DataBinding you will always have your application logic separated from your
   
   *If you should lose track after completing this step you can simply skip to the end by loading the MyFirstDataBoundView sample*
 
-  ![Tutorial Scene](/Documentation~/images/ImportSample.png)
+  ![Tutorial Scene](Documentation~/images/ImportSample.png)
 
 ### Setting up the scene
 
@@ -34,7 +34,7 @@ With DataBinding you will always have your application logic separated from your
   
   Your scene should look something like this:
   
-  ![Tutorial Scene](/Documentation~/images/InitialSetup.png)
+  ![Tutorial Scene](Documentation~/images/InitialSetup.png)
 
 - Create a new c# script ***CubeViewDataSource.cs***:
   
@@ -165,7 +165,7 @@ With DataBinding you will always have your application logic separated from your
 
 In a real world scenario we would not *hard code* this relation but generate the view from some prefab. However this approach is very handy to develop views in isolation.
 
-![Setup](/Documentation~/images/SetupInspector.png)
+![Setup](Documentation~/images/SetupInspector.png)
 
 ### Configuring the ***View*** GameObject
 
@@ -176,7 +176,7 @@ In a real world scenario we would not *hard code* this relation but generate the
 - Add a DynamicMaterialColor Component.
 - Drag the Cube Material onto the Material Property field of the DynamicMaterialColor Component.
   
-![Setup](/Documentation~/images/ViewInspector01.png)
+![Setup](Documentation~/images/ViewInspector01.png)
 
 - Now we are set to configure the two component property data bindings:
   
@@ -196,4 +196,4 @@ In a real world scenario we would not *hard code* this relation but generate the
 
 - That's it! We are done. Hit play and you should see the application logic change the appearance of the cube every other second.
 
-![Setup](/Documentation~/images/ViewInspector02.png)
+![Setup](Documentation~/images/ViewInspector02.png)
