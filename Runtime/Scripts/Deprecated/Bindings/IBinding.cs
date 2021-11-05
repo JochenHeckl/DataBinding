@@ -1,7 +1,10 @@
-﻿namespace de.JochenHeckl.Unity.DataBinding
+﻿using System;
+
+namespace de.JochenHeckl.Unity.DataBinding
 {
     public interface IBinding
     {
+        // TODO: Change to IDataSource in 2.0
         object DataSource
         {
             get;
@@ -15,6 +18,8 @@
         }
 
         void UpdateBinding();
+
+        [Obsolete( "This will be removed in version 2.0. Do bind actions to handle user input." )]
         void ReverseUpdateBinding();
     }
 
@@ -34,6 +39,7 @@
     }
 
 
+    [Obsolete( "This will be removed in version 2.0. Just do use code in views." )]
     public interface IAdapterBinding<ValueType> : IBinding
     {
         IBindingAdapter<ValueType> TargetAdapter
@@ -42,6 +48,7 @@
         }
     }
 
+    [Obsolete( "This will be removed in version 2.0. IT was only ever needed for TwoWay bindings which will soon be a thing of the past." )]
     public interface ISignalingAdapterBinding<ValueType> : IBinding
     {
         ISignalingBindingAdapter<ValueType> TargetAdapter

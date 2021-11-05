@@ -1,9 +1,12 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace de.JochenHeckl.Unity.DataBinding
 {
     [DebuggerDisplay("{dataSource.GetType().Name}.{Path} => {BindingAdapter.GetType().Name}")]
+
+    [Obsolete( "This will be removed in version 2.0" )]
     internal class TwoWayPropertyBinding<ValueType> : ISignalingAdapterBinding<ValueType>
     {
         public ISignalingBindingAdapter<ValueType> TargetAdapter

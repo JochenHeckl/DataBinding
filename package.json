@@ -1,12 +1,21 @@
 {
   "name": "de.jochenheckl.unity.databinding",
   "displayName": "Data Binding",
-  "version": "1.2.3",
-  "unity": "2019.3",
-  "description": "Data Binding is a unity library that supports binding user interface elements to custom data type (=ViewModel) properties.\n\nData Binding is easy to use and comes with some simple examples to get started.",
-  "type": "library",
+  "version": "1.3.0",
+  "unity": "2020.3",
+  "description": "Unity DataBinding brings data binding to unity game objects.\n\nDataBinding is especially useful when generating complex user interfaces. With DataBinding you will always have your application logic separated from your User interface logic.",
   "keywords": [
-    "data binding",
+    "Data Binding",
+    "DataBinding",
+    "View Model",
+    "ViewModel",
+    "MVVM",
+    "User Interface",
+    "UserInterface",
+    "UI",
+    "Declarative User Interface",
+    "Declarative UserInterface",
+    "Declarative UI",
     "SOLID"
   ],
   "author": {
@@ -14,6 +23,7 @@
     "email": "jochen.heckl@gmail.com",
     "url": "https://www.jochenheckl.de"
   },
+  "licensesUrl": "https://raw.githubusercontent.com/JochenHeckl/DataBinding/main/LICENSE.md",
   "dependencies": {
     "com.unity.test-framework": "1.1.11"
   },
@@ -22,6 +32,16 @@
       "displayName": "SimpleExamples",
       "description": "A collection of simple scenes that demonstrate certain aspects of the data binding package.",
       "path": "Samples~/SimpleExamples"
+    },
+    {
+      "displayName": "MyFirstDataBoundView (Getting Started Tutorial)",
+      "description": "The finished project you would have created when following the Getting Started Tutorial step by step.",
+      "path": "Samples~/UIToolkit/MyFirstDataBoundView"
+    },
+    {
+      "displayName": "VisualElementPropertyBinding",
+      "description": "A simple example demonstrating the use of DataBinding when using the new UIToolkit.",
+      "path": "Samples~/UIToolkit/VisualElementPropertyBinding"
     }
   ]
 }
