@@ -176,7 +176,7 @@ In a real world scenario we would not *hard code* this relation but generate the
 - Add a DynamicMaterialColor Component.
 - Drag the Cube Material onto the Material Property field of the DynamicMaterialColor Component.
   
-![Setup](Documentation~/images/ViewInspector01.png)
+![Setup](Documentation~/Images/ViewInspector01.png)
 
 - Now we are set to configure the two component property data bindings:
   
