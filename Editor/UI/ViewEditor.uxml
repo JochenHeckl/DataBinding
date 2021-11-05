@@ -1,7 +1,7 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement name="Root">
         <ui:VisualElement name="ViewModel" style="flex-direction: row; align-items: center; justify-content: space-between; flex-grow: 0;">
-            <ui:Label text="ViewModelType" name="ViewModelTypeLabel" style="align-items: auto; justify-content: flex-start;" />
+            <ui:Label text="DataSource Type" name="ViewModelTypeLabel" style="align-items: auto; justify-content: flex-start;" />
             <ui:DropdownField name="ViewModelTypeValue" style="flex-grow: initial; flex-shrink: 1;" />
         </ui:VisualElement>
         <ui:VisualElement name="ComponentPropertyBindingArea" style="padding-left: 2px; padding-right: 2px; padding-top: 2px; padding-bottom: 2px; margin-left: 2px; margin-right: 2px; margin-top: 2px; margin-bottom: 2px;">
