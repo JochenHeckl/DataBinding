@@ -7,7 +7,8 @@ public class DynamicMaterialColor : MonoBehaviour
     {
         set
         {
-            material.color = value;
+            var meshRenderer = GetComponent<MeshRenderer>();
+            meshRenderer.material.color = value;
         }
     }
 }

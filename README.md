@@ -141,14 +141,15 @@ With DataBinding you will always have your application logic separated from your
 
   public class DynamicMaterialColor : MonoBehaviour
   {
-    public Material material;
-    public Color Color
-    {
-        set
-        {
-            material.color = value;
-        }
-    }
+      public Material material;      
+      public Color Color
+      {
+          set
+          {
+              var meshRenderer = GetComponent<MeshRenderer>();
+              meshRenderer.material.color = value;
+          }
+      }
   }
 
   ```
@@ -173,8 +174,7 @@ In a real world scenario we would not *hard code* this relation but generate the
   Type "View" into the search bar. Add a View Component.
 - Choose CubeViewDataSource as the DataSource Type for this view.
 - On the View component add two component property bindings by clicking the Add Binding button twice.
-- Add a DynamicMaterialColor Component.
-- Drag the Cube Material onto the Material Property field of the DynamicMaterialColor Component.
+- Add a DynamicMaterialColor Component to the CubeGameObject.
   
 ![Setup](Documentation~/Images/ViewInspector01.png)
 
@@ -185,8 +185,8 @@ In a real world scenario we would not *hard code* this relation but generate the
   - For the ***Target Component*** choose ***Cube::Transform***
   - The ***Target Path*** will be ***localScale***
   - Select the ***Source Path*** for the second binding to be ***CubeColor***
-  - The ***Target GameObject*** will be the ***View*** GameObject itself.
-  - For the ***Target Component*** choose ***View::DynamicMaterialColor***
+  - The ***Target GameObject*** will be the ***Cube*** GameObject.
+  - For the ***Target Component*** choose ***Cube::DynamicMaterialColor***
   - And finally the ***Target Path*** will be ***Color***
 
   If the component property binding is valid, it will collapse to a condensed text description. You can toggle expanded and collapsed view
