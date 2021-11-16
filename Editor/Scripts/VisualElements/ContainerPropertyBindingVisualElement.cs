@@ -29,11 +29,11 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 			Type dataSourceTypeIn,
 			ContainerPropertyBinding bindingIn,
 			Action bindingChangedIn,
-            bool forcedShowExpanded,
+            Func<ContainerPropertyBinding, bool> showExpanded,
             Action<ContainerPropertyBinding> moveBindingUp,
             Action<ContainerPropertyBinding> moveBindingDown,
-            Action togglePropertyExpansion,
-            Action removeBindingIn )
+            Action<ContainerPropertyBinding> togglePropertyExpansion,
+            Action<ContainerPropertyBinding> removeBinding )
 		{
             _dataSourceType = dataSourceTypeIn;
             _binding = bindingIn;
@@ -57,14 +57,14 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             headerElement.AddToClassList("bindingDefinitionHeader");
 
             var isBindingValid = IsBindingValid( _binding );
-            var renderCondensed = isBindingValid && !forcedShowExpanded;
+            var renderCondensed = isBindingValid && !showExpanded( _binding );
 
-            removeBindingButton = new Button(removeBindingIn);
+            removeBindingButton = new Button( () => removeBinding( _binding ) );
             removeBindingButton.text = "✕";
 
             AddHeaderButton(removeBindingButton);            
 
-            togglePropertyExpansionButton = new Button(isBindingValid ? togglePropertyExpansion : null);
+            togglePropertyExpansionButton = new Button(isBindingValid ? () => togglePropertyExpansion(_binding) : (Action) null );
             togglePropertyExpansionButton.text = renderCondensed ? "…" : "↸";
             
             AddHeaderButton(togglePropertyExpansionButton);

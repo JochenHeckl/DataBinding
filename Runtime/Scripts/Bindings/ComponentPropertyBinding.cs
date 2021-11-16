@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace de.JochenHeckl.Unity.DataBinding
     {
 
 #if UNITY_EDITOR
-        [SerializeField] public bool expandView;
+        [SerializeField] public bool showExpanded;
 #endif
 
         [SerializeField] private GameObject targetGameObject;
@@ -18,20 +19,20 @@ namespace de.JochenHeckl.Unity.DataBinding
         [SerializeField] private string sourcePath;
         [SerializeField] private string targetPath;
 
-        private object dataSource;
+        private object _dataSource;
 
-        private MethodInfo dataSourcePropertyGetter;
-        private MethodInfo targetPropertySetter;
+        private MethodInfo[] _dataSourcePropertyAccessors;
+        private MethodInfo[] _targetPropertyAccessors;
 
         public object DataSource
         {
             get
             {
-                return dataSource;
+                return _dataSource;
             }
             set
             {
-                dataSource = value;
+                _dataSource = value;
                 BindSource();
             }
         }
@@ -59,7 +60,7 @@ namespace de.JochenHeckl.Unity.DataBinding
             {
                 targetGameObject = value;
                 targetComponent = null;
-                
+
                 BindTarget();
             }
         }
@@ -91,14 +92,15 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         private void BindSource()
         {
-            if ( dataSource != null && !string.IsNullOrEmpty( sourcePath ) )
+            if ( _dataSource != null && !string.IsNullOrEmpty( sourcePath ) )
             {
-                var propertyInfo = dataSource.ResolvePublicPropertyPath( SourcePath );
-                dataSourcePropertyGetter = (propertyInfo != null) ? propertyInfo.GetGetMethod() : null;
+                _dataSourcePropertyAccessors = _dataSource
+                    .ResolvePublicPropertyPath( PathResolveOperation.GetValue, SourcePath )
+                    .ToArray();
             }
             else
             {
-                dataSourcePropertyGetter = null;
+                _dataSourcePropertyAccessors = Array.Empty<MethodInfo>();
             }
         }
 
@@ -106,26 +108,28 @@ namespace de.JochenHeckl.Unity.DataBinding
         {
             if ( targetComponent != null && !string.IsNullOrEmpty( targetPath ) )
             {
-                var propertyInfo = targetComponent.ResolvePublicPropertyPath( targetPath );
-                targetPropertySetter = (propertyInfo != null) ? propertyInfo.GetSetMethod() : null;
+                _targetPropertyAccessors = targetComponent
+                    .ResolvePublicPropertyPath( PathResolveOperation.SetValue, targetPath )
+                    .ToArray();
             }
             else
             {
-                targetPropertySetter = null;
+                _targetPropertyAccessors = Array.Empty<MethodInfo>();
             }
         }
 
         public void UpdateBinding()
         {
-            if ( targetPropertySetter == null )
+            if ( _targetPropertyAccessors == null )
             {
                 BindTarget();
             }
 
-            if ( (dataSourcePropertyGetter != null) && (targetPropertySetter != null) )
+            if ( _dataSourcePropertyAccessors.Any() && _targetPropertyAccessors.Any() )
             {
-                var value = dataSourcePropertyGetter.Invoke( dataSource, null );
-                targetPropertySetter.Invoke( targetComponent, new object[] { value } );
+                var pathInstance = _dataSource;
+                var value = _dataSourcePropertyAccessors.InvokeGetOperation( _dataSource );
+                _targetPropertyAccessors.InvokeSetOperation( targetComponent, new object[] { value } );
             }
         }
     }

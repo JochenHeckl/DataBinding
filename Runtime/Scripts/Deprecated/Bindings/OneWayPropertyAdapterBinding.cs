@@ -46,7 +46,7 @@ namespace de.JochenHeckl.Unity.DataBinding
             dataSource = dataSourceIn;
 
             var propertyInfo = dataSource.ResolvePublicPropertyPath(SourcePath);
-            boundPropertyGetter = ( propertyInfo != null ) ? propertyInfo.GetGetMethod() : null;
+            boundPropertyGetter = propertyInfo?.GetGetMethod();
         }
 
         public void UpdateBinding()

@@ -6,31 +6,42 @@ using System.Text;
 
 namespace de.JochenHeckl.Unity.DataBinding
 {
+    public enum PathResolveOperation
+    {
+        GetValue,
+        SetValue
+    }
+
     public static class ReflectionExtensions
     {
+        public static PropertyInfo FindProperty( this Type type, string name )
+        {
+            return Array.Find( type.GetProperties(), ( x ) => x.Name == name );
+        }
+
         public static ValueType ResolveInstanceMember<ValueType>( this object instance, string path )
         {
-            if( instance == null )
+            if ( instance == null )
             {
                 return default;
             }
 
-            var pathFragments = path.Split('.');
+            var pathFragments = path.Split( '.' );
             var fragmentInstance = instance;
 
-            foreach ( var fragmentPath in pathFragments.Take(pathFragments.Length - 1) )
+            foreach ( var fragmentPath in pathFragments.Take( pathFragments.Length - 1 ) )
             {
                 if ( fragmentInstance == null )
                 {
-                    throw new InvalidOperationException(string.Format("Binding path {0} does not match dataSource of type {1}", path, instance.GetType().Name));
+                    throw new InvalidOperationException( string.Format( "Binding path {0} does not match dataSource of type {1}", path, instance.GetType().Name ) );
                 }
 
-                var memberInfo = fragmentInstance.GetType().GetMember(fragmentPath, BindingFlags.Instance);
+                var memberInfo = fragmentInstance.GetType().GetMember( fragmentPath, BindingFlags.Instance );
 
-                fragmentInstance = memberInfo.GetValue(0);
+                fragmentInstance = memberInfo.GetValue( 0 );
             }
 
-            return (ValueType) fragmentInstance.GetType().GetMember(pathFragments.Last(), BindingFlags.Instance).GetValue(0);
+            return (ValueType)fragmentInstance.GetType().GetMember( pathFragments.Last(), BindingFlags.Instance ).GetValue( 0 );
         }
 
         public static string GetFriendlyName( this Type type )
@@ -44,7 +55,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
             if ( type.IsGenericType )
             {
-                friendlyName = friendlyName.Split('`').First();
+                friendlyName = friendlyName.Split( '`' ).First();
 
                 friendlyName += "<";
 
@@ -53,7 +64,7 @@ namespace de.JochenHeckl.Unity.DataBinding
                 for ( int i = 0; i < typeParameters.Length; ++i )
                 {
                     string typeParamName = typeParameters[i].Name;
-                    friendlyName += ( i == 0 ? typeParamName : "," + typeParamName );
+                    friendlyName += (i == 0 ? typeParamName : "," + typeParamName);
                 }
 
                 friendlyName += ">";
@@ -67,6 +78,7 @@ namespace de.JochenHeckl.Unity.DataBinding
             return friendlyName;
         }
 
+        [Obsolete( "This is just here to make some old code survive compilation. It's bugged. Do NOT use it." )]
         public static PropertyInfo ResolvePublicPropertyPath( this object instance, string path )
         {
             if ( instance == null )
@@ -74,34 +86,99 @@ namespace de.JochenHeckl.Unity.DataBinding
                 return null;
             }
 
-            var pathFragments = path.Split('.');
+            var pathFragments = path.Split( '.' );
             var fragmentInstance = instance;
 
-            foreach ( var fragmentPath in pathFragments.Take(pathFragments.Count() - 1) )
+            foreach ( var fragmentPath in pathFragments.Take( pathFragments.Count() - 1 ) )
             {
                 if ( fragmentInstance == null )
                 {
-                    throw new InvalidOperationException(string.Format("Binding path {0} does not match dataSource of type {1}", path, instance.GetType().Name));
+                    throw new InvalidOperationException( string.Format( "Binding path {0} does not match dataSource of type {1}", path, instance.GetType().Name ) );
                 }
 
-                var propertyInfo = fragmentInstance.GetType().GetProperty(fragmentPath, BindingFlags.Instance | BindingFlags.Public);
+                var propertyInfo = fragmentInstance.GetType().GetProperty( fragmentPath, BindingFlags.Instance | BindingFlags.Public );
 
                 var boundPropertyGetter = propertyInfo.GetGetMethod();
-                fragmentInstance = boundPropertyGetter.Invoke(fragmentInstance, null);
+                fragmentInstance = boundPropertyGetter.Invoke( fragmentInstance, null );
             }
 
-            return fragmentInstance.GetType().GetProperty(pathFragments.Last(), BindingFlags.Instance | BindingFlags.Public );
+            return fragmentInstance.GetType().GetProperty( pathFragments.Last(), BindingFlags.Instance | BindingFlags.Public );
+        }
+
+        public static IEnumerable<MethodInfo> ResolvePublicPropertyPath(
+            this object instance,
+            PathResolveOperation operation,
+            string path )
+        {
+            if ( instance == null || path == null )
+            {
+                yield break;
+            }
+
+            var pathFragments = path.Split( '.' ).ToArray();
+            var fragmentInstanceType = instance.GetType();
+
+            foreach ( var fragmentPath in pathFragments.Take( pathFragments.Length - 1 ) )
+            {
+                var currentPathPropertyInfo = fragmentInstanceType.FindProperty( fragmentPath );
+                fragmentInstanceType = currentPathPropertyInfo.PropertyType;
+
+                yield return currentPathPropertyInfo.GetMethod;
+            }
+
+            var finalFragment = pathFragments.Last();
+            var propertyInfo = fragmentInstanceType.FindProperty( finalFragment );
+
+            if ( propertyInfo == null )
+            {
+                throw new InvalidOperationException($"Failed to resolve property path {path}.");
+            }
+
+            switch ( operation )
+            {
+                case PathResolveOperation.GetValue: yield return propertyInfo.GetMethod; break;
+                case PathResolveOperation.SetValue: yield return propertyInfo.SetMethod; break;
+            }
+        }
+
+        public static void SyncValue( this object source, object target, MethodInfo[] getAccessors, MethodInfo[] setAccessors )
+        {
+            setAccessors.InvokeSetOperation( target, getAccessors.InvokeGetOperation( source ) );
+        }
+
+        public static object InvokeGetOperation( this MethodInfo[] accessors, object instance )
+        {
+            var currentInstance = instance;
+
+            foreach ( var getter in accessors.Take( accessors.Length - 1 ) )
+            {
+                currentInstance = getter.Invoke( currentInstance, null );
+            }
+
+            return accessors.Last().Invoke( currentInstance, null) ;
+        }
+
+        public static void InvokeSetOperation<ValueType>( this MethodInfo[] accessors, object instance, ValueType value )
+        {
+            var currentInstance = instance;
+
+            foreach ( var getter in accessors.Take( accessors.Length - 1 ) )
+            {
+                currentInstance = getter.Invoke( currentInstance, null );
+            }
+
+            accessors.Last().Invoke( currentInstance, new object[] { value } );
         }
 
         public static bool InheritsOrImplements( this Type type, Type baseType )
         {
-            baseType = ResolveGenericTypeDefinition(baseType);
+            baseType = ResolveGenericTypeDefinition( baseType );
 
             var currentDerived = type.IsGenericType
                                    ? type.GetGenericTypeDefinition()
                                    : type;
 
-            while ( currentDerived != typeof(object) )
+            while ( currentDerived != typeof( object ) )
             {
                 if ( baseType == currentDerived || HasAnyInterfaces( currentDerived, baseType ) )
                 {
@@ -124,19 +201,19 @@ namespace de.JochenHeckl.Unity.DataBinding
         private static bool HasAnyInterfaces( Type type, Type interfaceType )
         {
             return type.GetInterfaces()
-                .Any(childInterface =>
-                {
-                    if( childInterface == interfaceType )
-                    {
-                        return true;
-                    }
+                .Any( childInterface =>
+                 {
+                     if ( childInterface == interfaceType )
+                     {
+                         return true;
+                     }
 
-                    var currentInterface = childInterface.IsGenericType
-                        ? childInterface.GetGenericTypeDefinition()
-                        : childInterface;
+                     var currentInterface = childInterface.IsGenericType
+                         ? childInterface.GetGenericTypeDefinition()
+                         : childInterface;
 
-                    return currentInterface == interfaceType;
-                });
+                     return currentInterface == interfaceType;
+                 } );
         }
 
         private static Type ResolveGenericTypeDefinition( Type type )

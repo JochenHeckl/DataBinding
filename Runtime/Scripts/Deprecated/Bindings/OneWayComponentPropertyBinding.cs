@@ -63,7 +63,7 @@ namespace de.JochenHeckl.Unity.DataBinding
             if ( dataSource != null && !string.IsNullOrEmpty(sourcePath) )
             {
                 var propertyInfo = dataSource.ResolvePublicPropertyPath(SourcePath);
-                dataSourcePropertyGetter = ( propertyInfo != null ) ? propertyInfo.GetGetMethod() : null;
+                dataSourcePropertyGetter = propertyInfo?.GetGetMethod();
             }
             else
             {
@@ -76,7 +76,7 @@ namespace de.JochenHeckl.Unity.DataBinding
             if ( target != null && !string.IsNullOrEmpty(targetPath) )
             {
                 var propertyInfo = target.ResolvePublicPropertyPath(targetPath);
-                targetPropertySetter = ( propertyInfo != null ) ? propertyInfo.GetSetMethod() : null;
+                targetPropertySetter = propertyInfo?.GetSetMethod();
             }
             else
             {

@@ -5,14 +5,13 @@ using UnityEngine;
 
 namespace de.JochenHeckl.Unity.DataBinding
 {
-	[DebuggerDisplay( "View({name}) : {DataSource}" )]
+    [DebuggerDisplay("View({name}) : {DataSource}")]
     public class View : MonoBehaviour
     {
 
 #if UNITY_EDITOR
 
         public SerializableType dataSourceType;
-
         public bool condenseValidBuilders;
 
 #endif // UNITY_EDITOR
@@ -21,18 +20,18 @@ namespace de.JochenHeckl.Unity.DataBinding
         public ContainerPropertyBinding[] containerPropertyBindings = Array.Empty<ContainerPropertyBinding>();
 
         public void OnEnable()
-		{
-            BindBindingDataSources( dataSource );
+        {
+            BindBindingDataSources(dataSource);
             UpdateBindings();
-		}
+        }
 
-		public object DataSource
+        public object DataSource
         {
             get
             {
                 // return local data source if available
 
-                if ( dataSource != null )
+                if (dataSource != null)
                 {
                     return dataSource;
                 }
@@ -41,11 +40,11 @@ namespace de.JochenHeckl.Unity.DataBinding
 
                 var parent = transform.parent;
 
-                if ( parent != null )
+                if (parent != null)
                 {
                     var parentViewBehaviour = parent.GetComponent<View>();
 
-                    if ( parentViewBehaviour != null )
+                    if (parentViewBehaviour != null)
                     {
                         return parentViewBehaviour.DataSource;
                     }
@@ -58,17 +57,17 @@ namespace de.JochenHeckl.Unity.DataBinding
             {
                 var oldDataSource = DataSource as INotifyDataSourceChanged;
 
-                if ( oldDataSource != null )
+                if (oldDataSource != null)
                 {
                     oldDataSource.DataSourceChanged -= OnDataSourceChanged;
                 }
 
                 dataSource = value;
-                BindBindingDataSources( dataSource );
+                BindBindingDataSources(dataSource);
 
                 var newDataSource = DataSource as INotifyDataSourceChanged;
 
-                if ( newDataSource != null )
+                if (newDataSource != null)
                 {
                     newDataSource.DataSourceChanged += OnDataSourceChanged;
                 }
@@ -82,19 +81,19 @@ namespace de.JochenHeckl.Unity.DataBinding
             UpdateBindings();
         }
 
-        private void BindBindingDataSources( object dataSource )
+        private void BindBindingDataSources(object dataSource)
         {
             if (dataSource == null)
             {
                 return;
             }
 
-            foreach ( var binding in componentPropertyBindings )
+            foreach (var binding in componentPropertyBindings)
             {
                 binding.DataSource = dataSource;
             }
 
-            foreach ( var binding in containerPropertyBindings )
+            foreach (var binding in containerPropertyBindings)
             {
                 binding.DataSource = dataSource;
             }
@@ -102,12 +101,12 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         private void UpdateBindings()
         {
-            foreach ( var binding in componentPropertyBindings )
+            foreach (var binding in componentPropertyBindings)
             {
                 binding.UpdateBinding();
             }
 
-            foreach ( var binding in containerPropertyBindings )
+            foreach (var binding in containerPropertyBindings)
             {
                 binding.UpdateBinding();
             }

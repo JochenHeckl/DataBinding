@@ -29,11 +29,11 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 			Type dataSourceTypeIn,
 			ComponentPropertyBinding bindingIn,
 			Action bindingChangedIn,
-            bool forcedShowExpanded,
+            Func<ComponentPropertyBinding, bool> showExpanded,
             Action<ComponentPropertyBinding> moveBindingUp,
             Action<ComponentPropertyBinding> moveBindingDown,
-            Action togglePropertyExpansion,
-            Action removeBindingIn )
+            Action<ComponentPropertyBinding> togglePropertyExpansion,
+            Action<ComponentPropertyBinding> removeBinding )
 		{
 			_dataSourceType = dataSourceTypeIn;
 			_binding = bindingIn;
@@ -55,13 +55,13 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             headerElement.AddToClassList("bindingDefinitionHeader");
 
             var isBindingValid = IsBindingValid(_binding);
-            var renderCondensed = isBindingValid && !forcedShowExpanded;
+            var renderCondensed = isBindingValid && !showExpanded( _binding );
 
-            removeBindingButton = new Button(removeBindingIn);
+            removeBindingButton = new Button( () => removeBinding( _binding ) );
             removeBindingButton.text = "✕";
             AddHeaderButton(removeBindingButton);
 
-            togglePropertyExpansionButton = new Button(isBindingValid ? togglePropertyExpansion : null);
+            togglePropertyExpansionButton = new Button(isBindingValid ? () => togglePropertyExpansion( _binding ) : (Action) null);
             togglePropertyExpansionButton.text = renderCondensed ? "…" : "↸";
             AddHeaderButton(togglePropertyExpansionButton);
 
@@ -77,7 +77,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
             if ( renderCondensed )
             {
-                var condensedLabel = new Label(MakeCondensedLabel(_binding));
+                var condensedLabel = new Label(MakeCondensedLabelText(_binding));
                 condensedLabel.AddToClassList("unity-text-element");
                 condensedLabel.AddToClassList("unity-label");
                 condensedLabel.AddToClassList("condensedBindingLabel");
@@ -119,11 +119,11 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void AddHeaderButton(Button button)
         {
-            button.AddToClassList("bindingActionButton");
+            button.AddToClassList(DataBindingEditorStyles.bindingActionButtonClassName);
             headerElement.Add(button);
         }
 
-        private string MakeCondensedLabel( ComponentPropertyBinding binding )
+        private string MakeCondensedLabelText( ComponentPropertyBinding binding )
 		{
             var sourceProperty = _bindableDataSourceProperties.Single( x => x.Name == _binding.SourcePath );
             var friendlySourceTypeName = sourceProperty.PropertyType.GetTypeInfo().GetFriendlyName();

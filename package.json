@@ -1,7 +1,7 @@
 {
   "name": "de.jochenheckl.unity.databinding",
-  "displayName": "Data Binding",
-  "version": "1.3.0",
+  "displayName": "DataBinding",
+  "version": "1.3.1",
   "unity": "2020.3",
   "description": "Unity DataBinding brings data binding to unity game objects.\n\nDataBinding is especially useful when generating complex user interfaces. With DataBinding you will always have your application logic separated from your User interface logic.",
   "keywords": [
@@ -25,7 +25,9 @@
   },
   "licensesUrl": "https://raw.githubusercontent.com/JochenHeckl/DataBinding/main/LICENSE.md",
   "dependencies": {
-    "com.unity.test-framework": "1.1.11"
+    "com.unity.test-framework": "1.1.11",
+    "com.unity.ui.builder": "1.0.0-preview.18",
+    "com.unity.ui": "1.0.0-preview.18"
   },
   "samples": [
     {
@@ -39,9 +41,9 @@
       "path": "Samples~/UIToolkit/MyFirstDataBoundView"
     },
     {
-      "displayName": "VisualElementPropertyBinding",
-      "description": "A simple example demonstrating the use of DataBinding when using the new UIToolkit.",
-      "path": "Samples~/UIToolkit/VisualElementPropertyBinding"
+      "displayName": "Welcome to DataBinding - UIToolkit",
+      "description": "A simple example demonstrating how to use DataBinding with UIToolkit.",
+      "path": "Samples~/UIToolkit/Welcome to DataBinding - UIToolkit"
     }
   ]
 }

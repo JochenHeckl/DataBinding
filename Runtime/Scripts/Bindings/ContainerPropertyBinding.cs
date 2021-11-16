@@ -12,7 +12,7 @@ namespace de.JochenHeckl.Unity.DataBinding
     {
 
 #if UNITY_EDITOR
-        [SerializeField] public bool expandView;
+        [SerializeField] public bool showExpanded;
 #endif
 
         [SerializeField] private Transform targetContainer;
@@ -21,7 +21,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         private object dataSource;
 
-        private MethodInfo dataSourcePropertyGetter;
+        private MethodInfo[] _dataSourcePropertyAccessors;
         
         public object DataSource
         {
@@ -77,20 +77,21 @@ namespace de.JochenHeckl.Unity.DataBinding
         {
             if ( dataSource != null && !string.IsNullOrEmpty( sourcePath ) )
             {
-                var propertyInfo = dataSource.ResolvePublicPropertyPath( SourcePath );
-                dataSourcePropertyGetter = (propertyInfo != null) ? propertyInfo.GetGetMethod() : null;
+                _dataSourcePropertyAccessors = dataSource
+                    .ResolvePublicPropertyPath( PathResolveOperation.GetValue, SourcePath )
+                    .ToArray();
             }
             else
             {
-                dataSourcePropertyGetter = null;
+                _dataSourcePropertyAccessors = Array.Empty<MethodInfo>();
             }
         }
 
         public void UpdateBinding()
         {
-            if ( (dataSourcePropertyGetter != null) && (targetContainer != null) )
+            if ( (_dataSourcePropertyAccessors != null) && (targetContainer != null) )
             {
-                var elements = dataSourcePropertyGetter.Invoke( dataSource, null ) as IEnumerable<object>;
+                var elements = _dataSourcePropertyAccessors.InvokeGetOperation( dataSource ) as IEnumerable<object>;
                 var elementCount = elements.Count();
 
                 while ( elementCount > targetContainer.childCount )

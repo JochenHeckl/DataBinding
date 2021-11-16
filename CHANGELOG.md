@@ -3,7 +3,13 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.3.0] - 2021-10-08
+## [1.3.1] - 2021-11-13
+
+### Adds 
+ - UIDocumentView : DataBinding extended to VisualElements and VisualElement Styles.
+ - A new Example demonstrating how to use the new features.
+
+## [1.3.0] - 2021-11-08
 
 ### Adds
 
