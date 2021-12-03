@@ -197,3 +197,16 @@ In a real world scenario we would not *hard code* this relation but generate the
 - That's it! We are done. Hit play and you should see the application logic change the appearance of the cube every other second.
 
 ![Setup](Documentation~/Images/ViewInspector02.png)
+
+
+## FAQ
+
+### **Question:**
+
+My Project looks like this. What Do I do?
+
+- ![UpgradeRenderPipeline](Documentation~/Images/UpgradeToURP.png)
+  
+### **Answer:**
+
+Your most likely use the Universal Render Pipeline (URP) in your Unity Project, but the example was made using the built in render pipeline. [Upgrade material and shaders to use the Universal Render Pipeline](https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@12.1/manual/upgrade-guides.html).

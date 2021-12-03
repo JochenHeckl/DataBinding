@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
-	public class ComponentPropertyBindingVisualElement : VisualElement
+	public class ComponentPropertyBindingEditor : VisualElement
 	{
 		private readonly VisualElement headerElement;
 		private readonly DropdownField sourcePathElement;
@@ -25,7 +25,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 		private readonly PropertyInfo[] _bindableDataSourceProperties;
 		private readonly Action _bindingChanged;
 
-		public ComponentPropertyBindingVisualElement(
+		public ComponentPropertyBindingEditor(
 			Type dataSourceTypeIn,
 			ComponentPropertyBinding bindingIn,
 			Action bindingChangedIn,

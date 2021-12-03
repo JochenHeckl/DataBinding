@@ -16,7 +16,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 #endif
 
         [SerializeField] private Transform targetContainer;
-        [SerializeField] private View elementTemplate;
+        [SerializeField] private UIDocumentView elementTemplate;
         [SerializeField] private string sourcePath;
 
         private object dataSource;
@@ -61,7 +61,7 @@ namespace de.JochenHeckl.Unity.DataBinding
             }
         }
 
-        public View ElementTemplate
+        public UIDocumentView ElementTemplate
         {
             get
             {

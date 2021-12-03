@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
-	public class ContainerPropertyBindingVisualElement : VisualElement
+	public class ContainerPropertyBindingEditor : VisualElement
 	{
 		private readonly VisualElement headerElement;
 		private readonly DropdownField sourcePathElement;
@@ -25,7 +25,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 		private readonly PropertyInfo[] _bindableDataSourceProperties;
 		private readonly Action _bindingChanged;
 
-		public ContainerPropertyBindingVisualElement(
+		public ContainerPropertyBindingEditor(
 			Type dataSourceTypeIn,
 			ContainerPropertyBinding bindingIn,
 			Action bindingChangedIn,
@@ -162,7 +162,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void HandleElementTemplateChanged(ChangeEvent<UnityEngine.Object> changeEvent)
         {
-            _binding.ElementTemplate = changeEvent.newValue as View;
+            _binding.ElementTemplate = changeEvent.newValue as UIDocumentView;
 
             MarkDirtyRepaint();
             _bindingChanged();

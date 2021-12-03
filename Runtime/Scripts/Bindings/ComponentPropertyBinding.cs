@@ -120,6 +120,11 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public void UpdateBinding()
         {
+            if ( _dataSourcePropertyAccessors == null )
+            {
+                return;
+            }
+
             if ( _targetPropertyAccessors == null )
             {
                 BindTarget();
@@ -127,9 +132,8 @@ namespace de.JochenHeckl.Unity.DataBinding
 
             if ( _dataSourcePropertyAccessors.Any() && _targetPropertyAccessors.Any() )
             {
-                var pathInstance = _dataSource;
                 var value = _dataSourcePropertyAccessors.InvokeGetOperation( _dataSource );
-                _targetPropertyAccessors.InvokeSetOperation( targetComponent, new object[] { value } );
+                _targetPropertyAccessors.InvokeSetOperation( targetComponent, value );
             }
         }
     }

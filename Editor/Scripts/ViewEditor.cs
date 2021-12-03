@@ -49,7 +49,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             _editorRootElement.Add( dataSourceTypeDropDownField );
 
             _editorRootElement.Add( MakeComponentPropertyBindings() );
-            _editorRootElement.Add( MakeComponentPropertyBindings() );
+            _editorRootElement.Add( MakeContainerPropertyBindings() );
         }
 
         private VisualElement MakeComponentPropertyBindings()
@@ -72,7 +72,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private VisualElement MakeComponentPropertyBindingVisualElement( ComponentPropertyBinding binding )
         {
-            return new ComponentPropertyBindingVisualElement(
+            return new ComponentPropertyBindingEditor(
                 _view.dataSourceType.Type,
                 binding,
                 StoreAndUpdateView,
@@ -131,7 +131,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private VisualElement MakeContainerPropertyBindingVisualElement( ContainerPropertyBinding binding )
         {
-            return new ContainerPropertyBindingVisualElement(
+            return new ContainerPropertyBindingEditor(
                 _view.dataSourceType.Type,
                 binding,
                 StoreAndUpdateView,

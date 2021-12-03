@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
-    internal class VisualElementPropertyBindingVisualElement : VisualElement
+    internal class VisualElementPropertyBindingEditor : VisualElement
     {
         private readonly Type _dataSourceType;
         private readonly VisualElement _rootVisualElement;
@@ -15,7 +15,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         private readonly Action _bindingChanged;
         private PropertyInfo[] _bindableDataSourceProperties;
 
-        public VisualElementPropertyBindingVisualElement(
+        public VisualElementPropertyBindingEditor(
             Type dataSourceType,
             VisualElement rootVisualElement,
             VisualElementPropertyBinding binding,
@@ -133,12 +133,14 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                         .GetType()
                         .GetProperties()
                         .Where( x => x.PropertyType.IsAssignableFrom( sourceProperty.PropertyType ) )
-                        .Select( x => x.Name );
+                        .Select( x => x.Name )
+                        .ToArray();
 
                     var bindableStyleProperties = typeof( IStyle )
                     .GetProperties()
                     .Where( x => x.PropertyType.IsAssignableFrom( sourceProperty.PropertyType ) )
-                    .Select( x => $"{nameof( targetVisualElement.style )}.{x.Name}" );
+                    .Select( x => $"{nameof( targetVisualElement.style )}.{x.Name}" )
+                    .ToArray();
 
                     var selectableTargetPaths = bindableTargetVisualElementProperties
                         .Union( bindableStyleProperties )

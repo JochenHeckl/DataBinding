@@ -158,7 +158,7 @@ namespace de.JochenHeckl.Unity.DataBinding
             return accessors.Last().Invoke( currentInstance, null) ;
         }
 
-        public static void InvokeSetOperation<ValueType>( this MethodInfo[] accessors, object instance, ValueType value )
+        public static void InvokeSetOperation( this MethodInfo[] accessors, object instance, params object[] values )
         {
             var currentInstance = instance;
 
@@ -167,7 +167,8 @@ namespace de.JochenHeckl.Unity.DataBinding
                 currentInstance = getter.Invoke( currentInstance, null );
             }
 
-            accessors.Last().Invoke( currentInstance, new object[] { value } );
+            var setter = accessors.Last();
+            setter.Invoke( currentInstance, values );
         }
 
         public static bool InheritsOrImplements( this Type type, Type baseType )
