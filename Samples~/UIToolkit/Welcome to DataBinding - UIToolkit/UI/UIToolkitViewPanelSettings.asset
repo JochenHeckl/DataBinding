@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 19101, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: New Panel Settings
+  m_Name: UIToolkitViewPanelSettings
   m_EditorClassIdentifier: 
-  themeUss: {fileID: -4733365628477956816, guid: bef4b2bf60085dd4b8b0c285bf8324a0,
+  themeUss: {fileID: -4733365628477956816, guid: cdb67b43b8e347b4abd0c115432740c2,
     type: 3}
   m_TargetTexture: {fileID: 0}
   m_ScaleMode: 1

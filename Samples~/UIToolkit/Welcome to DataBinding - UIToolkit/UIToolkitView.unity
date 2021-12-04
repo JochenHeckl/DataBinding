@@ -255,7 +255,7 @@ MonoBehaviour:
   view: {fileID: 1407924235}
   helloMessageTextColor: {r: 0.27058825, g: 0.4284314, b: 0.9019608, a: 0.7490196}
   helloMessageTextOutlineColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-  helloMessageTextOutlineWidth: 2
+  helloMessageTextOutlineWidth: 1.5
 --- !u!1 &1407924232
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,19 +305,19 @@ MonoBehaviour:
     assemblyQualifiedName: de.JochenHeckl.Unity.DataBinding.Examples.UIToolkitViewDataSource,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   visualElementPropertyBindings:
-  - showExpanded: 0
+  - showExpanded: 1
     _sourcePath: HelloMessage
     _targetVisualElementQuery: HelloMessageLabel
     _targetPath: text
-  - showExpanded: 0
+  - showExpanded: 1
     _sourcePath: HelloMessageTextColor
     _targetVisualElementQuery: HelloMessageLabel
     _targetPath: style.color
-  - showExpanded: 0
+  - showExpanded: 1
     _sourcePath: HelloMessageTextOutlineColor
     _targetVisualElementQuery: HelloMessageLabel
     _targetPath: style.unityTextOutlineColor
-  - showExpanded: 0
+  - showExpanded: 1
     _sourcePath: HelloMessageTextOutlineWidth
     _targetVisualElementQuery: HelloMessageLabel
     _targetPath: style.unityTextOutlineWidth
