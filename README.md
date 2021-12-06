@@ -24,6 +24,10 @@ With DataBinding you will always have your application logic separated from your
 
   ![Tutorial Scene](Documentation~/Images/ImportSample.png)
 
+- If you want to use this package with Unity versions older than 2021.2 you also need to add the packages:
+  - com.unity.ui  
+  - com.unity.ui.builder
+
 ### Setting up the scene
 
 - Add a New GameObject and name it `Setup`
@@ -159,15 +163,6 @@ With DataBinding you will always have your application logic separated from your
 - Create a Material for the Cube.
   From the Menu select *Assets* --> *Create* --> *Material*. Name the Material "Cube Material" and drag it onto the Cube in your scene view.
 
-### Configuring the ***Setup*** GameObject
-
-- Add the MyFirstDataBoundViewSetup component to the Setup GameObject.
-- Link the View GameObject to the View property of MyFirstDataBoundViewSetup.
-
-In a real world scenario we would not *hard code* this relation but generate the view from some prefab. However this approach is very handy to develop views in isolation.
-
-![Setup](Documentation~/Images/SetupInspector.png)
-
 ### Configuring the ***View*** GameObject
 
 - Select the View GameObject and click the Add Component button.
@@ -191,6 +186,15 @@ In a real world scenario we would not *hard code* this relation but generate the
 
   If the component property binding is valid, it will collapse to a condensed text description. You can toggle expanded and collapsed view
   using the ```…``` and ```↸``` toggle button.
+
+### Configuring the ***Setup*** GameObject
+
+- Add the MyFirstDataBoundViewSetup component to the Setup GameObject.
+- Link the View GameObject to the View property of MyFirstDataBoundViewSetup.
+
+In a real world scenario we would not *hard code* this relation but generate the view from some prefab. However this approach is very handy to develop views in isolation.
+
+![Setup](Documentation~/Images/SetupInspector.png)
 
 ### Running the Project
 
