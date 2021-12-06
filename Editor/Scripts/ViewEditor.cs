@@ -85,14 +85,18 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void HandleMoveBindingUp( ComponentPropertyBinding binding )
         {
-            ViewEditorCommon.MoveElementUp( _view.componentPropertyBindings, binding );
+            _view.componentPropertyBindings = ViewEditorCommon
+                .MoveElementUp( _view.componentPropertyBindings, binding )
+                .ToArray();
 
             StoreAndUpdateView();
         }
 
         private void HandleMoveBindingDown( ComponentPropertyBinding binding )
         {
-            ViewEditorCommon.MoveElementDown( _view.componentPropertyBindings, binding );
+            _view.componentPropertyBindings = ViewEditorCommon
+                .MoveElementDown( _view.componentPropertyBindings, binding )
+                .ToArray();
 
             StoreAndUpdateView();
         }

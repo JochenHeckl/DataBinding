@@ -69,34 +69,19 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         {
             Clear();
 
-            _bindableDataSourceProperties =
-                _dataSourceType.GetProperties()
-                .Where( x => x.CanRead )
-                .ToArray();
-
-            AddToClassList( DataBindingEditorStyles.bindingDefinitionClassName );
-
-            var headerElement = new VisualElement();
-            headerElement.AddToClassList( DataBindingEditorStyles.bindingDefinitionHeaderClassName );
-
             var isBindingValid = IsBindingValid( _binding );
-            var renderCondensed = isBindingValid && !showExpanded(_binding);
+            bool renderCondensed = isBindingValid && !showExpanded( _binding ); 
 
-            var removeBindingButton = new Button( () => removeBinding( _binding ) );
-            removeBindingButton.text = "✕";
-            AddHeaderButton( headerElement, removeBindingButton );
+            VisualElement headerElement = new VisualElement(); 
 
-            var toggleBindingExpansionButton = new Button( () => togglePropertyExpansion( _binding ) );
-            toggleBindingExpansionButton.text = renderCondensed ? "…" : "↸";
-            AddHeaderButton( headerElement, toggleBindingExpansionButton );
-
-            var moveBindingDownButton = new Button( moveBindingDown != null ? () => moveBindingDown( _binding ) : (Action)null );
-            moveBindingDownButton.text = "▼";
-            AddHeaderButton( headerElement, moveBindingDownButton );
-
-            var moveBindingUpButton = new Button( moveBindingUp != null ? () => moveBindingUp( _binding ) : (Action)null );
-            moveBindingUpButton.text = "▲";
-            AddHeaderButton( headerElement, moveBindingUpButton );
+            MakeBindingHeader( 
+                headerElement,
+                showExpanded,
+                moveBindingUp,
+                moveBindingDown,
+                togglePropertyExpansion,
+                removeBinding,
+                renderCondensed );
 
             Add( headerElement );
 
@@ -156,6 +141,47 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             }
         }
 
+        private void MakeBindingHeader( 
+            VisualElement headerElement,
+            Func<VisualElementPropertyBinding, bool> showExpanded,
+            Action<VisualElementPropertyBinding> moveBindingUp,
+            Action<VisualElementPropertyBinding> moveBindingDown,
+            Action<VisualElementPropertyBinding> togglePropertyExpansion,
+            Action<VisualElementPropertyBinding> removeBinding,
+            bool renderCondensed )
+        {
+            _bindableDataSourceProperties =
+                _dataSourceType.GetProperties()
+                .Where( x => x.CanRead )
+                .ToArray();
+
+            AddToClassList( DataBindingEditorStyles.bindingDefinitionClassName );
+
+            headerElement.AddToClassList( DataBindingEditorStyles.bindingDefinitionHeaderClassName );
+
+            var removeBindingButton = new Button( () => removeBinding( _binding ) );
+            removeBindingButton.text = "✕";
+            AddHeaderButton( headerElement, removeBindingButton );
+
+            var toggleBindingExpansionButton = new Button( () => togglePropertyExpansion( _binding ) );
+            toggleBindingExpansionButton.text = renderCondensed ? "…" : "↸";
+            AddHeaderButton( headerElement, toggleBindingExpansionButton );
+
+            var moveBindingDownButton = new Button( moveBindingDown != null ? () => moveBindingDown( _binding ) : (Action)null );
+            moveBindingDownButton.text = "▼";
+            AddHeaderButton( headerElement, moveBindingDownButton );
+
+            var moveBindingUpButton = new Button( moveBindingUp != null ? () => moveBindingUp( _binding ) : (Action)null );
+            moveBindingUpButton.text = "▲";
+            AddHeaderButton( headerElement, moveBindingUpButton );
+        }
+
+        private void HandleSourcePathChanged( ChangeEvent<string> changeEvent )
+        {
+            _binding.SourcePath = changeEvent.newValue;
+            _bindingChanged();
+        }
+
         private void HandleTargetPathChanged( ChangeEvent<string> changeEvent )
         {
             _binding.TargetPath = changeEvent.newValue;
@@ -165,12 +191,6 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         private void HandleTargetVisualElementQueryChanged( ChangeEvent<string> changeEvent )
         {
             _binding.TargetVisualElementQuery = changeEvent.newValue;
-            _bindingChanged();
-        }
-
-        private void HandleSourcePathChanged( ChangeEvent<string> changeEvent )
-        {
-            _binding.SourcePath = changeEvent.newValue;
             _bindingChanged();
         }
 
@@ -194,7 +214,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private bool IsBindingValid( VisualElementPropertyBinding binding )
         {
-            var sourceProperty = _bindableDataSourceProperties
+            var sourceProperty = _bindableDataSourceProperties?
                 .FirstOrDefault( x => x.Name == binding.SourcePath );
 
             var targetVisualElement = _rootVisualElement?.Q( binding.TargetVisualElementQuery );
