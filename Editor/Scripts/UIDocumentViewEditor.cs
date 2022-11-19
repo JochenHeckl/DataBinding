@@ -1,97 +1,108 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using UnityEditor;
+
+using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
+
+using static UnityEngine.UI.InputField;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     [CustomEditor(typeof(UIDocumentView), true)]
-    public class UIDocumentViewEditor : UnityEditor.Editor
+    public class UIDocumentViewEditor : ViewEditorBase
     {
-        private UIDocumentView _view;
-        private static Type[] _validDataSources;
-        private VisualElement _editorRootElement;
+        private UIDocumentView view;
+        private Dictionary<string, bool> expansionState = new();
 
-        public void OnEnable()
+        public override void OnEnable()
         {
-            _view = target as UIDocumentView;
+            base.OnEnable();
 
-            if (_validDataSources == null)
+            view = target as UIDocumentView;
+
+            if (view.dataSourceType.Type == null)
             {
-                _validDataSources = ViewEditorCommon.GetValidDataSourceTypes();
+                view.dataSourceType.Type = GuessDataSourceTypeName(view.name, ValidDataSources);
             }
         }
+
         public override VisualElement CreateInspectorGUI()
         {
-            _editorRootElement = new VisualElement();
-
             MakeEditorView();
 
-            return _editorRootElement;
+            return EditorRootElement;
         }
 
         private void MakeEditorView()
         {
             try
             {
-                _editorRootElement.Clear();
-                _editorRootElement.styleSheets.Add(DataBindingEditorStyles.StyleSheet);
-                _editorRootElement.AddToClassList(DataBindingEditorStyles.viewEditorClassName);
+                InitDataBindingEditorRootElement();
 
-                var dataSourceTypeDropDownField = new DropdownField(
-                    label: "DataSource Type",
-                    choices: _validDataSources.Select(x => x.GetFriendlyName()).ToList(),
-                    defaultValue: _validDataSources.FirstOrDefault(x => x == _view.dataSourceType.Type)?.Name ?? "");
+                EditorRootElement.Add(
+                    MakeDataSourceSection(
+                        ValidDataSources,
+                        view.dataSourceType,
+                        HandleDataSourceTypeChanged
+                    )
+                );
 
-                dataSourceTypeDropDownField.AddToClassList(DataBindingEditorStyles.bindingDataSourceTypeLabelClassName);
-                dataSourceTypeDropDownField.RegisterValueChangedCallback(HandleDataSourceTypeChanged);
-                _editorRootElement.Add(dataSourceTypeDropDownField);
-
-                _editorRootElement.Add(MakeVisualElementPropertyBindings());
+                EditorRootElement.Add(MakeVisualElementPropertyBindings());
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                _editorRootElement.Add(new Label(e.Message));
+                EditorRootElement.Clear();
+                EditorRootElement.Add(MakeErrorReport(exception));
             }
         }
 
         private VisualElement MakeVisualElementPropertyBindings()
         {
-            return ViewEditorCommon.MakeBindingSection(
+            return MakeBindingSection(
                 "VisualElement Property Bindings",
                 HandleAddVisualElementPropertyBinding,
-                _view.visualElementPropertyBindings,
-                MakeVisualElementPropertyBindingVisualElement);
+                view.visualElementPropertyBindings,
+                MakeVisualElementPropertyBindingVisualElement
+            );
         }
 
         private void HandleAddVisualElementPropertyBinding()
         {
-            _view.visualElementPropertyBindings = _view.visualElementPropertyBindings
+            view.visualElementPropertyBindings = view.visualElementPropertyBindings
                 .Append(new VisualElementPropertyBinding())
                 .ToArray();
 
             StoreAndUpdateView();
         }
 
-        private VisualElement MakeVisualElementPropertyBindingVisualElement(VisualElementPropertyBinding binding)
+        private VisualElement MakeVisualElementPropertyBindingVisualElement(
+            VisualElementPropertyBinding binding
+        )
         {
             return new VisualElementPropertyBindingEditor(
-                        _view.dataSourceType.Type,
-                        _view.RootVisualElement,
-                        binding,
-                        StoreAndUpdateView,
-                        binding => binding.showExpanded,
-                        HandleMoveBindingUp,
-                        HandleMoveBindingDown,
-                        HandleTogglePropertyExpansion,
-                        HandleRemoveBinding);
+                EditorDisplayText,
+                view.dataSourceType.Type,
+                view.RootVisualElement,
+                binding,
+                StoreAndUpdateView,
+                binding => GetExpansionState(binding),
+                HandleMoveBindingUp,
+                HandleMoveBindingDown,
+                HandleTogglePropertyExpansion,
+                HandleRemoveBinding
+            );
         }
 
         private void HandleMoveBindingUp(VisualElementPropertyBinding binding)
         {
-            _view.visualElementPropertyBindings = ViewEditorCommon
-                .MoveElementUp(_view.visualElementPropertyBindings, binding)
+            view.visualElementPropertyBindings = MoveElementUp(
+                    view.visualElementPropertyBindings,
+                    binding
+                )
                 .ToArray();
 
             StoreAndUpdateView();
@@ -99,8 +110,10 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void HandleMoveBindingDown(VisualElementPropertyBinding binding)
         {
-            _view.visualElementPropertyBindings = ViewEditorCommon
-                .MoveElementDown(_view.visualElementPropertyBindings, binding)
+            view.visualElementPropertyBindings = MoveElementDown(
+                    view.visualElementPropertyBindings,
+                    binding
+                )
                 .ToArray();
 
             StoreAndUpdateView();
@@ -108,24 +121,24 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void HandleTogglePropertyExpansion(VisualElementPropertyBinding binding)
         {
-            binding.showExpanded = !binding.showExpanded;
+            ToggleExpansionState(binding);
             StoreAndUpdateView();
         }
 
         private void HandleRemoveBinding(VisualElementPropertyBinding binding)
         {
-            _view.visualElementPropertyBindings = _view.visualElementPropertyBindings
+            view.visualElementPropertyBindings = view.visualElementPropertyBindings
                 .Where(x => x != binding)
                 .ToArray();
 
             StoreAndUpdateView();
         }
 
-        private void HandleDataSourceTypeChanged(ChangeEvent<string> changeEvent)
+        private void HandleDataSourceTypeChanged(Type newDataSourceType)
         {
-            if (_view != null)
+            if ((view != null) && (view.dataSourceType.Type != newDataSourceType))
             {
-                _view.dataSourceType.Type = _validDataSources.FirstOrDefault(x => x.Name == changeEvent.newValue);
+                view.dataSourceType.Type = newDataSourceType;
 
                 StoreAndUpdateView();
             }
@@ -133,12 +146,29 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void StoreAndUpdateView()
         {
-            EditorUtility.SetDirty(_view);
-            AssetDatabase.SaveAssetIfDirty(_view);
+            EditorUtility.SetDirty(view);
+            AssetDatabase.SaveAssetIfDirty(view);
 
             MakeEditorView();
 
-            _editorRootElement.MarkDirtyRepaint();
+            EditorRootElement.MarkDirtyRepaint();
+        }
+
+        private bool GetExpansionState(VisualElementPropertyBinding binding)
+        {
+            bool expandBinding = false;
+
+            expansionState.TryGetValue(binding.SourcePath, out expandBinding);
+
+            return expandBinding;
+        }
+
+        private void ToggleExpansionState(VisualElementPropertyBinding binding)
+        {
+            if (binding.SourcePath != null)
+            {
+                expansionState[binding.SourcePath] = !GetExpansionState(binding);
+            }
         }
     }
 }

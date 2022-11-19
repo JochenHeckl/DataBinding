@@ -9,17 +9,18 @@ namespace de.JochenHeckl.Unity.DataBinding
     [Serializable]
     public class VisualElementPropertyBinding
     {
-
-#if UNITY_EDITOR
-        [SerializeField] public bool showExpanded;
-#endif
-        
         private INotifyDataSourceChanged _dataSource;
-        [SerializeField] private string _sourcePath;
+
+        [SerializeField]
+        private string _sourcePath;
 
         private VisualElement _rootVisualElement;
-        [SerializeField] private string _targetVisualElementQuery;
-        [SerializeField] private string _targetPath;
+
+        [SerializeField]
+        private string _targetVisualElementQuery;
+
+        [SerializeField]
+        private string _targetPath;
 
         private MethodInfo[] _dataSourcePropertyAccessors;
         private MethodInfo[] _targetPropertyAccessors;
@@ -28,10 +29,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public INotifyDataSourceChanged DataSource
         {
-            get
-            {
-                return _dataSource;
-            }
+            get { return _dataSource; }
             set
             {
                 _dataSource = value;
@@ -41,10 +39,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public string SourcePath
         {
-            get
-            {
-                return _sourcePath;
-            }
+            get { return _sourcePath; }
             set
             {
                 _sourcePath = value;
@@ -54,10 +49,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public VisualElement RootVisualElement
         {
-            get
-            {
-                return _rootVisualElement;
-            }
+            get { return _rootVisualElement; }
             set
             {
                 _rootVisualElement = value;
@@ -67,10 +59,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public string TargetVisualElementQuery
         {
-            get
-            {
-                return _targetVisualElementQuery;
-            }
+            get { return _targetVisualElementQuery; }
             set
             {
                 _targetVisualElementQuery = value;
@@ -80,10 +69,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public string TargetPath
         {
-            get
-            {
-                return _targetPath;
-            }
+            get { return _targetPath; }
             set
             {
                 _targetPath = value;
@@ -93,10 +79,10 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         private void BindSource()
         {
-            if ( (_dataSource != null) && !string.IsNullOrEmpty( _sourcePath ) )
+            if ((_dataSource != null) && !string.IsNullOrEmpty(_sourcePath))
             {
                 _dataSourcePropertyAccessors = _dataSource
-                    .ResolvePublicPropertyPath( PathResolveOperation.GetValue, SourcePath )
+                    .ResolvePublicPropertyPath(PathResolveOperation.GetValue, SourcePath)
                     .ToArray();
             }
             else
@@ -107,12 +93,16 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         private void BindTarget()
         {
-            if ( (_rootVisualElement != null)
-                && !string.IsNullOrEmpty( _targetVisualElementQuery )
-                && !string.IsNullOrEmpty( _targetPath ) )
+            if (
+                (_rootVisualElement != null)
+                && !string.IsNullOrEmpty(_targetVisualElementQuery)
+                && !string.IsNullOrEmpty(_targetPath)
+            )
             {
-                _targetInstance = RootVisualElement.Q( _targetVisualElementQuery );
-                _targetPropertyAccessors = _targetInstance.ResolvePublicPropertyPath( PathResolveOperation.SetValue, TargetPath ).ToArray();
+                _targetInstance = RootVisualElement.Q(_targetVisualElementQuery);
+                _targetPropertyAccessors = _targetInstance
+                    .ResolvePublicPropertyPath(PathResolveOperation.SetValue, TargetPath)
+                    .ToArray();
             }
             else
             {
@@ -122,15 +112,20 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public void UpdateBinding()
         {
-            if ( ( _dataSource != null)
+            if (
+                (_dataSource != null)
                 && (_targetInstance != null)
                 && (_dataSourcePropertyAccessors != null)
                 && _dataSourcePropertyAccessors.Any()
                 && (_targetPropertyAccessors != null)
-                && _targetPropertyAccessors.Any() )
+                && _targetPropertyAccessors.Any()
+            )
             {
-
-                _dataSource.SyncValue( _targetInstance, _dataSourcePropertyAccessors, _targetPropertyAccessors );
+                _dataSource.SyncValue(
+                    _targetInstance,
+                    _dataSourcePropertyAccessors,
+                    _targetPropertyAccessors
+                );
             }
         }
     }

@@ -10,24 +10,30 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     public static class DataBindingEditorStyles
     {
-        private static readonly string _viewEditorStyleSheetFile
-            = "Packages/de.jochenheckl.unity.dataBinding/Editor/UI/DataBinding.uss";
+        private static readonly string _viewEditorStyleSheetFile =
+            "Packages/de.jochenheckl.unity.dataBinding/Editor/UI/DataBinding.uss";
 
         private static StyleSheet _sharedStyleSheetAsset;
         public const string viewEditorClassName = "viewEditor";
+
+        public const string GenericRow = "genericRow";
+
+        public const string SuccessText = "successText";
+        public const string ErrorText = "errorText";
+        public const string InfoText = "infoText";
+
         public const string invalidBindingClassName = "invalidBinding";
-        
-        public const string bindingDataSourceTypeLabelClassName = "bindingDataSourceTypeLabel";
-        public const string bindingGroupClassName = "bindingGroup";
-        public const string bindingGroupHeaderClassName = "bindingGroupHeader";
-        public const string bindingGroupLabelClassName = "bindingGroupLabel";
-        public const string bindingGroupListClassName = "bindingGroupList";
-        public const string bindingActionButtonClassName = "bindingActionButton";
-        public const string bindingDefinitionClassName = "bindingDefinition";
-        public const string bindingDefinitionHeaderClassName = "bindingDefinitionHeader";
-        public const string condensedBindingLabelClassName = "condensedBindingLabel";
 
-
+        public const string bindingHeaderRow = "bindingHeaderRow";
+        public const string bindingDataSourceTypeLabel = "bindingDataSourceTypeLabel";
+        public const string bindingGroup = "bindingGroup";
+        public const string bindingGroupHeader = "bindingGroupHeader";
+        public const string bindingGroupLabel = "bindingGroupLabel";
+        public const string bindingGroupList = "bindingGroupList";
+        public const string bindingActionButton = "bindingInteractionButton";
+        public const string bindingContainer = "bindingContainer";
+        public const string bindingInteractionButtonContainer = "bindingInteractionButtonContainer";
+        public const string condensedBindingLabel = "condensedBindingLabel";
 
         public static StyleSheet StyleSheet
         {
@@ -35,7 +41,9 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             {
                 // if ( _sharedStyleSheetAsset == null )
                 {
-                    _sharedStyleSheetAsset = AssetDatabase.LoadAssetAtPath<StyleSheet>( _viewEditorStyleSheetFile );
+                    _sharedStyleSheetAsset = AssetDatabase.LoadAssetAtPath<StyleSheet>(
+                        _viewEditorStyleSheetFile
+                    );
                 }
 
                 return _sharedStyleSheetAsset;

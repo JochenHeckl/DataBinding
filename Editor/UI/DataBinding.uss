@@ -2,9 +2,31 @@
 
 }
 
-.invalidBinding{
+.genericRow {
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.successText {
+    font-size: 14px;
+    color: green;
+    white-space: normal;
+}
+
+.errorText {
+    color: rgb(192, 32, 32);
+    font-size: 14px;
+    white-space: normal;
+}
+
+.infoText {
+    font-size: 12px;
+    white-space: normal;
+}
+
+.invalidBinding {
     margin: 8px;
-    background: Color.red;
+    background-color: red;
 }
 
 .bindingDataSourceTypeLabel {
@@ -41,18 +63,25 @@
     font-size: 14px;
 }
 
-.bindingActionButton {
+.bindingInteractionButton {
     margin: 0;
 }
 
-.bindingDefinition
+.bindingContainer
 {
+    flex-direction: column;
 }
 
-.bindingDefinitionHeader {
-    flex-direction: row-reverse;
-    flex-wrap: wrap-reverse;
+.bindingHeaderRow{
+    padding: 2px;
+    flex-direction: row;
+    justify-content: space-between;
+
     background-color: var(--unity-colors-app_toolbar_button-background-hover);
+}
+
+.bindingInteractionButtonContainer {
+    flex-direction: row;
 }
 
 .condensedBindingLabel {

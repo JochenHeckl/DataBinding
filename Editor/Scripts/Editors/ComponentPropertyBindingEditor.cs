@@ -9,73 +9,82 @@ using UnityEngine.UIElements;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
-	public class ComponentPropertyBindingEditor : VisualElement
-	{
-		private readonly VisualElement headerElement;
-		private readonly DropdownField sourcePathElement;
-		private readonly ObjectField targetObjectSelectionElement;
-		private readonly DropdownField targetComponentSelectionElement;
-		private readonly DropdownField targetPathElement;
+    public class ComponentPropertyBindingEditor : VisualElement
+    {
+        private readonly VisualElement headerElement;
+        private readonly DropdownField sourcePathElement;
+        private readonly ObjectField targetObjectSelectionElement;
+        private readonly DropdownField targetComponentSelectionElement;
+        private readonly DropdownField targetPathElement;
         private readonly Button togglePropertyExpansionButton;
         private readonly Button removeBindingButton;
 
-		public ComponentPropertyBinding _binding;
+        public ComponentPropertyBinding _binding;
 
-		private readonly Type _dataSourceType;
-		private readonly PropertyInfo[] _bindableDataSourceProperties;
-		private readonly Action _bindingChanged;
+        private readonly Type _dataSourceType;
+        private readonly PropertyInfo[] _bindableDataSourceProperties;
+        private readonly Action _bindingChanged;
 
-		public ComponentPropertyBindingEditor(
-			Type dataSourceTypeIn,
-			ComponentPropertyBinding bindingIn,
-			Action bindingChangedIn,
+        public ComponentPropertyBindingEditor(
+            Type dataSourceTypeIn,
+            ComponentPropertyBinding bindingIn,
+            Action bindingChangedIn,
             Func<ComponentPropertyBinding, bool> showExpanded,
             Action<ComponentPropertyBinding> moveBindingUp,
             Action<ComponentPropertyBinding> moveBindingDown,
             Action<ComponentPropertyBinding> togglePropertyExpansion,
-            Action<ComponentPropertyBinding> removeBinding )
-		{
-			_dataSourceType = dataSourceTypeIn;
-			_binding = bindingIn;
-			_bindingChanged = bindingChangedIn;
+            Action<ComponentPropertyBinding> removeBinding
+        )
+        {
+            _dataSourceType = dataSourceTypeIn;
+            _binding = bindingIn;
+            _bindingChanged = bindingChangedIn;
 
-            if ( _dataSourceType == null )
+            if (_dataSourceType == null)
             {
                 return;
             }
-			
-            _bindableDataSourceProperties =
-				_dataSourceType.GetProperties()
-				.Where( x => x.CanRead )
-				.ToArray();
+
+            _bindableDataSourceProperties = _dataSourceType
+                .GetProperties()
+                .Where(x => x.CanRead)
+                .ToArray();
 
             AddToClassList("bindingDefinition");
 
             headerElement = new VisualElement();
             headerElement.AddToClassList("bindingDefinitionHeader");
 
-            var isBindingValid = IsBindingValid(_binding);
-            var renderCondensed = isBindingValid && !showExpanded( _binding );
+            var bindingState = TestBindingState(_binding);
+            bool isBindingComplete = bindingState == ComponentPropertyBindingState.Complete;
+            var renderCondensed = isBindingComplete && !showExpanded(_binding);
 
-            removeBindingButton = new Button( () => removeBinding( _binding ) );
+            removeBindingButton = new Button(() => removeBinding(_binding));
             removeBindingButton.text = "✕";
             AddHeaderButton(removeBindingButton);
 
-            togglePropertyExpansionButton = new Button(isBindingValid ? () => togglePropertyExpansion( _binding ) : (Action) null);
+            togglePropertyExpansionButton = new Button(
+                isBindingComplete ? () => togglePropertyExpansion(_binding) : (Action)null
+            );
             togglePropertyExpansionButton.text = renderCondensed ? "…" : "↸";
+            togglePropertyExpansionButton.SetEnabled(isBindingComplete);
             AddHeaderButton(togglePropertyExpansionButton);
 
-            var moveBindingDownButton = new Button(moveBindingDown != null ? () => moveBindingDown(_binding) : (Action)null);
+            var moveBindingDownButton = new Button(
+                moveBindingDown != null ? () => moveBindingDown(_binding) : (Action)null
+            );
             moveBindingDownButton.text = "▼";
             AddHeaderButton(moveBindingDownButton);
 
-            var moveBindingUpButton = new Button(moveBindingUp != null ? () => moveBindingUp(_binding) : (Action)null);
+            var moveBindingUpButton = new Button(
+                moveBindingUp != null ? () => moveBindingUp(_binding) : (Action)null
+            );
             moveBindingUpButton.text = "▲";
             AddHeaderButton(moveBindingUpButton);
 
             Add(headerElement);
 
-            if ( renderCondensed )
+            if (renderCondensed)
             {
                 var condensedLabel = new Label(MakeCondensedLabelText(_binding));
                 condensedLabel.AddToClassList("unity-text-element");
@@ -87,7 +96,9 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             else
             {
                 sourcePathElement = new DropdownField("Source Path");
-                sourcePathElement.choices = _bindableDataSourceProperties.Select(x => x.Name).ToList();
+                sourcePathElement.choices = _bindableDataSourceProperties
+                    .Select(x => x.Name)
+                    .ToList();
                 sourcePathElement.value = _binding.SourcePath;
                 sourcePathElement.RegisterValueChangedCallback(HandleSourcePathChanged);
 
@@ -98,12 +109,16 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 targetObjectSelectionElement.objectType = typeof(UnityEngine.GameObject);
                 targetObjectSelectionElement.value = _binding.TargetGameObject;
 
-                targetObjectSelectionElement.RegisterValueChangedCallback(HandleTargetObjectSelectionChanged);
+                targetObjectSelectionElement.RegisterValueChangedCallback(
+                    HandleTargetObjectSelectionChanged
+                );
 
                 Add(targetObjectSelectionElement);
 
                 targetComponentSelectionElement = new DropdownField("Target Component");
-                targetComponentSelectionElement.RegisterValueChangedCallback(HandleTargetComponentChanged);
+                targetComponentSelectionElement.RegisterValueChangedCallback(
+                    HandleTargetComponentChanged
+                );
 
                 Add(targetComponentSelectionElement);
 
@@ -119,114 +134,141 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void AddHeaderButton(Button button)
         {
-            button.AddToClassList(DataBindingEditorStyles.bindingActionButtonClassName);
+            button.AddToClassList(DataBindingEditorStyles.bindingActionButton);
             headerElement.Add(button);
         }
 
-        private string MakeCondensedLabelText( ComponentPropertyBinding binding )
-		{
-            var sourceProperty = _bindableDataSourceProperties.Single( x => x.Name == _binding.SourcePath );
-            var friendlySourceTypeName = sourceProperty.PropertyType.GetTypeInfo().GetFriendlyName();
+        private string MakeCondensedLabelText(ComponentPropertyBinding binding)
+        {
+            var sourceProperty = _bindableDataSourceProperties.Single(
+                x => x.Name == _binding.SourcePath
+            );
+            var friendlySourceTypeName = sourceProperty.PropertyType
+                .GetTypeInfo()
+                .GetFriendlyName();
 
             return $"<color=blue>{friendlySourceTypeName}</color> <b>{_binding.SourcePath}</b> binds to <b>{_binding.TargetComponent.GetType().Name}.{binding.TargetPath}</b> ({_binding.TargetComponent.name})";
         }
 
-		private bool IsBindingValid( ComponentPropertyBinding binding )
-		{
-            var sourceProperty = _bindableDataSourceProperties
-                .FirstOrDefault( x => x.Name == binding.SourcePath );
+        private ComponentPropertyBindingState TestBindingState(ComponentPropertyBinding binding)
+        {
+            var sourceProperty = _bindableDataSourceProperties.FirstOrDefault(
+                x => x.Name == binding.SourcePath
+            );
 
-            var targetProperty = _binding.TargetComponent?
-                .GetType()
+            if (sourceProperty == null)
+            {
+                return ComponentPropertyBindingState.SourceUnbound;
+            }
+
+            var targetProperty = _binding.TargetComponent
+                ?.GetType()
                 .GetProperties()
-                .FirstOrDefault( x => x.Name == binding.TargetPath );
+                .FirstOrDefault(x => x.Name == binding.TargetPath);
 
-            return
-                sourceProperty != null
-                && targetProperty != null
-                && targetProperty.PropertyType.IsAssignableFrom( sourceProperty.PropertyType );
+            if (targetProperty == null)
+            {
+                return ComponentPropertyBindingState.TargetUnbound;
+            }
+
+            if (!targetProperty.PropertyType.IsAssignableFrom(sourceProperty.PropertyType))
+            {
+                return ComponentPropertyBindingState.Unassignable;
+            }
+
+            return ComponentPropertyBindingState.Complete;
         }
 
-		private void HandleSourcePathChanged( ChangeEvent<string> change )
-		{
-			_binding.SourcePath = change.newValue;
+        private void HandleSourcePathChanged(ChangeEvent<string> change)
+        {
+            _binding.SourcePath = change.newValue;
 
-			MarkDirtyRepaint();
-			_bindingChanged();
-		}
+            MarkDirtyRepaint();
+            _bindingChanged();
+        }
 
+        private void HandleTargetObjectSelectionChanged(ChangeEvent<UnityEngine.Object> changeEvent)
+        {
+            _binding.TargetGameObject = changeEvent.newValue as GameObject;
 
-		private void HandleTargetObjectSelectionChanged( ChangeEvent<UnityEngine.Object> changeEvent)
-		{
-			_binding.TargetGameObject = changeEvent.newValue as GameObject;
+            UpdateTargetComponentChoices();
 
-			UpdateTargetComponentChoices();
+            MarkDirtyRepaint();
+            _bindingChanged();
+        }
 
-			MarkDirtyRepaint();
-			_bindingChanged();
-		}
+        private void HandleTargetComponentChanged(ChangeEvent<string> changeEvent)
+        {
+            _binding.TargetComponent = _binding.TargetGameObject
+                ?.GetComponentsInChildren<Component>()
+                .FirstOrDefault((x) => MakeTargetComponentDisplayValue(x) == changeEvent.newValue);
 
-		private void HandleTargetComponentChanged( ChangeEvent<string> changeEvent )
-		{
-			_binding.TargetComponent = _binding.TargetGameObject?.GetComponentsInChildren<Component>()
-				.FirstOrDefault( ( x ) => MakeTargetComponentDisplayValue( x ) == changeEvent.newValue );
+            UpdateTargetPathChoises();
 
-			UpdateTargetPathChoises();
+            MarkDirtyRepaint();
+            _bindingChanged();
+        }
 
-			MarkDirtyRepaint(); 
-			_bindingChanged();
-		}
+        private void HandleTargetPathChanged(ChangeEvent<string> changeEvent)
+        {
+            _binding.TargetPath = changeEvent.newValue;
 
-		private void HandleTargetPathChanged( ChangeEvent<string> changeEvent )
-		{
-			_binding.TargetPath = changeEvent.newValue;
+            MarkDirtyRepaint();
+            _bindingChanged();
+        }
 
-			MarkDirtyRepaint(); 
-			_bindingChanged();
-		}
+        private void UpdateTargetComponentChoices()
+        {
+            var componentsOfGameObject = Array.Empty<Component>();
 
-		private void UpdateTargetComponentChoices()
-		{
-			var componentsOfGameObject = Array.Empty<Component>();
+            if (_binding.TargetGameObject != null)
+            {
+                componentsOfGameObject =
+                    _binding.TargetGameObject.GetComponentsInChildren<Component>(true);
 
-			if ( _binding.TargetGameObject != null )
-			{
-				componentsOfGameObject = _binding.TargetGameObject.GetComponentsInChildren<Component>( true );
+                targetComponentSelectionElement.choices = componentsOfGameObject
+                    .Select(MakeTargetComponentDisplayValue)
+                    .ToList();
+                targetComponentSelectionElement.value = MakeTargetComponentDisplayValue(
+                    _binding.TargetComponent
+                );
+            }
+        }
 
-				targetComponentSelectionElement.choices = componentsOfGameObject.Select( MakeTargetComponentDisplayValue ).ToList();
-				targetComponentSelectionElement.value = MakeTargetComponentDisplayValue( _binding.TargetComponent );
+        private void UpdateTargetPathChoises()
+        {
+            var sourceProperty = Array.Find(
+                _dataSourceType.GetProperties(),
+                x => x.Name == _binding.SourcePath
+            );
 
-			}
-		}
+            if ((sourceProperty != null) && (_binding.TargetComponent != null))
+            {
+                var targetProperties = _binding.TargetComponent.GetType().GetProperties();
+                var targetProperty = Array.Find(
+                    targetProperties,
+                    (x) => x.Name == _binding.TargetPath
+                );
 
-		private void UpdateTargetPathChoises()
-		{
-			var sourceProperty = Array.Find(
-				_dataSourceType.GetProperties(),
-				x => x.Name == _binding.SourcePath );
+                targetPathElement.choices = targetProperties
+                    .Where(x => x.PropertyType.IsAssignableFrom(sourceProperty.PropertyType))
+                    .Select(x => x.Name)
+                    .ToList();
 
-			if ( (sourceProperty != null) && (_binding.TargetComponent != null) )
-			{
-				var targetProperties = _binding.TargetComponent.GetType().GetProperties();
-				var targetProperty = Array.Find( targetProperties, ( x ) => x.Name == _binding.TargetPath );
+                targetPathElement.value = targetPathElement.choices.Contains(_binding.TargetPath)
+                    ? _binding.TargetPath
+                    : null;
+            }
+        }
 
-				targetPathElement.choices = targetProperties
-					.Where( x => x.PropertyType.IsAssignableFrom( sourceProperty.PropertyType ) )
-							.Select( x => x.Name )
-							.ToList();
+        private string MakeTargetComponentDisplayValue(Component component)
+        {
+            if (component != null)
+            {
+                return $"{component.gameObject.name}::{component.GetType().Name}";
+            }
 
-				targetPathElement.value = targetPathElement.choices.Contains( _binding.TargetPath ) ? _binding.TargetPath : null;
-			}
-		}
-
-		private string MakeTargetComponentDisplayValue( Component component )
-		{
-			if ( component != null )
-			{
-				return $"{component.gameObject.name}::{component.GetType().Name}";
-			}
-
-			return null;
-		}
-	}
+            return null;
+        }
+    }
 }
