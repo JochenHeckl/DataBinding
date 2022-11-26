@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 
 using UnityEditor;
+using UnityEditor.Graphs;
 
 using UnityEngine.UIElements;
 
@@ -54,7 +55,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         private VisualElement MakeComponentPropertyBindings()
         {
             return MakeBindingSection(
-                EditorDisplayText.ComponentPropertyBindings,
+                EditorDisplayText.ComponentPropertyBindingsText,
                 HandleAddComponentPropertyBinding,
                 view.componentPropertyBindings,
                 MakeComponentPropertyBindingVisualElement
@@ -124,7 +125,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         private VisualElement MakeContainerPropertyBindings()
         {
             return MakeBindingSection(
-                "Container Property Bindings",
+                EditorDisplayText.ContainerPropertyBindingsText,
                 HandleAddContainerPropertyBinding,
                 view.containerPropertyBindings,
                 MakeContainerPropertyBindingVisualElement
@@ -145,6 +146,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         )
         {
             return new ContainerPropertyBindingEditor(
+                EditorDisplayText,
                 view.dataSourceType.Type,
                 binding,
                 StoreAndUpdateView,

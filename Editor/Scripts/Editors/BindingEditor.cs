@@ -10,10 +10,13 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     internal class BindingEditor<BindingType> : VisualElement
     {
+        public IDataBindingEditorDisplayText DisplayText { get; private set; }
+
         public BindingType Binding { get; private set; }
 
-        public BindingEditor(BindingType binding)
+        public BindingEditor(IDataBindingEditorDisplayText displayText, BindingType binding)
         {
+            DisplayText = displayText;
             Binding = binding;
         }
 
@@ -30,6 +33,12 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             var removeBindingButton = new Button(() => removeBinding(Binding));
             removeBindingButton.text = "Remove Binding";
             Add(removeBindingButton);
+        }
+
+        protected void AddHeaderButton(VisualElement parent, Button button)
+        {
+            button.AddToClassList(DataBindingEditorStyles.bindingActionButton);
+            parent.Add(button);
         }
     }
 }

@@ -14,6 +14,15 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         Complete,
     }
 
+    internal enum ContainerPropertyBindingState
+    {
+        SourceUnbound,
+        TargetUnbound,
+        ElementTemplateMissing,
+        ElementTemplateIsNotAssignable,
+        Complete,
+    }
+
     internal enum VisualElementPropertyBindingState
     {
         RootVisualElementUnboud,

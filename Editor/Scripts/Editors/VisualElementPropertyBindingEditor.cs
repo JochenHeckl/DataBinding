@@ -9,11 +9,11 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     internal class VisualElementPropertyBindingEditor : BindingEditor<VisualElementPropertyBinding>
     {
-        private readonly IDataBindingEditorDisplayText displayText;
         private readonly Type dataSourceType;
-        private readonly VisualElement rootVisualElement;
-        private readonly Action bindingChanged;
         private readonly PropertyInfo[] bindableDataSourceProperties;
+        private readonly Action bindingChanged;
+
+        private readonly VisualElement rootVisualElement;
 
         public VisualElementPropertyBindingEditor(
             IDataBindingEditorDisplayText displayText,
@@ -26,9 +26,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             Action<VisualElementPropertyBinding> moveBindingDown,
             Action<VisualElementPropertyBinding> togglePropertyExpansion,
             Action<VisualElementPropertyBinding> removeBinding
-        ) : base(binding)
+        ) : base(displayText, binding)
         {
-            this.displayText = displayText;
             this.dataSourceType = dataSourceType;
             this.rootVisualElement = rootVisualElement;
             this.bindingChanged = bindingChanged;
@@ -96,7 +95,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             }
             else
             {
-                var sourcePathElement = new DropdownField(displayText.SourcePathText);
+                var sourcePathElement = new DropdownField(DisplayText.SourcePathText);
                 sourcePathElement.choices = bindableDataSourceProperties
                     .Select(x => x.Name)
                     .ToList();
@@ -247,12 +246,6 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             var targetVisualElementTypeName = targetVisualElement.GetType().GetFriendlyName();
 
             return $"<color=blue>{friendlySourceTypeName}</color> <b>{this.Binding.SourcePath}</b> binds to <color=blue>{targetVisualElementTypeName}</color>::<b>{this.Binding.TargetPath}</b> ({this.Binding.TargetVisualElementQuery})";
-        }
-
-        private void AddHeaderButton(VisualElement headerElement, Button button)
-        {
-            button.AddToClassList(DataBindingEditorStyles.bindingActionButton);
-            headerElement.Add(button);
         }
 
         private VisualElementPropertyBindingState DetermineBindingState(

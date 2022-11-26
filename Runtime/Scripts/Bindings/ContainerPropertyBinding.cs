@@ -19,7 +19,7 @@ namespace de.JochenHeckl.Unity.DataBinding
         private Transform targetContainer;
 
         [SerializeField]
-        private UIDocumentView elementTemplate;
+        private View elementTemplate;
 
         [SerializeField]
         private string sourcePath;
@@ -54,7 +54,7 @@ namespace de.JochenHeckl.Unity.DataBinding
             set { targetContainer = value; }
         }
 
-        public UIDocumentView ElementTemplate
+        public View ElementTemplate
         {
             get { return elementTemplate; }
             set { elementTemplate = value; }
@@ -81,6 +81,16 @@ namespace de.JochenHeckl.Unity.DataBinding
                 var elements =
                     _dataSourcePropertyAccessors.InvokeGetOperation(dataSource)
                     as IEnumerable<INotifyDataSourceChanged>;
+
+                if (elements == null)
+                {
+                    foreach (Transform child in targetContainer)
+                    {
+                        UnityEngine.Object.Destroy(child.gameObject);
+                    }
+
+                    return;
+                }
 
                 var elementCount = elements.Count();
 
