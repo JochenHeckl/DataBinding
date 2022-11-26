@@ -1,4 +1,6 @@
-﻿namespace de.JochenHeckl.Unity.DataBinding.Editor
+﻿using System;
+
+namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     internal interface IDataBindingEditorDisplayText
     {
@@ -10,5 +12,12 @@
         string NoSourceCodeAvailableToolTip { get; }
         string SourcePathText { get; }
         string EditorErrorMessageText { get; }
+        string ComponentPropertyBindings { get; }
+        string BindingSourceUnboundMessageText { get; }
+        string BindingTargetUnboundMessageText { get; }
+        string BindingUnassignableMessageText { get; }
+        string TargetGameObjectText { get; }
+        string TargetComponentText { get; }
+        string ComponentPropertyBindingCondensedLabelFormat_Type_Source_Target_Component { get; }
     }
 }
