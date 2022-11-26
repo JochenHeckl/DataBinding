@@ -26,7 +26,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             }
         }
 
-        public void InitDataBindingEditorRootElement()
+        public void InitDatabindingEditorRootElement()
         {
             if (EditorRootElement == null)
             {
@@ -68,12 +68,11 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         }
 
         public VisualElement MakeDataSourceSection(
-            Type[] validDataSources,
             SerializableType currentDataSourceType,
             Action<Type> handleDataSourceTypeChanged
         )
         {
-            if (validDataSources.Length == 0)
+            if (ValidDataSources.Length == 0)
             {
                 return MakeMissingDataSourceLabel();
             }

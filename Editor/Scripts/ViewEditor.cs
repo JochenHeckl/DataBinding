@@ -11,7 +11,6 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
     public class ViewEditor : ViewEditorBase
     {
         private View view;
-        private static Type[] validDataSources;
 
         public override void OnEnable()
         {
@@ -36,36 +35,14 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         {
             try
             {
-                InitDataBindingEditorRootElement();
+                InitDatabindingEditorRootElement();
 
                 EditorRootElement.Add(
-                    MakeDataSourceSection(
-                        ValidDataSources,
-                        view.dataSourceType,
-                        HandleDataSourceTypeChanged
-                    )
+                    MakeDataSourceSection(view.dataSourceType, HandleDataSourceTypeChanged)
                 );
 
-                //editorRootElement.Add(MakeVisualElementPropertyBindings());
-
-                //var dataSourceTypeDropDownField = new DropdownField(
-                //    label: "DataSource Type",
-                //    choices: validDataSources.Select(x => x.GetFriendlyName()).ToList(),
-                //    defaultValue: validDataSources
-                //        .FirstOrDefault(x => x == view.dataSourceType.Type)
-                //        ?.Name ?? ""
-                //);
-
-                //dataSourceTypeDropDownField.AddToClassList(
-                //    DataBindingEditorStyles.bindingDataSourceTypeLabel
-                //);
-                //dataSourceTypeDropDownField.RegisterValueChangedCallback(
-                //    HandleDataSourceTypeChanged
-                //);
-                //editorRootElement.Add(dataSourceTypeDropDownField);
-
-                //editorRootElement.Add(MakeComponentPropertyBindings());
-                //editorRootElement.Add(MakeContainerPropertyBindings());
+                EditorRootElement.Add(MakeComponentPropertyBindings());
+                EditorRootElement.Add(MakeContainerPropertyBindings());
             }
             catch (Exception exception)
             {
@@ -77,7 +54,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         private VisualElement MakeComponentPropertyBindings()
         {
             return MakeBindingSection(
-                "Component Property Bindings",
+                EditorDisplayText.ComponentPropertyBindings,
                 HandleAddComponentPropertyBinding,
                 view.componentPropertyBindings,
                 MakeComponentPropertyBindingVisualElement
@@ -98,6 +75,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         )
         {
             return new ComponentPropertyBindingEditor(
+                EditorDisplayText,
                 view.dataSourceType.Type,
                 binding,
                 StoreAndUpdateView,

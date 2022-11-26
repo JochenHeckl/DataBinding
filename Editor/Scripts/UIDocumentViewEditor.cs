@@ -41,14 +41,10 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         {
             try
             {
-                InitDataBindingEditorRootElement();
+                InitDatabindingEditorRootElement();
 
                 EditorRootElement.Add(
-                    MakeDataSourceSection(
-                        ValidDataSources,
-                        view.dataSourceType,
-                        HandleDataSourceTypeChanged
-                    )
+                    MakeDataSourceSection(view.dataSourceType, HandleDataSourceTypeChanged)
                 );
 
                 EditorRootElement.Add(MakeVisualElementPropertyBindings());
