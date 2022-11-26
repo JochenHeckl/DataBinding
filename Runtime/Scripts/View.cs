@@ -8,16 +8,18 @@ namespace de.JochenHeckl.Unity.DataBinding
     [DebuggerDisplay("View({name}) : {DataSource}")]
     public class View : MonoBehaviour
     {
-
 #if UNITY_EDITOR
 
         public SerializableType dataSourceType;
         public bool condenseValidBuilders;
-
 #endif // UNITY_EDITOR
 
-        public ComponentPropertyBinding[] componentPropertyBindings = Array.Empty<ComponentPropertyBinding>();
-        public ContainerPropertyBinding[] containerPropertyBindings = Array.Empty<ContainerPropertyBinding>();
+        public ComponentPropertyBinding[] componentPropertyBindings =
+            Array.Empty<ComponentPropertyBinding>();
+        public ContainerPropertyBinding[] containerPropertyBindings =
+            Array.Empty<ContainerPropertyBinding>();
+
+        private INotifyDataSourceChanged dataSource;
 
         public void OnEnable()
         {
@@ -25,7 +27,7 @@ namespace de.JochenHeckl.Unity.DataBinding
             UpdateBindings();
         }
 
-        public object DataSource
+        public INotifyDataSourceChanged DataSource
         {
             get
             {
@@ -52,7 +54,6 @@ namespace de.JochenHeckl.Unity.DataBinding
 
                 return null;
             }
-
             set
             {
                 var oldDataSource = DataSource as INotifyDataSourceChanged;
@@ -111,7 +112,5 @@ namespace de.JochenHeckl.Unity.DataBinding
                 binding.UpdateBinding();
             }
         }
-
-        private object dataSource;
     }
 }

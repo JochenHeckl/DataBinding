@@ -6,32 +6,30 @@ using UnityEngine.UIElements;
 
 namespace de.JochenHeckl.Unity.DataBinding
 {
-    [DebuggerDisplay( "UIDocumentView ({name}) : {DataSource}" )]
-
+    [DebuggerDisplay("UIDocumentView ({name}) : {DataSource}")]
     [RequireComponent(typeof(UIDocument))]
     public class UIDocumentView : MonoBehaviour
     {
-
 #if UNITY_EDITOR
 
         public SerializableType dataSourceType;
-
 #endif // UNITY_EDITOR
 
-        public VisualElementPropertyBinding[] visualElementPropertyBindings = Array.Empty<VisualElementPropertyBinding>();
+        public VisualElementPropertyBinding[] visualElementPropertyBindings =
+            Array.Empty<VisualElementPropertyBinding>();
 
-        private INotifyDataSourceChanged _dataSource;
+        private INotifyDataSourceChanged dataSource;
         private VisualElement _rootVisualElement;
-        
+
         public VisualElement RootVisualElement
         {
             get
             {
-                if ( _rootVisualElement == null )
+                if (_rootVisualElement == null)
                 {
                     var uiDocument = GetComponent<UIDocument>();
 
-                    if ( uiDocument != null )
+                    if (uiDocument != null)
                     {
                         _rootVisualElement = uiDocument.rootVisualElement;
                     }
@@ -40,7 +38,7 @@ namespace de.JochenHeckl.Unity.DataBinding
                 return _rootVisualElement;
             }
         }
-        
+
         public void OnEnable()
         {
             BindBindingDataSources();
@@ -50,26 +48,22 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public INotifyDataSourceChanged DataSource
         {
-            get
-            {
-                return _dataSource;
-            }
-
+            get { return dataSource; }
             set
             {
-                var oldDataSource = _dataSource;
+                var oldDataSource = dataSource;
 
-                if ( oldDataSource != null )
+                if (oldDataSource != null)
                 {
                     oldDataSource.DataSourceChanged -= OnDataSourceChanged;
                 }
 
-                _dataSource = value;
+                dataSource = value;
                 BindBindingDataSources();
 
                 var newDataSource = value;
 
-                if ( newDataSource != null )
+                if (newDataSource != null)
                 {
                     newDataSource.DataSourceChanged += OnDataSourceChanged;
                 }
@@ -85,20 +79,20 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         private void BindBindingDataSources()
         {
-            if ( _dataSource == null )
+            if (dataSource == null)
             {
                 return;
             }
 
-            foreach ( var binding in visualElementPropertyBindings )
+            foreach (var binding in visualElementPropertyBindings)
             {
-                binding.DataSource = _dataSource;
+                binding.DataSource = dataSource;
             }
         }
 
         private void BindBindingVisualElements()
         {
-            foreach ( var binding in visualElementPropertyBindings )
+            foreach (var binding in visualElementPropertyBindings)
             {
                 binding.RootVisualElement = RootVisualElement;
             }
@@ -106,7 +100,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         private void UpdateBindings()
         {
-            foreach ( var binding in visualElementPropertyBindings )
+            foreach (var binding in visualElementPropertyBindings)
             {
                 binding.UpdateBinding();
             }

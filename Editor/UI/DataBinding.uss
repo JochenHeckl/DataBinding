@@ -74,7 +74,8 @@
 
 .bindingHeaderRow{
     padding: 2px;
-    flex-direction: row;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
     justify-content: space-between;
 
     background-color: var(--unity-colors-app_toolbar_button-background-hover);
