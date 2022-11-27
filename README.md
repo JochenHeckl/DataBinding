@@ -4,7 +4,7 @@
 
 Unity DataBinding brings data binding to unity game objects. DataBinding is aiming to minimize the effort required to create dynamic, performant user interfaces.
 
-With DataBinding you will always have your application logic separated from your User interface logic.
+Using DataBinding will enable you to always keep your application logic separated from your user interface logic.
 
 ## Getting started (Step by Step Tutorial - 5 minutes to complete)
 
@@ -12,7 +12,7 @@ With DataBinding you will always have your application logic separated from your
 
 - Open Unity and create a new Unity Project.
 
-  It does not matter which kind of Unity project you choose DataBinding works with all flavours of Unity. For simplicity we will choose 3D Core.
+  It does not matter which kind of Unity project you choose, DataBinding works with all flavours of Unity. We will choose which probably is the most common choice - 3D (URP) Core for this example.
 
   ![Create Project](Documentation~/Images/CreateProject.png)
 
@@ -68,7 +68,7 @@ With DataBinding you will always have your application logic separated from your
 
   /// <summary>
   /// This class is here as a replacement for whatever
-  /// application logic your application might implement.
+  /// application logic your application will implement.
   /// You application might be arbitrarily complex and expose
   /// many data sources - static data sources as well as dynamic ones.
   /// This application is about changing the scale and color of a cube.
@@ -78,19 +78,19 @@ With DataBinding you will always have your application logic separated from your
   public class PlaceholderApplicationLogic
   {
     public CubeViewDataSource CubeViewDataSource { get; set; }
-    private float _nextCubeUpdateTimeSeconds;
+    private float nextCubeUpdateTimeSeconds;
 
     public void Initialize()
     {
         CubeViewDataSource = new CubeViewDataSource();
-        _nextCubeUpdateTimeSeconds = 0f;
+        nextCubeUpdateTimeSeconds = 0f;
     }
 
     public void Update(float simulationTimeSeconds)
     {
-        if ( _nextCubeUpdateTimeSeconds < simulationTimeSeconds )
+        if ( nextCubeUpdateTimeSeconds < simulationTimeSeconds )
         {
-            _nextCubeUpdateTimeSeconds += 3.0f;
+            nextCubeUpdateTimeSeconds += 3.0f;
 
             CubeViewDataSource.NotifyChanges(x =>
             {
@@ -113,22 +113,24 @@ With DataBinding you will always have your application logic separated from your
   using de.JochenHeckl.Unity.DataBinding;
   using UnityEngine;
 
+  /// This is a simple bootstrapping behaviour.
+  /// We just instanciate PlaceholderApplicationLogic()
+  /// and run an update loop on it.
   public class MyFirstDataBoundViewSetup : MonoBehaviour
   {
     public View view;
-    private PlaceholderApplicationLogic _placeholderApplicationLogic;
+    private PlaceholderApplicationLogic placeholderApplicationLogic;
     public void Start()
     {
-        _placeholderApplicationLogic = new PlaceholderApplicationLogic();
-        _placeholderApplicationLogic.Initialize();
+        placeholderApplicationLogic = new PlaceholderApplicationLogic();
+        placeholderApplicationLogic.Initialize();
 
-        view.DataSource = _placeholderApplicationLogic.CubeViewDataSource;
+        view.DataSource = placeholderApplicationLogic.CubeViewDataSource;
     }
 
-    // Update is called once per frame
-    public void Update()
+    public void FixedUpdate()
     {
-        _placeholderApplicationLogic.Update(Time.time);
+        placeholderApplicationLogic.Update(Time.time);
     }
   }
   ```
@@ -165,42 +167,49 @@ With DataBinding you will always have your application logic separated from your
 
 ### Configuring the ***View*** GameObject
 
-- Select the View GameObject and click the Add Component button.
+- Select the **View** GameObject and click the Add Component button.
   Type "View" into the search bar. Add a View Component.
 - Choose CubeViewDataSource as the DataSource Type for this view.
 - On the View component add two component property bindings by clicking the Add Binding button twice.
-- Add a DynamicMaterialColor Component to the CubeGameObject.
+- Add a DynamicMaterialColor Component to the **Cube** GameObject.
   
-![Setup](Documentation~/Images/ViewInspector01.png)
+  ![Setup01](Documentation~/Images/ViewInspector01-1.png)
+  ![Setup02](Documentation~/Images/ViewInspector01-2.png)
 
 - Now we are set to configure the two component property data bindings:
   
-  - Select the ***Source Path*** for the first binding to be ***CubeScale***
+  - Setup the ***Source Path*** for the first binding to be ***CubeScale***
   - The ***Target GameObject*** will be the ***Cube*** GameObject.
   - For the ***Target Component*** choose ***Cube::Transform***
   - The ***Target Path*** will be ***localScale***
-  - Select the ***Source Path*** for the second binding to be ***CubeColor***
+  
+    ![Setup03](Documentation~/Images/ViewInspector01-3.png)
+
+  - Setup the ***Source Path*** for the second binding to be ***CubeColor***
   - The ***Target GameObject*** will be the ***Cube*** GameObject.
   - For the ***Target Component*** choose ***Cube::DynamicMaterialColor***
   - And finally the ***Target Path*** will be ***Color***
 
-  If the component property binding is valid, it will collapse to a condensed text description. You can toggle expanded and collapsed view
-  using the ```…``` and ```↸``` toggle button.
+    ![Setup04](Documentation~/Images/ViewInspector01-4.png)
+
+  If the component property binding is complete and valid, it will collapse to a condensed text description. You can toggle expanded and collapsed view using the ```…``` and ```↸``` toggle button.
 
 ### Configuring the ***Setup*** GameObject
 
 - Add the MyFirstDataBoundViewSetup component to the Setup GameObject.
 - Link the View GameObject to the View property of MyFirstDataBoundViewSetup.
 
-In a real world scenario we would not *hard code* this relation but generate the view from some prefab. However this approach is very handy to develop views in isolation.
+  ![Setup](Documentation~/Images/SetupInspector.png)
 
-![Setup](Documentation~/Images/SetupInspector.png)
+In a real world scenario we would not *hard code* this relation but dynamically generate the view from a prefab.
+
+This static approach however is very handy to develop views in isolation. I Usually keep several of these *control development scenes* around.
 
 ### Running the Project
 
 - That's it! We are done. Hit play and you should see the application logic change the appearance of the cube every other second.
 
-![Setup](Documentation~/Images/ViewInspector02.png)
+  ![Setup](Documentation~/Images/ViewInspector02.png)
 
 
 ## FAQ
