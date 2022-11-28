@@ -33,14 +33,9 @@
   },
   "samples": [
     {
-      "displayName": "SimpleExamples",
-      "description": "A collection of simple scenes that demonstrate certain aspects of the data binding package.",
-      "path": "Samples~/SimpleExamples"
-    },
-    {
       "displayName": "MyFirstDataBoundView (Getting Started Tutorial)",
       "description": "The finished project you would have created when following the Getting Started Tutorial step by step.",
-      "path": "Samples~/UIToolkit/MyFirstDataBoundView"
+      "path": "Samples~/MyFirstDataBoundView (Getting Started Tutorial)"
     },
     {
       "displayName": "Welcome to DataBinding - UIToolkit",
