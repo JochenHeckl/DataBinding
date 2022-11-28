@@ -11,7 +11,6 @@ namespace de.JochenHeckl.Unity.DataBinding
 #if UNITY_EDITOR
 
         public SerializableType dataSourceType;
-        public bool condenseValidBuilders;
 #endif // UNITY_EDITOR
 
         public ComponentPropertyBinding[] componentPropertyBindings =

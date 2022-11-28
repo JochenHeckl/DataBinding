@@ -15,12 +15,12 @@ namespace de.JochenHeckl.Unity.DataBinding.Examples.GettingStarted
     /// </summary>
     public class PlaceholderApplicationLogic
     {
-        public CubeViewModel CubeViewDataSource { get; set; }
+        public CubeViewDataSource CubeViewDataSource { get; set; }
         private float _nextCubeUpdateTimeSeconds;
 
         public void Initialize()
         {
-            CubeViewDataSource = new CubeViewModel();
+            CubeViewDataSource = new CubeViewDataSource();
             _nextCubeUpdateTimeSeconds = 0f;
         }
 
@@ -35,11 +35,6 @@ namespace de.JochenHeckl.Unity.DataBinding.Examples.GettingStarted
                     x.CubeScale = Vector3.one + Random.insideUnitSphere;
                     x.CubeColor = Random.ColorHSV(0, 1, 0, 1);
                 });
-
-                CubeViewDataSource.Spheres = Enumerable
-                    .Range(0, 4)
-                    .Select(x => new SphereViewModel() { SphereOffset = Random.onUnitSphere * 2f })
-                    .ToArray();
             }
         }
     }
