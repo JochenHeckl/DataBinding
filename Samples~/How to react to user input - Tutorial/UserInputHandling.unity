@@ -1643,21 +1643,6 @@ MonoBehaviour:
     targetComponent: {fileID: 1861046460}
     sourcePath: PressCounterText
     targetPath: text
-  - showExpanded: 1
-    targetGameObject: {fileID: 1169885965}
-    targetComponent: {fileID: 1169885967}
-    sourcePath: HandleTypedTextChanged
-    targetPath: HandleInputChangedAction
-  - showExpanded: 1
-    targetGameObject: {fileID: 1169885965}
-    targetComponent: {fileID: 1169885967}
-    sourcePath: HandleDropDownSelectionChanged
-    targetPath: HandleSelectionChangedCallback
-  - showExpanded: 1
-    targetGameObject: {fileID: 1169885965}
-    targetComponent: {fileID: 1169885967}
-    sourcePath: HandleButtonPressed
-    targetPath: HandleButtonPressed
   containerPropertyBindings: []
 --- !u!1 &1216311565
 GameObject:

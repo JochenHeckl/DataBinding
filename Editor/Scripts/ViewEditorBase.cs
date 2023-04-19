@@ -5,6 +5,8 @@ using UnityEngine.UIElements;
 using UnityEngine;
 using UnityEditor;
 using static UnityEngine.UI.InputField;
+using System.IO;
+using UnityEditor.UIElements;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
@@ -38,6 +40,14 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             else
             {
                 EditorRootElement.Clear();
+            }
+
+            if (target.GetType() != typeof(View))
+            {
+                var defaultInspector = new VisualElement();
+
+                InspectorElement.FillDefaultInspector(defaultInspector, serializedObject, this);
+                EditorRootElement.Add(defaultInspector);
             }
         }
 
@@ -193,7 +203,9 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             var dataSourceDropDown = new DropdownField(
                 label: EditorDisplayText.DataSourceTypeText,
                 choices: ValidDataSources.Select(x => x.GetFriendlyName()).ToList(),
-                defaultValue: ValidDataSources.FirstOrDefault(x => x == dataSourceType.Type)?.Name
+                defaultValue: ValidDataSources
+                    .FirstOrDefault(x => x == dataSourceType.Type)
+                    ?.GetFriendlyName()
             );
 
             dataSourceDropDown.AddToClassList(DataBindingEditorStyles.bindingDataSourceTypeLabel);
@@ -201,7 +213,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 (changeEvent) =>
                 {
                     var newDataSourceType = ValidDataSources.FirstOrDefault(
-                        x => x.Name == changeEvent.newValue
+                        x => x.GetFriendlyName() == changeEvent.newValue
                     );
                     handleDataSourceTypeChanged(newDataSourceType);
                 }
@@ -236,58 +248,58 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private static VisualElement MakeOpenDataSourceButton(SerializableType dataSourceType)
         {
-            var dataSourceSourceAsset = FindDataSourceSourceAsset(dataSourceType);
+            var dataSourceSourceFile = FindDataSourceSourceFile(dataSourceType.Type);
 
             var button = new UnityEngine.UIElements.Button(
-                () => OpenDataSourceEditor(dataSourceType)
+                () => OpenDataSourceEditor(dataSourceSourceFile)
             );
 
             button.text = EditorDisplayText.EditSourceText;
             button.tooltip = EditorDisplayText.NoSourceCodeAvailableToolTip;
 
-            button.SetEnabled(dataSourceSourceAsset != null);
+            button.SetEnabled(dataSourceSourceFile != null);
             return button;
         }
 
-        private static void OpenDataSourceEditor(SerializableType dataSourceType)
+        private static void OpenDataSourceEditor(string dataSourceSourceFile)
         {
-            if (dataSourceType.Type != null)
+            if (dataSourceSourceFile != null)
             {
-                var sourceFile = AssetDatabase
-                    .FindAssets(dataSourceType.Type.Name)
-                    .FirstOrDefault();
+                var scriptAsset = AssetDatabase.LoadAssetAtPath<MonoScript>(
+                    dataSourceSourceFile.Replace('/', Path.DirectorySeparatorChar)
+                );
 
-                if (sourceFile != null)
+                if (scriptAsset != null)
                 {
-                    var scriptAsset = AssetDatabase.LoadAssetAtPath<MonoScript>(
-                        AssetDatabase.GUIDToAssetPath(sourceFile)
-                    );
-
-                    if (scriptAsset != null)
-                    {
-                        AssetDatabase.OpenAsset(scriptAsset);
-                        return;
-                    }
+                    AssetDatabase.OpenAsset(scriptAsset);
                 }
             }
         }
 
-        private static MonoScript FindDataSourceSourceAsset(SerializableType dataSourceType)
+        private static string FindDataSourceSourceFile(Type type)
         {
-            if (dataSourceType.Type != null)
+            var assetGuid = AssetDatabase.FindAssets(type.Name).FirstOrDefault();
+
+            if (assetGuid == null)
             {
-                var sourceFile = AssetDatabase
-                    .FindAssets(dataSourceType.Type.Name)
-                    .FirstOrDefault();
+                var allSourceFiles = Directory.GetFiles(
+                    Application.dataPath,
+                    "*.cs",
+                    SearchOption.AllDirectories
+                );
 
-                if (sourceFile != null)
-                {
-                    var scriptAsset = AssetDatabase.LoadAssetAtPath<MonoScript>(
-                        AssetDatabase.GUIDToAssetPath(sourceFile)
-                    );
+                var sourceFile = allSourceFiles.FirstOrDefault(
+                    x => File.ReadAllText(x).Contains($"class {type.Name}")
+                );
 
-                    return scriptAsset;
-                }
+                var assetName = Path.GetFileNameWithoutExtension(sourceFile);
+
+                assetGuid = AssetDatabase.FindAssets(assetName).FirstOrDefault();
+            }
+
+            if (assetGuid != null)
+            {
+                return AssetDatabase.GUIDToAssetPath(assetGuid);
             }
 
             return null;

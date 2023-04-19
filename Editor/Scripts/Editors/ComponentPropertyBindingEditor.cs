@@ -177,7 +177,10 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
             headerElement.Add(buttonContainer);
 
-            headerElement.Add(MakeBindingStateLabel(bindingState));
+            if (renderCondensed || bindingState != ComponentPropertyBindingState.Complete)
+            {
+                headerElement.Add(MakeBindingStateLabel(bindingState));
+            }
 
             return headerElement;
         }

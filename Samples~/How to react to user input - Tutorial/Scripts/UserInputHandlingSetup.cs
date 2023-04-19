@@ -31,12 +31,6 @@ namespace de.JochenHeckl.Unity.DataBinding.Example
             viewModel.PressCounterText = MakePressCounterText(pressCounter);
 
             viewModel.DropDownOptions = dropdownOptions;
-
-            // Tutorial Step: Store the handlers in the ViewModel for our user interface.
-            viewModel.HandleTypedTextChanged = HandleTypedTextChanged;
-            viewModel.HandleDropDownSelectionChanged = HandleDropDownSelectionChanged;
-            viewModel.HandleButtonPressed = HandleButtonPressed;
-
             view.DataSource = viewModel;
         }
 
@@ -46,7 +40,6 @@ namespace de.JochenHeckl.Unity.DataBinding.Example
                 (x) =>
                     x.SelectedDropDownText = MakeOptionText(x.DropDownOptions[selectedOptionIndex])
             );
-            ;
         }
 
         private void HandleTypedTextChanged(string newText)

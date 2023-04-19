@@ -3,6 +3,24 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2022-12-01
+
+### Removes
+- The formerly deprecated binder workflow has been removed.
+  
+### Adds
+- A new feature to quickly access the source code of a data source was added.
+  
+  ![Access source code of DataSource](Documentation~/Images/AccessSourceCodeOfDataSource.png)
+
+- Incomlete bindings now show a hint in the user interface.
+
+### Changes
+- The editors user interface has been rewritten using UI Toolkit.
+- Consistency checks are now integrated into the Inspector UI.
+
+
+
 ## [1.3.1] - 2021-11-13
 
 ### Adds 

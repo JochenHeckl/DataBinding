@@ -37,8 +37,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         public string ComponentPropertyBindingsText => "Component Property Bindings";
 
-        public string BindingSourceUnboundMessageText => "Select a binding source";
-        public string BindingTargetUnboundMessageText => "Select a binding target";
+        public string BindingSourceUnboundMessageText => "Select the binding source path";
+        public string BindingTargetUnboundMessageText => "Select the binding target";
         public string BindingUnassignableMessageText =>
             "The binding source is not assignable to the binding target";
 
