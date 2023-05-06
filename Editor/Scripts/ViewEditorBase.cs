@@ -231,6 +231,15 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 .FirstOrDefault();
         }
 
+        public static string GuessBinding(string match, string[] pool)
+        {
+            return pool
+                .Select(x => new { x, distance = match.DamerauLevenshteinDistance(x) })
+                .OrderBy(x => x.distance)
+                .Select(x => x.x)
+                .FirstOrDefault();
+        }
+
         private static VisualElement MakeMissingDataSourceLabel()
         {
             var labelContainer = new Box();

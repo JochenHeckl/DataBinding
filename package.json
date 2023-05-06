@@ -50,18 +50,13 @@
 
     {
       "displayName": "How to react to user input - Tutorial",
-        "description": "Lear how to accept user input in a simple step by step tutorial. https://github.com/JochenHeckl/DataBinding/Documentation~/HowToReactToUserInput.md",
+      "description": "Lear how to accept user input in a simple step by step tutorial. https://github.com/JochenHeckl/DataBinding/Documentation~/HowToReactToUserInput.md",
       "path": "Samples~/How to react to user input - Tutorial"
     },
     {
       "displayName": "How to react to user input",
       "description": "The finished project you will end up with after completing the step by step tutorial.",
       "path": "Samples~/How to react to user input"
-    },
-    {
-      "displayName": "Using DataBinding with UIToolkit - Experimental",
-      "description": "A simple example demonstrating how to use DataBinding with UIToolkit.",
-      "path": "Samples~/UIToolkit/Using DataBinding with UIToolkit"
     }
   ]
 }

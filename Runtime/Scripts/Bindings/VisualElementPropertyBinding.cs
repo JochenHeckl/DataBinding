@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace de.JochenHeckl.Unity.DataBinding
+namespace de.JochenHeckl.Unity.DataBinding.Experimental
 {
     [Serializable]
     public class VisualElementPropertyBinding

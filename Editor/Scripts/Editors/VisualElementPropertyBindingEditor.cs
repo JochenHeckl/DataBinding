@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
+
 using UnityEngine.UIElements;
 
-namespace de.JochenHeckl.Unity.DataBinding.Editor
+using de.JochenHeckl.Unity.DataBinding.Editor;
+
+namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
 {
     internal class VisualElementPropertyBindingEditor : BindingEditor<VisualElementPropertyBinding>
     {

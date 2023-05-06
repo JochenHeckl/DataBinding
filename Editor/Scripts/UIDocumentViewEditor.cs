@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 
 using UnityEditor;
-
-using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.UIElements;
 
-using static UnityEngine.UI.InputField;
+using de.JochenHeckl.Unity.DataBinding.Editor;
 
-namespace de.JochenHeckl.Unity.DataBinding.Editor
+namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
 {
     [CustomEditor(typeof(UIDocumentView), true)]
     public class UIDocumentViewEditor : ViewEditorBase
