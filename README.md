@@ -220,10 +220,20 @@ This static approach however is very handy to develop views in isolation. I Usua
 
 ### **Question:**
 
-My Project looks like this. What Do I do?
+**My Project looks like this. What Do I do?**
 
 - ![UpgradeRenderPipeline](Documentation~/Images/UpgradeToURP.png)
   
 ### **Answer:**
 
 Your most likely use the Universal Render Pipeline (URP) in your Unity Project, but the example was made using the built in render pipeline. [Upgrade material and shaders to use the Universal Render Pipeline](https://docs.unity3d.com/Packages/com.unity.render-pipelines.universal@12.1/manual/upgrade-guides.html).
+
+### **Question:**
+
+**I started out with an empty project. Then I added your package and imported a sample. Now Unity complains about unknown Types. What can I do?**
+
+### **Answer:**
+
+This package itself does not have dependencies for now.
+
+The samples however might use regular standard Unity packages. You will probable have to add **2D Sprite** and **TextMeshPro** via the Package Manager.
