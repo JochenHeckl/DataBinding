@@ -198,7 +198,7 @@ We assume you completed the ["Getting Started" tutorial](../README.md)  and have
   ![Tutorial Start](Images/UserInput/UserInputTutorial.FillInBindings.png)
 
 
-- When we hit play now, the text samples reflect user input.
+- When we click play now, the text samples reflect user input.
 
   ![Tutorial Start](Images/UserInput/UserInputTutorial.End.png)
 

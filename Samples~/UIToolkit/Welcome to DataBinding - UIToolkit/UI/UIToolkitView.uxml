@@ -1,9 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <Style src="UIToolkitView.uss" />
-    <ui:VisualElement name="Root" style="left: 20px; top: 20px; right: 20px; bottom: 20px; position: absolute; background-color: rgba(82, 133, 204, 0.25); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px; border-left-color: rgba(0, 0, 0, 0.75); border-right-color: rgba(0, 0, 0, 0.75); border-top-color: rgba(0, 0, 0, 0.75); border-bottom-color: rgba(0, 0, 0, 0.75); align-items: center; justify-content: flex-start;">
-        <ui:VisualElement style="flex-basis: 50%; align-items: center; justify-content: center;">
-            <ui:Label text="Welcome to" display-tooltip-when-elided="true" style="-unity-text-align: middle-center; font-size: 32px; flex-grow: 1; -unity-font: url(&apos;/Assets/Samples/DataBinding/1.3.1/Welcome to DataBinding - UIToolkit/Fonts/Herr_Von_Muellerhoff/HerrVonMuellerhoff-Regular.ttf&apos;); -unity-font-definition: url(&apos;/Assets/Samples/DataBinding/1.3.1/Welcome to DataBinding - UIToolkit/Fonts/Herr_Von_Muellerhoff/HerrVonMuellerhoff-Regular SDF.asset&apos;);" />
-            <ui:Label display-tooltip-when-elided="true" name="HelloMessageLabel" class="helloMessageLabel" style="font-size: 48px; align-items: center; justify-content: center;" />
-        </ui:VisualElement>
-    </ui:VisualElement>
-</ui:UXML>

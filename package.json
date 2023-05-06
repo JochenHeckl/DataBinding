@@ -38,10 +38,16 @@
       "path": "Samples~/MyFirstDataBoundView (Getting Started Tutorial)"
     },    
     {
-      "displayName": "A look at ContainerBindings",
+      "displayName": "A look at ContainerBindings - Tutorial",
       "description": "Starting point for a simple step by step tutorial introducing ContainerBindings.",
+      "path": "Samples~/A look at ContainerBindings - Tutorial"
+    },
+    {
+      "displayName": "A look at ContainerBindings",
+      "description": "The finished project you will end up with after completing the step by step tutorial.",
       "path": "Samples~/A look at ContainerBindings"
     },
+
     {
       "displayName": "How to react to user input - Tutorial",
         "description": "Lear how to accept user input in a simple step by step tutorial. https://github.com/JochenHeckl/DataBinding/Documentation~/HowToReactToUserInput.md",
@@ -49,13 +55,13 @@
     },
     {
       "displayName": "How to react to user input",
-      "description": "The finished project you will end up with after doing the step by step tutorial.",
+      "description": "The finished project you will end up with after completing the step by step tutorial.",
       "path": "Samples~/How to react to user input"
     },
     {
-      "displayName": "Welcome to DataBinding - UIToolkit",
+      "displayName": "Using DataBinding with UIToolkit - Experimental",
       "description": "A simple example demonstrating how to use DataBinding with UIToolkit.",
-      "path": "Samples~/UIToolkit/Welcome to DataBinding - UIToolkit"
+      "path": "Samples~/UIToolkit/Using DataBinding with UIToolkit"
     }
   ]
 }
