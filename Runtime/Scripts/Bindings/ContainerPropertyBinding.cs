@@ -99,9 +99,9 @@ namespace de.JochenHeckl.Unity.DataBinding
                     UnityEngine.Object.Instantiate(elementTemplate, targetContainer);
                 }
 
-                while (elementCount < targetContainer.childCount)
+                for (var i = 0; i < targetContainer.childCount - elementCount; ++i)
                 {
-                    UnityEngine.Object.Destroy(targetContainer.GetChild(elementCount));
+                    UnityEngine.Object.Destroy(targetContainer.GetChild(elementCount + i).gameObject);
                 }
 
                 var childIndex = 0;
