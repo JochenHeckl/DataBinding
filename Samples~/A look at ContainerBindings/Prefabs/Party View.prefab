@@ -57,7 +57,7 @@ MonoBehaviour:
   containerPropertyBindings:
   - showExpanded: 1
     targetContainer: {fileID: 1394055450767064804}
-    elementTemplate: {fileID: 6668738108973706113, guid: 98a1ac3d8286b2e48bbc6612014ff8cb,
+    elementTemplate: {fileID: 6668738108973706113, guid: 761391fb3c4a0e640a664c16b9a1439e,
       type: 3}
     sourcePath: Characters
 --- !u!1 &3183226223414695614

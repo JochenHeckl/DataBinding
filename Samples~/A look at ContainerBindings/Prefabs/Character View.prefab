@@ -474,7 +474,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d7ede02237241a943ad9a02a1ef31c2e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 724c1261922389e4981c5bff747f37ad, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6ff6591213b50964ba24cf2e737d88e7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 42df3ca5268536342927f4e4b2489eba, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -627,7 +627,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 250de0c48c897f148ab0bff763a29d2f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c09ece7a4a9424447ba47f72efbc9dfd, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -859,6 +859,6 @@ MonoBehaviour:
   containerPropertyBindings:
   - showExpanded: 0
     targetContainer: {fileID: 136798727438285465}
-    elementTemplate: {fileID: -276628925325594562, guid: ff6d313dbcd9d084e9f4c9fa71cc6a57,
+    elementTemplate: {fileID: -276628925325594562, guid: 4224f8f75e0244f48a63e9086793af2d,
       type: 3}
     sourcePath: Attributes

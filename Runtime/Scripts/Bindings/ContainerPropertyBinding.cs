@@ -101,7 +101,9 @@ namespace de.JochenHeckl.Unity.DataBinding
 
                 for (var i = 0; i < targetContainer.childCount - elementCount; ++i)
                 {
-                    UnityEngine.Object.Destroy(targetContainer.GetChild(elementCount + i).gameObject);
+                    UnityEngine.Object.Destroy(
+                        targetContainer.GetChild(elementCount + i).gameObject
+                    );
                 }
 
                 var childIndex = 0;

@@ -234,14 +234,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203844586}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &571532050
+--- !u!1 &785101729
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,8 +249,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 571532051}
-  - component: {fileID: 571532052}
+  - component: {fileID: 785101730}
+  - component: {fileID: 785101731}
   m_Layer: 0
   m_Name: Bootstrap
   m_TagString: Untagged
@@ -258,37 +258,37 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &571532051
+--- !u!4 &785101730
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571532050}
+  m_GameObject: {fileID: 785101729}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 670.5865, y: 426.3416, z: -4.3818207}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &571532052
+--- !u!114 &785101731
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571532050}
+  m_GameObject: {fileID: 785101729}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f74b4feb17c13045aa3f29ecb32b1d2, type: 3}
+  m_Script: {fileID: 11500000, guid: a5643dec7ede891438295f8e885970c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partyViewTemplate: {fileID: 3139894007772532996, guid: 9d8409970404f6c4bb68a9f695e6e2dd,
+  partyViewTemplate: {fileID: 3139894007772532996, guid: 7db9b76be1d221f41baf341f586bf77d,
     type: 3}
   partyViewContainer: {fileID: 2083099024}
-  theOneAndOnlyCharacterImage: {fileID: 21300000, guid: d815245f502e2d340889ca1b93a95a99,
+  theOneAndOnlyCharacterImage: {fileID: 21300000, guid: 2cd5d91abcdb1654a8c2b29ae771d7e2,
     type: 3}
 --- !u!1 &961739749
 GameObject:
