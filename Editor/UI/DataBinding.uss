@@ -63,20 +63,27 @@
     font-size: 14px;
 }
 
-.bindingInteractionButton {
-    margin: 0;
+.bindingActionButton {
+    margin: 0px;
+    width: 24px;
+    height: 18px;
 }
 
 .bindingContainer
 {
     flex-direction: column;
+    margin: 1px;
+    
+    border-width: 1px;
+    border-radius: 2px;
+    border-color: rgb(64, 64, 64);
+
 }
 
 .bindingHeaderRow{
     padding: 2px;
-    flex-direction: row-reverse;
+    flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-between;
 
     background-color: var(--unity-colors-app_toolbar_button-background-hover);
 }
@@ -88,5 +95,9 @@
 .condensedBindingLabel {
     -unity-text-align: middle-left;
     white-space: normal;
-    margin: 2px;
+    margin:2px;
+}
+
+.bindingProperty{
+    margin-right: 2px;
 }

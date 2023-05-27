@@ -30,10 +30,11 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         public const string bindingGroupHeader = "bindingGroupHeader";
         public const string bindingGroupLabel = "bindingGroupLabel";
         public const string bindingGroupList = "bindingGroupList";
-        public const string bindingActionButton = "bindingInteractionButton";
+        public const string bindingActionButton = "bindingActionButton";
         public const string bindingContainer = "bindingContainer";
         public const string bindingInteractionButtonContainer = "bindingInteractionButtonContainer";
         public const string condensedBindingLabel = "condensedBindingLabel";
+        public const string bindingProperty = "bindingProperty";
 
         public static StyleSheet StyleSheet
         {

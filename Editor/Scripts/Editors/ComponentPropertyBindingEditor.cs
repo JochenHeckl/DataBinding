@@ -90,6 +90,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             if (!renderCondensed)
             {
                 var sourcePathElement = new DropdownField(DisplayText.SourcePathText);
+                sourcePathElement.AddToClassList(DataBindingEditorStyles.bindingProperty);
                 sourcePathElement.choices = bindableDataSourceProperties
                     .Select(x => x.Name)
                     .ToList();
@@ -100,6 +101,9 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
                 var targetObjectSelectionElement = new ObjectField(
                     DisplayText.TargetGameObjectText
+                );
+                targetObjectSelectionElement.AddToClassList(
+                    DataBindingEditorStyles.bindingProperty
                 );
                 targetObjectSelectionElement.allowSceneObjects = true;
                 targetObjectSelectionElement.objectType = typeof(UnityEngine.GameObject);
@@ -114,6 +118,10 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 targetComponentSelectionDropdownField = new DropdownField(
                     DisplayText.TargetComponentText
                 );
+                targetComponentSelectionDropdownField.AddToClassList(
+                    DataBindingEditorStyles.bindingProperty
+                );
+
                 targetComponentSelectionDropdownField.RegisterValueChangedCallback(
                     HandleTargetComponentChanged
                 );
@@ -121,6 +129,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 Add(targetComponentSelectionDropdownField);
 
                 var targetPathElement = new DropdownField("Target Path");
+                targetPathElement.AddToClassList(DataBindingEditorStyles.bindingProperty);
+
                 targetPathElement.RegisterValueChangedCallback(HandleTargetPathChanged);
 
                 Add(targetPathElement);
@@ -143,6 +153,14 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             headerElement.AddToClassList(DataBindingEditorStyles.bindingHeaderRow);
 
             VisualElement buttonContainer = new VisualElement();
+
+            // if (renderCondensed)
+            {
+                buttonContainer.style.position = Position.Absolute;
+                buttonContainer.style.left = StyleKeyword.Auto;
+                buttonContainer.style.top = 2;
+                buttonContainer.style.right = 2;
+            }
 
             buttonContainer.AddToClassList(
                 DataBindingEditorStyles.bindingInteractionButtonContainer
@@ -175,12 +193,14 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             removeBindingButton.text = "✕";
             AddHeaderButton(buttonContainer, removeBindingButton);
 
-            headerElement.Add(buttonContainer);
-
-            if (renderCondensed || bindingState != ComponentPropertyBindingState.Complete)
+            // if (renderCondensed || bindingState != ComponentPropertyBindingState.Complete)
             {
-                headerElement.Add(MakeBindingStateLabel(bindingState));
+                var bindingStateLabel = MakeBindingStateLabel(bindingState);
+                bindingStateLabel.style.flexGrow = 1;
+                headerElement.Add(bindingStateLabel);
             }
+
+            headerElement.Add(buttonContainer);
 
             return headerElement;
         }
@@ -227,8 +247,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 DisplayText.ComponentPropertyBindingCondensedLabelFormat_Type_Source_Target_Component,
                 friendlySourceTypeName,
                 Binding.SourcePath,
-                $"{Binding.TargetComponent.GetType().Name}.{binding.TargetPath}",
-                Binding.TargetComponent.name
+                Binding.TargetComponent.name,
+                $"{Binding.TargetComponent.GetType().Name}.{binding.TargetPath}"
             );
         }
 

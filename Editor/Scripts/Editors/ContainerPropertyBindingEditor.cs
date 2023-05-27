@@ -90,6 +90,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             if (!renderCondensed)
             {
                 var sourcePathElement = new DropdownField(DisplayText.SourcePathText);
+                sourcePathElement.AddToClassList(DataBindingEditorStyles.bindingProperty);
                 sourcePathElement.choices = bindableDataSourceProperties
                     .Select(x => x.Name)
                     .ToList();
@@ -99,6 +100,9 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 Add(sourcePathElement);
 
                 var targetContainerSelectionElement = new ObjectField("Target Container");
+                targetContainerSelectionElement.AddToClassList(
+                    DataBindingEditorStyles.bindingProperty
+                );
                 targetContainerSelectionElement.allowSceneObjects = true;
                 targetContainerSelectionElement.objectType = typeof(Transform);
                 targetContainerSelectionElement.value = Binding.TargetContainer;
@@ -109,6 +113,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 Add(targetContainerSelectionElement);
 
                 var elementTemplateSelection = new ObjectField("Element Template");
+                elementTemplateSelection.AddToClassList(DataBindingEditorStyles.bindingProperty);
                 elementTemplateSelection.allowSceneObjects = false;
                 elementTemplateSelection.objectType = typeof(View);
                 elementTemplateSelection.value = Binding.ElementTemplate;
@@ -135,6 +140,14 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             buttonContainer.AddToClassList(
                 DataBindingEditorStyles.bindingInteractionButtonContainer
             );
+
+            // if (renderCondensed)
+            {
+                buttonContainer.style.position = Position.Absolute;
+                buttonContainer.style.left = StyleKeyword.Auto;
+                buttonContainer.style.top = 2;
+                buttonContainer.style.right = 2;
+            }
 
             var moveBindingUpButton = new Button(
                 moveBindingUp != null ? () => moveBindingUp(Binding) : (Action)null
@@ -163,9 +176,9 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             removeBindingButton.text = "✕";
             AddHeaderButton(buttonContainer, removeBindingButton);
 
-            headerElement.Add(buttonContainer);
-
             headerElement.Add(MakeBindingStateLabel(bindingState));
+
+            headerElement.Add(buttonContainer);
 
             return headerElement;
         }
