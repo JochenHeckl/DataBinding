@@ -123,7 +123,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
             var addBindingButton = new Button(handleAddBinding);
             addBindingButton.text = "Add Binding";
-            addBindingButton.AddToClassList(DataBindingEditorStyles.bindingActionButton);
+            addBindingButton.AddToClassList(DataBindingEditorStyles.addBindingActionButton);
             header.Add(addBindingButton);
 
             sectionRoot.Add(header);

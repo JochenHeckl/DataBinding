@@ -22,19 +22,20 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         public const string ErrorText = "errorText";
         public const string InfoText = "infoText";
 
-        public const string invalidBindingClassName = "invalidBinding";
 
-        public const string bindingHeaderRow = "bindingHeaderRow";
+        public const string addBindingActionButton = "addBindingActionButton";
+        public const string bindingActionButton = "bindingActionButton";
+        public const string bindingContainer = "bindingContainer";
         public const string bindingDataSourceTypeLabel = "bindingDataSourceTypeLabel";
         public const string bindingGroup = "bindingGroup";
         public const string bindingGroupHeader = "bindingGroupHeader";
         public const string bindingGroupLabel = "bindingGroupLabel";
         public const string bindingGroupList = "bindingGroupList";
-        public const string bindingActionButton = "bindingActionButton";
-        public const string bindingContainer = "bindingContainer";
+        public const string bindingHeaderRow = "bindingHeaderRow";
         public const string bindingInteractionButtonContainer = "bindingInteractionButtonContainer";
-        public const string condensedBindingLabel = "condensedBindingLabel";
         public const string bindingProperty = "bindingProperty";
+        public const string condensedBindingLabel = "condensedBindingLabel";
+        public const string invalidBindingClassName = "invalidBinding";
 
         public static StyleSheet StyleSheet
         {
