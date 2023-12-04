@@ -201,7 +201,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 return errorLabel;
             }
 
-            if (bindingState == ComponentPropertyBindingState.TargetUnbound)
+            if (bindingState == ComponentPropertyBindingState.Unassignable)
             {
                 var errorLabel = new Label(DisplayText.BindingUnassignableMessageText);
                 errorLabel.AddToClassList(DataBindingEditorStyles.ErrorText);
