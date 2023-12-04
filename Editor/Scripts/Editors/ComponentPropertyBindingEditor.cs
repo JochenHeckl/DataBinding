@@ -302,11 +302,9 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void UpdateTargetComponentChoices()
         {
-            var componentsOfGameObject = Array.Empty<Component>();
-
             if (Binding.TargetGameObject != null)
             {
-                componentsOfGameObject =
+                var componentsOfGameObject =
                     Binding.TargetGameObject.GetComponentsInChildren<Component>(true);
 
                 targetComponentSelectionDropdownField.choices = componentsOfGameObject
@@ -328,10 +326,6 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             if ((sourceProperty != null) && (Binding.TargetComponent != null))
             {
                 var targetProperties = Binding.TargetComponent.GetType().GetProperties();
-                var targetProperty = Array.Find(
-                    targetProperties,
-                    (x) => x.Name == Binding.TargetPath
-                );
 
                 targetPathDropdownField.choices = targetProperties
                     .Where(x => x.PropertyType.IsAssignableFrom(sourceProperty.PropertyType))
