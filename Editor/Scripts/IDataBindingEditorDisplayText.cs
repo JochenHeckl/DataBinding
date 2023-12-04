@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace de.JochenHeckl.Unity.DataBinding.Editor
+﻿namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     internal interface IDataBindingEditorDisplayText
     {
@@ -25,6 +23,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         string ExpandButtonText { get; }
         string CondenseButtonText { get; }
         string BindingElementTemplateMissingMessageText { get; }
+        string BindingElementTemplateIsNotAssignableMessageText { get; }
         string ContainerPropertyBindingCondensedLabelFormat_Type_Source_Target_Template { get; }
     }
 }

@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using de.JochenHeckl.Unity.DataBinding.Editor;
 using UnityEditor;
 using UnityEngine.UIElements;
-
-using de.JochenHeckl.Unity.DataBinding.Editor;
 
 namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
 {

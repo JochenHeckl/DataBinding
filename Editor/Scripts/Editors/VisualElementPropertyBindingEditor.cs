@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
-using UnityEngine.UIElements;
-
 using de.JochenHeckl.Unity.DataBinding.Editor;
+using UnityEngine.UIElements;
 
 namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
 {
@@ -28,7 +26,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
             Action<VisualElementPropertyBinding> moveBindingDown,
             Action<VisualElementPropertyBinding> togglePropertyExpansion,
             Action<VisualElementPropertyBinding> removeBinding
-        ) : base(displayText, binding)
+        )
+            : base(displayText, binding)
         {
             this.dataSourceType = dataSourceType;
             this.rootVisualElement = rootVisualElement;
@@ -90,28 +89,30 @@ namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
 
             if (renderCondensed)
             {
-                var condensedLabel = new Label(MakeCondensedLabelText(Binding));
+                var condensedLabel = new Label(MakeCondensedLabelText());
                 condensedLabel.AddToClassList(DataBindingEditorStyles.condensedBindingLabel);
 
                 Add(condensedLabel);
             }
             else
             {
-                var sourcePathElement = new DropdownField(DisplayText.SourcePathText);
-                sourcePathElement.choices = bindableDataSourceProperties
-                    .Select(x => x.Name)
-                    .ToList();
-                sourcePathElement.value = Binding.SourcePath;
+                var sourcePathElement = new DropdownField(DisplayText.SourcePathText)
+                {
+                    choices = bindableDataSourceProperties.Select(x => x.Name).ToList(),
+                    value = Binding.SourcePath
+                };
+
                 sourcePathElement.RegisterValueChangedCallback(HandleSourcePathChanged);
 
                 Add(sourcePathElement);
 
                 var namedVisualElements = EnumerateRecursive(rootVisualElement).ToArray();
-                var targetVisualElementQueryElement = new DropdownField("Target Visual Element");
-                targetVisualElementQueryElement.choices = namedVisualElements
-                    .Select(x => x.name)
-                    .ToList();
-                targetVisualElementQueryElement.value = Binding.TargetVisualElementQuery;
+                var targetVisualElementQueryElement = new DropdownField("Target Visual Element")
+                {
+                    choices = namedVisualElements.Select(x => x.name).ToList(),
+                    value = Binding.TargetVisualElementQuery
+                };
+
                 targetVisualElementQueryElement.RegisterValueChangedCallback(
                     HandleTargetVisualElementQueryChanged
                 );
@@ -121,36 +122,42 @@ namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
                 var sourceProperty = dataSourceType
                     .GetProperties()
                     .FirstOrDefault(x => x.Name == Binding.SourcePath);
+
                 var targetVisualElement = namedVisualElements.FirstOrDefault(
                     x => x.name == Binding.TargetVisualElementQuery
                 );
 
-                if (targetVisualElement != null)
+                if (targetVisualElement == null)
                 {
-                    var bindableTargetVisualElementProperties = targetVisualElement
-                        .GetType()
-                        .GetProperties()
-                        .Where(x => x.PropertyType.IsAssignableFrom(sourceProperty.PropertyType))
-                        .Select(x => x.Name)
-                        .ToArray();
-
-                    var bindableStyleProperties = typeof(IStyle)
-                        .GetProperties()
-                        .Where(x => x.PropertyType.IsAssignableFrom(sourceProperty.PropertyType))
-                        .Select(x => $"{nameof(targetVisualElement.style)}.{x.Name}")
-                        .ToArray();
-
-                    var selectableTargetPaths = bindableTargetVisualElementProperties
-                        .Union(bindableStyleProperties)
-                        .ToList();
-
-                    var targetPathElement = new DropdownField("Target Path");
-                    targetPathElement.choices = selectableTargetPaths;
-                    targetPathElement.value = Binding.TargetPath;
-                    targetPathElement.RegisterValueChangedCallback(HandleTargetPathChanged);
-
-                    Add(targetPathElement);
+                    return;
                 }
+
+                var bindableTargetVisualElementProperties = targetVisualElement
+                    .GetType()
+                    .GetProperties()
+                    .Where(x => x.PropertyType.IsAssignableFrom(sourceProperty?.PropertyType))
+                    .Select(x => x.Name)
+                    .ToArray();
+
+                var bindableStyleProperties = typeof(IStyle)
+                    .GetProperties()
+                    .Where(x => x.PropertyType.IsAssignableFrom(sourceProperty?.PropertyType))
+                    .Select(x => $"{nameof(targetVisualElement.style)}.{x.Name}")
+                    .ToArray();
+
+                var selectableTargetPaths = bindableTargetVisualElementProperties
+                    .Union(bindableStyleProperties)
+                    .ToList();
+
+                var targetPathElement = new DropdownField("Target Path")
+                {
+                    choices = selectableTargetPaths,
+                    value = Binding.TargetPath
+                };
+
+                targetPathElement.RegisterValueChangedCallback(HandleTargetPathChanged);
+
+                Add(targetPathElement);
             }
         }
 
@@ -175,15 +182,19 @@ namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
             );
 
             var moveBindingUpButton = new Button(
-                moveBindingUp != null ? () => moveBindingUp(Binding) : (Action)null
-            );
-            moveBindingUpButton.text = "▲";
+                moveBindingUp != null ? () => moveBindingUp(Binding) : null
+            )
+            {
+                text = "▲"
+            };
             AddHeaderButton(buttonContainer, moveBindingUpButton);
 
             var moveBindingDownButton = new Button(
-                moveBindingDown != null ? () => moveBindingDown(Binding) : (Action)null
-            );
-            moveBindingDownButton.text = "▼";
+                moveBindingDown != null ? () => moveBindingDown(Binding) : null
+            )
+            {
+                text = "▼"
+            };
             AddHeaderButton(buttonContainer, moveBindingDownButton);
 
             var toggleBindingExpansionButton = new Button(() => togglePropertyExpansion(Binding));
@@ -194,8 +205,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
             toggleBindingExpansionButton.text = renderCondensed ? "…" : "↸";
             AddHeaderButton(buttonContainer, toggleBindingExpansionButton);
 
-            var removeBindingButton = new Button(() => removeBinding(Binding));
-            removeBindingButton.text = "✕";
+            var removeBindingButton = new Button(() => removeBinding(Binding)) { text = "✕" };
             AddHeaderButton(buttonContainer, removeBindingButton);
 
             headerElement.Add(buttonContainer);
@@ -235,12 +245,13 @@ namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
             bindingChanged();
         }
 
-        private string MakeCondensedLabelText(VisualElementPropertyBinding binding)
+        private string MakeCondensedLabelText()
         {
             var sourceProperty = bindableDataSourceProperties.Single(
                 x => x.Name == this.Binding.SourcePath
             );
-            var friendlySourceTypeName = sourceProperty.PropertyType
+            var friendlySourceTypeName = sourceProperty
+                .PropertyType
                 .GetTypeInfo()
                 .GetFriendlyName();
 

@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
 using UnityEditor.UIElements;
-
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,7 +10,6 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     internal class ContainerPropertyBindingEditor : BindingEditor<ContainerPropertyBinding>
     {
-        private readonly Type dataSourceType;
         private readonly PropertyInfo[] bindableDataSourceProperties;
         private readonly Action bindingChanged;
 
@@ -26,10 +23,15 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             Action<ContainerPropertyBinding> moveBindingDown,
             Action<ContainerPropertyBinding> togglePropertyExpansion,
             Action<ContainerPropertyBinding> removeBinding
-        ) : base(displayText, binding)
+        )
+            : base(displayText, binding)
         {
-            this.dataSourceType = dataSourceType;
             this.bindingChanged = bindingChanged;
+
+            if (dataSourceType == null)
+            {
+                return;
+            }
 
             bindableDataSourceProperties = dataSourceType
                 .GetProperties()
@@ -37,11 +39,6 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                     x => x.CanRead && typeof(IEnumerable<object>).IsAssignableFrom(x.PropertyType)
                 )
                 .ToArray();
-
-            if (dataSourceType == null)
-            {
-                return;
-            }
 
             try
             {
@@ -150,15 +147,19 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             }
 
             var moveBindingUpButton = new Button(
-                moveBindingUp != null ? () => moveBindingUp(Binding) : (Action)null
-            );
-            moveBindingUpButton.text = DisplayText.MoveUpButtonText;
+                moveBindingUp != null ? () => moveBindingUp(Binding) : null
+            )
+            {
+                text = DisplayText.MoveUpButtonText
+            };
             AddHeaderButton(buttonContainer, moveBindingUpButton);
 
             var moveBindingDownButton = new Button(
-                moveBindingDown != null ? () => moveBindingDown(Binding) : (Action)null
-            );
-            moveBindingDownButton.text = DisplayText.MoveDownButtonText;
+                moveBindingDown != null ? () => moveBindingDown(Binding) : null
+            )
+            {
+                text = DisplayText.MoveDownButtonText
+            };
             AddHeaderButton(buttonContainer, moveBindingDownButton);
 
             var toggleBindingExpansionButton = new Button(() => togglePropertyExpansion(Binding));
@@ -172,8 +173,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
             AddHeaderButton(buttonContainer, toggleBindingExpansionButton);
 
-            var removeBindingButton = new Button(() => removeBinding(Binding));
-            removeBindingButton.text = "✕";
+            var removeBindingButton = new Button(() => removeBinding(Binding)) { text = "✕" };
             AddHeaderButton(buttonContainer, removeBindingButton);
 
             headerElement.Add(MakeBindingStateLabel(bindingState));
@@ -206,26 +206,29 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 return errorLabel;
             }
 
-            if (bindingState == ContainerPropertyBindingState.ElementTemplateMissing)
+            if (bindingState == ContainerPropertyBindingState.ElementTemplateIsNotAssignable)
             {
-                var errorLabel = new Label(DisplayText.BindingElementTemplateMissingMessageText);
+                var errorLabel = new Label(
+                    DisplayText.BindingElementTemplateIsNotAssignableMessageText
+                );
                 errorLabel.AddToClassList(DataBindingEditorStyles.ErrorText);
                 return errorLabel;
             }
 
-            var condensedLabel = new Label(MakeCondensedLabelText(Binding));
+            var condensedLabel = new Label(MakeCondensedLabelText());
             condensedLabel.AddToClassList(DataBindingEditorStyles.condensedBindingLabel);
 
             return condensedLabel;
         }
 
-        private string MakeCondensedLabelText(ContainerPropertyBinding binding)
+        private string MakeCondensedLabelText()
         {
             var sourceProperty = bindableDataSourceProperties.Single(
                 x => x.Name == Binding.SourcePath
             );
 
-            var friendlySourceTypeName = sourceProperty.PropertyType
+            var friendlySourceTypeName = sourceProperty
+                .PropertyType
                 .GetTypeInfo()
                 .GetFriendlyName();
 

@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using UnityEditor.Graphs;
-
-using UnityEngine.UIElements;
-
-namespace de.JochenHeckl.Unity.DataBinding.Editor
+﻿namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     internal class DataBindingEditorDisplayText : IDataBindingEditorDisplayText
     {
@@ -31,9 +20,9 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         public string SourcePathText => "Source Path";
 
         public string EditorErrorMessageText =>
-            "An internal error happended setting up the editor view. Please file an Issue.";
+            "An internal error appended setting up the editor view. Please file an Issue.";
         public string EditorErrorMessageLinkText =>
-            "An internal error happended setting up the editor view. Please file an Issue.";
+            "An internal error happened setting up the editor view. Please file an Issue.";
 
         public string ComponentPropertyBindingsText => "Component Property Bindings";
 
@@ -60,6 +49,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         public string BindingElementTemplateMissingMessageText =>
             "Please specify a an element template ( == a prefab with a View component)";
+        public string BindingElementTemplateIsNotAssignableMessageText =>
+            "Please specify an element template with a View component";
         public string ContainerPropertyBindingCondensedLabelFormat_Type_Source_Target_Template =>
             "<color=green>✔</color> <color=blue>{0}</color> <b>{1}</b> expands into <b>{2}</b> ({3})";
     }
