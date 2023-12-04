@@ -193,9 +193,9 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 return errorLabel;
             }
 
-            if (bindingState == ContainerPropertyBindingState.ElementTemplateMissing)
+            if (bindingState == ContainerPropertyBindingState.ElementTemplateIsNotAssignable)
             {
-                var errorLabel = new Label(DisplayText.BindingElementTemplateMissingMessageText);
+                var errorLabel = new Label(DisplayText.BindingElementTemplateIsNotAssignableMessageText);
                 errorLabel.AddToClassList(DataBindingEditorStyles.ErrorText);
                 return errorLabel;
             }

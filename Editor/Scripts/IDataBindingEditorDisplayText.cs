@@ -25,6 +25,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         string ExpandButtonText { get; }
         string CondenseButtonText { get; }
         string BindingElementTemplateMissingMessageText { get; }
+        string BindingElementTemplateIsNotAssignableMessageText { get; }
         string ContainerPropertyBindingCondensedLabelFormat_Type_Source_Target_Template { get; }
     }
 }
