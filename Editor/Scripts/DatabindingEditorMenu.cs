@@ -1,13 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-
-using UnityEditor;
-using UnityEditor.PackageManager;
-
-using UnityEngine;
+﻿using UnityEditor;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor
 {

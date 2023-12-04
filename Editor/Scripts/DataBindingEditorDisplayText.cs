@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using UnityEditor.Graphs;
-
-using UnityEngine.UIElements;
-
-namespace de.JochenHeckl.Unity.DataBinding.Editor
+﻿namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     internal class DataBindingEditorDisplayText : IDataBindingEditorDisplayText
     {

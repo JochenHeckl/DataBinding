@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace de.JochenHeckl.Unity.DataBinding.Editor
+﻿namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     internal interface IDataBindingEditorDisplayText
     {
