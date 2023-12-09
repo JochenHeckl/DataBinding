@@ -1,7 +1,7 @@
 {
   "name": "de.jochenheckl.unity.databinding",
   "displayName": "DataBinding",
-  "version": "2.0.0",
+  "version": "2.1.0-rc01",
   "unity": "2021.2",
   "description": "This package brings DataBinding to unity game objects.\n\nExpose a ViewModel and bind it to your user interface to keep you application code separate and clean.\n\nMake even the largest projects structured, streamlined and easy to maintain.",
   "keywords": [
@@ -36,7 +36,7 @@
       "displayName": "MyFirstDataBoundView (Getting Started Tutorial)",
       "description": "The finished project you would have created when following the Getting Started Tutorial step by step.",
       "path": "Samples~/MyFirstDataBoundView (Getting Started Tutorial)"
-    },    
+    },
     {
       "displayName": "A look at ContainerBindings - Tutorial",
       "description": "Starting point for a simple step by step tutorial introducing ContainerBindings.",
@@ -47,7 +47,6 @@
       "description": "The finished project you will end up with after completing the step by step tutorial.",
       "path": "Samples~/A look at ContainerBindings"
     },
-
     {
       "displayName": "How to react to user input - Tutorial",
       "description": "Lear how to accept user input in a simple step by step tutorial. https://github.com/JochenHeckl/DataBinding/Documentation~/HowToReactToUserInput.md",
