@@ -1,0 +1,36 @@
+name: Actions
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build my project
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          packageMode: true
+          unityVersion: 2023.2.2f1
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+      
+      # Output
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: build
