@@ -28,7 +28,7 @@ jobs:
         with:
           projectPath: .
           packageMode: true
-          unityVersion: 2023.2.1
+          unityVersion: 2023.2.1f1
           githubToken: ${{ secrets.GITHUB_TOKEN }}
       
       # # Output
