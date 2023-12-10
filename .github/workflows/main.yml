@@ -21,12 +21,10 @@ jobs:
 
       # Test
       - name: Unity - Test runner
-        uses: game-ci/unity-test-runner@v4.0.0
-            
+        uses: game-ci/unity-test-runner@v4.0.0            
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
-          projectPath: .
           packageMode: true
           unityVersion: 2023.2.1f1
           githubToken: ${{ secrets.GITHUB_TOKEN }}
