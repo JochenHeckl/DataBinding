@@ -4,20 +4,20 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Build my project
+    name: Run tests
     runs-on: ubuntu-latest
     steps:
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Cache
-      - uses: actions/cache@v3
-        with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
+      # # Cache
+      # - uses: actions/cache@v3
+      #   with:
+      #     path: Library
+      #     key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+      #     restore-keys: |
+      #       Library-
 
       # Test
       - name: Unity - Test runner
@@ -31,8 +31,8 @@ jobs:
           unityVersion: 2023.2.1
           githubToken: ${{ secrets.GITHUB_TOKEN }}
       
-      # Output
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Build
-          path: build
+      # # Output
+      # - uses: actions/upload-artifact@v3
+      #   with:
+      #     name: Build
+      #     path: build
