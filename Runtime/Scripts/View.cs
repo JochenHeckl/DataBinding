@@ -29,6 +29,13 @@ namespace de.JochenHeckl.Unity.DataBinding
             UpdateBindings();
         }
 
+        public void OnDestroy()
+        {
+            if (dataSource == null) return;
+            
+            dataSource.DataSourceChanged -= OnDataSourceChanged;
+        }
+
         public INotifyDataSourceChanged DataSource
         {
             get
