@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-
 using UnityEngine;
 
 namespace de.JochenHeckl.Unity.DataBinding
@@ -27,6 +26,14 @@ namespace de.JochenHeckl.Unity.DataBinding
         {
             BindBindingDataSources(dataSource);
             UpdateBindings();
+        }
+
+        public void OnDestroy()
+        {
+            if (DataSource != null)
+            {
+                DataSource = null;
+            }
         }
 
         public INotifyDataSourceChanged DataSource
