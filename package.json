@@ -31,6 +31,9 @@
   "dependencies": {
     "com.unity.test-framework": "1.1.11"
   },
+  "testtables": [
+    "de.jochenheckl.unity.databinding"
+  ],
   "samples": [
     {
       "displayName": "MyFirstDataBoundView (Getting Started Tutorial)",
