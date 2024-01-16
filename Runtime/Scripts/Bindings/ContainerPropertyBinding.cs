@@ -76,6 +76,21 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public void UpdateBinding()
         {
+            if (dataSource == null)
+            {
+                if (targetContainer == null)
+                {
+                    return;
+                }
+                
+                foreach (Transform child in targetContainer)
+                {
+                    UnityEngine.Object.Destroy(child.gameObject);
+                }
+                
+                return;
+            }
+            
             if ((_dataSourcePropertyAccessors != null) && (targetContainer != null))
             {
                 var elements =

@@ -93,11 +93,6 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         private void BindBindingDataSources(object dataSource)
         {
-            if (dataSource == null)
-            {
-                return;
-            }
-
             foreach (var binding in componentPropertyBindings)
             {
                 binding.DataSource = dataSource;
