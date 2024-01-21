@@ -1,9 +1,9 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace de.JochenHeckl.Unity.DataBinding
 {
@@ -26,11 +26,11 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         private object dataSource;
 
-        private MethodInfo[] _dataSourcePropertyAccessors;
+        private MethodInfo[] dataSourcePropertyAccessors;
 
         public object DataSource
         {
-            get { return dataSource; }
+            get => dataSource;
             set
             {
                 dataSource = value;
@@ -40,7 +40,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public string SourcePath
         {
-            get { return sourcePath; }
+            get => sourcePath;
             set
             {
                 sourcePath = value;
@@ -50,69 +50,70 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public Transform TargetContainer
         {
-            get { return targetContainer; }
-            set { targetContainer = value; }
+            get => targetContainer;
+            set => targetContainer = value;
         }
 
         public View ElementTemplate
         {
-            get { return elementTemplate; }
-            set { elementTemplate = value; }
+            get => elementTemplate;
+            set => elementTemplate = value;
         }
 
         private void BindSource()
         {
-            if (dataSource != null && !string.IsNullOrEmpty(sourcePath))
+            if (dataSource != null && !String.IsNullOrEmpty(sourcePath))
             {
-                _dataSourcePropertyAccessors = dataSource
-                    .ResolvePublicPropertyPath(PathResolveOperation.GetValue, SourcePath)
+                dataSourcePropertyAccessors = dataSource
+                    .ResolvePublicPropertyPath(SourcePath, PathResolveOperation.GetValue)
                     .ToArray();
             }
             else
             {
-                _dataSourcePropertyAccessors = Array.Empty<MethodInfo>();
+                dataSourcePropertyAccessors = Array.Empty<MethodInfo>();
             }
         }
 
         public void UpdateBinding()
         {
-            if ((_dataSourcePropertyAccessors != null) && (targetContainer != null))
+            if (
+                (dataSourcePropertyAccessors != null)
+                && (ElementTemplate != null)
+                && (TargetContainer != null)
+            )
             {
-                var elements =
-                    _dataSourcePropertyAccessors.InvokeGetOperation(dataSource)
-                    as IEnumerable<INotifyDataSourceChanged>;
+                var boundInstances = (
+                    (
+                        dataSourcePropertyAccessors.InvokeGetAccessChain(dataSource)
+                        as IEnumerable<INotifyDataSourceChanged>
+                    ) ?? Array.Empty<INotifyDataSourceChanged>()
+                ).ToArray();
 
-                if (elements == null)
+                AddMissingChildren(boundInstances.Length);
+                RemoveSuperfluousChildren(boundInstances.Length);
+
+                for (var childIndex = 0; childIndex < boundInstances.Length; childIndex++)
                 {
-                    foreach (Transform child in targetContainer)
-                    {
-                        UnityEngine.Object.Destroy(child.gameObject);
-                    }
-
-                    return;
+                    // ReSharper disable once Unity.PerformanceCriticalCodeInvocation
+                    var view = TargetContainer.GetChild(childIndex).GetComponent<View>();
+                    view.DataSource = boundInstances[childIndex];
                 }
+            }
+        }
 
-                var elementCount = elements.Count();
+        private void AddMissingChildren(int numRequiredChildren)
+        {
+            while (TargetContainer.childCount < numRequiredChildren)
+            {
+                UnityEngine.Object.Instantiate(ElementTemplate, TargetContainer);
+            }
+        }
 
-                while (elementCount > targetContainer.childCount)
-                {
-                    UnityEngine.Object.Instantiate(elementTemplate, targetContainer);
-                }
-
-                for (var i = 0; i < targetContainer.childCount - elementCount; ++i)
-                {
-                    UnityEngine.Object.Destroy(
-                        targetContainer.GetChild(elementCount + i).gameObject
-                    );
-                }
-
-                var childIndex = 0;
-
-                foreach (var element in elements)
-                {
-                    var view = targetContainer.GetChild(childIndex++).GetComponent<View>();
-                    view.DataSource = element;
-                }
+        private void RemoveSuperfluousChildren(int numberOfChildrenToKeep)
+        {
+            while (TargetContainer.childCount > numberOfChildrenToKeep)
+            {
+                UnityEngine.Object.DestroyImmediate(TargetContainer.GetChild(0).gameObject);
             }
         }
     }

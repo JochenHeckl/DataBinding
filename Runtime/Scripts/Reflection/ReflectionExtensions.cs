@@ -130,13 +130,18 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public static IEnumerable<MethodInfo> ResolvePublicPropertyPath(
             this object instance,
-            PathResolveOperation operation,
-            string path
+            string path,
+            PathResolveOperation operation
         )
         {
-            if (instance == null || path == null)
+            if (instance == null)
             {
-                yield break;
+                throw new ArgumentNullException(nameof(instance));
+            }
+
+            if (path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
             }
 
             var pathFragments = path.Split('.').ToArray();
@@ -176,11 +181,16 @@ namespace de.JochenHeckl.Unity.DataBinding
             MethodInfo[] setAccessors
         )
         {
-            setAccessors.InvokeSetOperation(target, getAccessors.InvokeGetOperation(source));
+            setAccessors.InvokeSetAccessChain(target, getAccessors.InvokeGetAccessChain(source));
         }
 
-        public static object InvokeGetOperation(this MethodInfo[] accessors, object instance)
+        public static object InvokeGetAccessChain(this MethodInfo[] accessors, object instance)
         {
+            if (instance == null)
+            {
+                return null;
+            }
+
             var currentInstance = instance;
 
             foreach (var getter in accessors.Take(accessors.Length - 1))
@@ -191,12 +201,17 @@ namespace de.JochenHeckl.Unity.DataBinding
             return accessors.Last().Invoke(currentInstance, null);
         }
 
-        public static void InvokeSetOperation(
+        public static void InvokeSetAccessChain(
             this MethodInfo[] accessors,
             object instance,
             params object[] values
         )
         {
+            if (instance == null)
+            {
+                throw new ArgumentNullException(nameof(instance));
+            }
+
             var currentInstance = instance;
 
             foreach (var getter in accessors.Take(accessors.Length - 1))
