@@ -1,7 +1,7 @@
 {
   "name": "de.jochenheckl.unity.databinding",
   "displayName": "DataBinding",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "unity": "2021.2",
   "description": "This package brings DataBinding to unity game objects.\n\nExpose a ViewModel and bind it to your user interface to keep you application code separate and clean.\n\nMake even the largest projects structured, streamlined and easy to maintain.",
   "keywords": [
