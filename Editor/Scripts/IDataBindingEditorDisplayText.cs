@@ -1,6 +1,6 @@
 ﻿namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
-    internal interface IDataBindingEditorDisplayText
+    public interface IDataBindingEditorDisplayText
     {
         string HeavyCheckmark { get; }
         string MissingDataSourcesErrorText { get; }
