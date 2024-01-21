@@ -65,6 +65,11 @@ namespace de.JochenHeckl.Unity.DataBinding
             }
             set
             {
+                if (dataSource == value)
+                {
+                    return;
+                }
+
                 var oldDataSource = DataSource as INotifyDataSourceChanged;
 
                 if (oldDataSource != null)
@@ -91,21 +96,16 @@ namespace de.JochenHeckl.Unity.DataBinding
             UpdateBindings();
         }
 
-        private void BindBindingDataSources(object dataSource)
+        private void BindBindingDataSources(object bindingDataSource)
         {
-            if (dataSource == null)
-            {
-                return;
-            }
-
             foreach (var binding in componentPropertyBindings)
             {
-                binding.DataSource = dataSource;
+                binding.DataSource = bindingDataSource;
             }
 
             foreach (var binding in containerPropertyBindings)
             {
-                binding.DataSource = dataSource;
+                binding.DataSource = bindingDataSource;
             }
         }
 

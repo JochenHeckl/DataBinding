@@ -1,15 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-
 using NUnit.Framework;
-
 using UnityEngine;
-using UnityEngine.TestTools;
-using UnityEngine.UIElements;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor.Tests
 {
-    internal class EditorDataSourceTest
+    class EditorDataSourceTest
     {
         class TestElementTemplateDataSource : DataSourceBase<TestElementTemplateDataSource>
         {
@@ -50,18 +45,10 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor.Tests
             };
 
             containerView.DataSource = testDataSource;
+            Assert.AreEqual(2, containerGameObject.transform.childCount);
 
-            Assert.AreEqual(containerGameObject.transform.childCount, 2);
+            containerView.DataSource = null;
+            Assert.AreEqual(0, containerGameObject.transform.childCount);
         }
-
-        //// A UnityTest behaves like a coroutine in PlayMode
-        //// and allows you to yield null to skip a frame in EditMode
-        //[UnityTest]
-        //public IEnumerator EditorSampleTestWithEnumeratorPasses()
-        //{
-        //    // Use the Assert class to test conditions.
-        //    // yield to skip a frame
-        //    yield return null;
-        //}
     }
 }

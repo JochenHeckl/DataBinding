@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using UnityEngine.UIElements;
-using UnityEngine;
-using UnityEditor;
 using System.IO;
+using System.Linq;
+using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     public class ViewEditorBase : UnityEditor.Editor
     {
-        internal static IDataBindingEditorDisplayText EditorDisplayText =
+        static readonly IDataBindingEditorDisplayText EditorDisplayText =
             new DataBindingEditorDisplayText();
 
         public VisualElement EditorRootElement { get; set; }
@@ -150,7 +150,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         public static IEnumerable<ElementType> MoveElementUp<ElementType>(
             IEnumerable<ElementType> sequence,
             ElementType element
-        ) where ElementType : class
+        )
+            where ElementType : class
         {
             return MoveElementDown(sequence.Reverse(), element).Reverse();
         }
@@ -158,7 +159,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         public static IEnumerable<ElementType> MoveElementDown<ElementType>(
             IEnumerable<ElementType> sequence,
             ElementType element
-        ) where ElementType : class
+        )
+            where ElementType : class
         {
             for (var elementIndex = 0; elementIndex < sequence.Count(); ++elementIndex)
             {
@@ -232,8 +234,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         public static string GuessBinding(string match, string[] pool)
         {
-            return pool
-                .Select(x => new { x, distance = match.DamerauLevenshteinDistance(x) })
+            return pool.Select(x => new { x, distance = match.DamerauLevenshteinDistance(x) })
                 .OrderBy(x => x.distance)
                 .Select(x => x.x)
                 .FirstOrDefault();

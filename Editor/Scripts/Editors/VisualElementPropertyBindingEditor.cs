@@ -292,8 +292,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
             }
 
             var targetPropertyAccess = targetVisualElement.ResolvePublicPropertyPath(
-                PathResolveOperation.SetValue,
-                binding.TargetPath
+                binding.TargetPath,
+                PathResolveOperation.SetValue
             );
 
             if (!targetPropertyAccess.Any())
