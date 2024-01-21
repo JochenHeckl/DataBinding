@@ -11,7 +11,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     public class ViewEditorBase : UnityEditor.Editor
     {
-        static readonly IDataBindingEditorDisplayText EditorDisplayText =
+        public static readonly IDataBindingEditorDisplayText EditorDisplayText =
             new DataBindingEditorDisplayText();
 
         public VisualElement EditorRootElement { get; set; }
