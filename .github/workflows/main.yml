@@ -3,34 +3,60 @@ name: Actions
 on: [push, pull_request]
 
 jobs:
-  build:
-    name: Run tests
-    runs-on: ubuntu-latest
+  run_test:
+    name: Run Databinding Tests
+
+    strategy:
+      matrix:
+        unityVersion:
+          - 2023.2.7f1
+        os:
+          -ubuntu-latest
+    
+    runs-on: ${{ matrix.os }}
+
     steps:
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          lfs: false
 
       # # Cache
-      # - uses: actions/cache@v3
+      # - uses: actions/cache@v4
       #   with:
       #     path: Library
       #     key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
       #     restore-keys: |
       #       Library-
 
+      # # Build
+      # - name: Build project
+      #   uses: game-ci/unity-builder@v4
+      #   env:
+      #     UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      #     UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      #     UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+      #   with:
+      #     targetPlatform: StandaloneLinux64
+      #     customParameters: -nographics
+
       # Test
-      - name: Unity - Test runner
-        uses: game-ci/unity-test-runner@v4.0.0            
+      - name: run tests
+        uses: game-ci/unity-test-runner@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           packageMode: true
-          unityVersion: 2023.2.1f1
+          unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+
       
-      # # Output
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: Build
-      #     path: build
+     # Output Test Artifacts
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Test results
+          path: artifacts
