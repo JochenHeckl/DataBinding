@@ -1,12 +1,12 @@
 {
     "name": "de.JochenHeckl.Unity.DataBinding.Editor.Tests",
-    "rootNamespace": "",
+    "rootNamespace": "de.JochenHeckl.Unity.DataBinding.Editor.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "de.Jochenheckl.Unity.DataBinding"
     ],
-    "includePlatforms": [
+        "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
