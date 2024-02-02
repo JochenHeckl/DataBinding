@@ -1,0 +1,42 @@
+name: Actions
+
+on: [push, pull_request]
+
+jobs:
+  run_test:
+    name: Run Tests
+
+    permissions:
+      checks: write
+
+    strategy:
+      matrix:
+        unityVersion:
+          - 2023.2.7f1
+          - 2023.1.20f1
+          - 2022.3.19f1
+          - 2021.3.34f1
+        os:
+          - ubuntu-latest
+          # - windows-latest
+    
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      # Test
+      - name: run tests
+        uses: game-ci/unity-test-runner@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          packageMode: true
+          unityVersion: ${{ matrix.unityVersion }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}

@@ -29,8 +29,11 @@
   },
   "licensesUrl": "https://raw.githubusercontent.com/JochenHeckl/DataBinding/main/LICENSE.md",
   "dependencies": {
-    "com.unity.test-framework": "1.1.11"
+    "com.unity.test-framework": "1.4.3"
   },
+  "testtables": [
+    "de.jochenheckl.unity.databinding"
+  ],
   "samples": [
     {
       "displayName": "MyFirstDataBoundView (Getting Started Tutorial)",

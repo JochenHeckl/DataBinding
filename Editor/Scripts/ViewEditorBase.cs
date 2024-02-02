@@ -11,23 +11,19 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
     public class ViewEditorBase : UnityEditor.Editor
     {
-        public static readonly IDataBindingEditorDisplayText EditorDisplayText =
+        internal static readonly IDataBindingEditorDisplayText EditorDisplayText =
             new DataBindingEditorDisplayText();
 
-        public VisualElement EditorRootElement { get; set; }
-        public Type[] ValidDataSources { get; set; }
+        protected VisualElement EditorRootElement { get; private set; }
 
-        public ViewEditorBase() { }
+        protected Type[] ValidDataSources { get; private set; }
 
         public virtual void OnEnable()
         {
-            if (ValidDataSources == null)
-            {
-                ValidDataSources = GetValidDataSourceTypes();
-            }
+            ValidDataSources ??= GetValidDataSourceTypes();
         }
 
-        public void InitDatabindingEditorRootElement()
+        protected void InitDatabindingEditorRootElement()
         {
             if (EditorRootElement == null)
             {
@@ -50,7 +46,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             }
         }
 
-        public VisualElement MakeErrorReport(Exception exception)
+        protected static VisualElement MakeErrorReport(Exception exception)
         {
             var errorReport = new VisualElement();
 
@@ -76,7 +72,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             Application.OpenURL(link);
         }
 
-        public VisualElement MakeDataSourceSection(
+        protected VisualElement MakeDataSourceSection(
             SerializableType currentDataSourceType,
             Action<Type> handleDataSourceTypeChanged
         )
@@ -103,11 +99,11 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             }
         }
 
-        public static VisualElement MakeBindingSection<BindingType>(
+        protected static VisualElement MakeBindingSection<BindingType>(
             string sectionHeaderText,
             Action handleAddBinding,
             IEnumerable<BindingType> bindings,
-            Func<BindingType, VisualElement> MakeEditorVisualElement
+            Func<BindingType, VisualElement> makeEditorVisualElement
         )
         {
             var sectionRoot = new VisualElement();
@@ -120,8 +116,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             headerLabel.AddToClassList(DataBindingEditorStyles.bindingGroupLabel);
             header.Add(headerLabel);
 
-            var addBindingButton = new Button(handleAddBinding);
-            addBindingButton.text = "Add Binding";
+            var addBindingButton = new Button(handleAddBinding) { text = "Add Binding" };
+
             addBindingButton.AddToClassList(DataBindingEditorStyles.addBindingActionButton);
             header.Add(addBindingButton);
 
@@ -130,16 +126,14 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             var bindingsGroup = new VisualElement();
             bindingsGroup.AddToClassList(DataBindingEditorStyles.bindingGroupList);
 
-            if (!bindings.Any())
+            foreach (var binding in bindings)
             {
-                bindingsGroup.Add(new Label($"There are no bindings in this secion."));
+                bindingsGroup.Add(makeEditorVisualElement(binding));
             }
-            else
+
+            if (!bindingsGroup.Children().Any())
             {
-                foreach (var binding in bindings)
-                {
-                    bindingsGroup.Add(MakeEditorVisualElement(binding));
-                }
+                bindingsGroup.Add(new Label($"There are no bindings in this section."));
             }
 
             sectionRoot.Add(bindingsGroup);
@@ -147,7 +141,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             return sectionRoot;
         }
 
-        public static IEnumerable<ElementType> MoveElementUp<ElementType>(
+        protected static IEnumerable<ElementType> MoveElementUp<ElementType>(
             IEnumerable<ElementType> sequence,
             ElementType element
         )
@@ -156,44 +150,53 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             return MoveElementDown(sequence.Reverse(), element).Reverse();
         }
 
-        public static IEnumerable<ElementType> MoveElementDown<ElementType>(
+        protected static IEnumerable<ElementType> MoveElementDown<ElementType>(
             IEnumerable<ElementType> sequence,
             ElementType element
         )
             where ElementType : class
         {
-            for (var elementIndex = 0; elementIndex < sequence.Count(); ++elementIndex)
+            if (sequence == null)
             {
-                var currentElement = sequence.ElementAt(elementIndex);
+                throw new ArgumentNullException(nameof(sequence));
+            }
 
-                if (currentElement == element)
+            var rearrangedSequence = sequence as ElementType[] ?? sequence.ToArray();
+
+            for (var elementIndex = 0; elementIndex < rearrangedSequence.Length; ++elementIndex)
+            {
+                if (rearrangedSequence[elementIndex] == element)
                 {
-                    if (currentElement != sequence.Last())
+                    if (elementIndex < (rearrangedSequence.Length - 1))
                     {
-                        yield return sequence.ElementAt(elementIndex + 1);
-                        ++elementIndex;
+                        (rearrangedSequence[elementIndex], rearrangedSequence[elementIndex + 1]) = (
+                            rearrangedSequence[elementIndex + 1],
+                            rearrangedSequence[elementIndex]
+                        );
+
+                        break;
                     }
                 }
-
-                yield return currentElement;
             }
+
+            return rearrangedSequence;
         }
 
-        public static Type[] GetValidDataSourceTypes()
+        private static Type[] GetValidDataSourceTypes()
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            Func<Type, bool> dataSourceFilterFunc = (x) =>
-                !x.IsAbstract
-                && !x.IsGenericType
-                && !x.IsInterface
-                && x.InheritsOrImplements(typeof(INotifyDataSourceChanged));
 
             return assemblies
                 .Where(x => !x.IsDynamic)
                 .SelectMany(x => x.ExportedTypes)
-                .Where(dataSourceFilterFunc)
+                .Where(DataSourceFilterFunc)
                 .ToArray();
+
+            bool DataSourceFilterFunc(Type x) =>
+                !x.IsAbstract
+                && !x.IsGenericType
+                && !x.IsInterface
+                && x.InheritsOrImplements(typeof(INotifyDataSourceChanged));
         }
 
         private VisualElement MakeDataSourceDropDown(
@@ -223,7 +226,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             return dataSourceDropDown;
         }
 
-        public static Type GuessDataSourceTypeName(string viewName, Type[] validDataSources)
+        protected static Type GuessDataSourceTypeName(string viewName, Type[] validDataSources)
         {
             return validDataSources
                 .Select(x => new { x, distance = viewName.DamerauLevenshteinDistance(x.Name) })
@@ -259,12 +262,11 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
         {
             var dataSourceSourceFile = FindDataSourceSourceFile(dataSourceType.Type);
 
-            var button = new UnityEngine.UIElements.Button(
-                () => OpenDataSourceEditor(dataSourceSourceFile)
-            );
-
-            button.text = EditorDisplayText.EditSourceText;
-            button.tooltip = EditorDisplayText.NoSourceCodeAvailableToolTip;
+            var button = new Button(() => OpenDataSourceEditor(dataSourceSourceFile))
+            {
+                text = EditorDisplayText.EditSourceText,
+                tooltip = EditorDisplayText.NoSourceCodeAvailableToolTip
+            };
 
             button.SetEnabled(dataSourceSourceFile != null);
             return button;
