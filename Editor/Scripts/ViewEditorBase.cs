@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine.UIElements;
 using UnityEngine;
 using UnityEditor;
-using static UnityEngine.UI.InputField;
 using System.IO;
 using UnityEditor.UIElements;
 
