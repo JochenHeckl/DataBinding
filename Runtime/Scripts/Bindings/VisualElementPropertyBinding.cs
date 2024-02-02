@@ -82,7 +82,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Experimental
             if ((_dataSource != null) && !string.IsNullOrEmpty(_sourcePath))
             {
                 _dataSourcePropertyAccessors = _dataSource
-                    .ResolvePublicPropertyPath(PathResolveOperation.GetValue, SourcePath)
+                    .ResolvePublicPropertyPath(SourcePath, PathResolveOperation.GetValue)
                     .ToArray();
             }
             else
@@ -101,7 +101,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Experimental
             {
                 _targetInstance = RootVisualElement.Q(_targetVisualElementQuery);
                 _targetPropertyAccessors = _targetInstance
-                    .ResolvePublicPropertyPath(PathResolveOperation.SetValue, TargetPath)
+                    .ResolvePublicPropertyPath(TargetPath, PathResolveOperation.SetValue)
                     .ToArray();
             }
             else

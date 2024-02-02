@@ -1,22 +1,13 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-
-using UnityEditor;
-using UnityEditor.PackageManager;
-
-using UnityEngine;
+﻿using UnityEditor;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor
 {
-    public static class DatabindingEditorMenu
+    public static class DataBindingEditorMenu
     {
         [MenuItem("Data Binding/About")]
         public static void About()
         {
-            EditorUtility.DisplayDialog("Data Binding", $"Thank you for using DataBinding.", "OK");
+            EditorUtility.DisplayDialog("Data Binding", "Thank you for using DataBinding.", "OK");
         }
     }
 }

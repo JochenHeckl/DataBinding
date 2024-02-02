@@ -1,9 +1,6 @@
 using System;
 using System.Linq;
-
 using UnityEditor;
-using UnityEditor.Graphs;
-
 using UnityEngine.UIElements;
 
 namespace de.JochenHeckl.Unity.DataBinding.Editor
@@ -80,7 +77,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 view.dataSourceType.Type,
                 binding,
                 StoreAndUpdateView,
-                binding => binding.showExpanded,
+                x => x.showExpanded,
                 HandleMoveBindingUp,
                 HandleMoveBindingDown,
                 HandleTogglePropertyExpansion,
@@ -150,7 +147,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 view.dataSourceType.Type,
                 binding,
                 StoreAndUpdateView,
-                binding => binding.showExpanded,
+                x => x.showExpanded,
                 HandleMoveBindingUp,
                 HandleMoveBindingDown,
                 HandleTogglePropertyExpansion,
@@ -160,14 +157,19 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void HandleMoveBindingUp(ContainerPropertyBinding binding)
         {
-            MoveElementUp(view.containerPropertyBindings, binding);
+            view.containerPropertyBindings = MoveElementUp(view.containerPropertyBindings, binding)
+                .ToArray();
 
             StoreAndUpdateView();
         }
 
         private void HandleMoveBindingDown(ContainerPropertyBinding binding)
         {
-            MoveElementDown(view.containerPropertyBindings, binding);
+            view.containerPropertyBindings = MoveElementDown(
+                    view.containerPropertyBindings,
+                    binding
+                )
+                .ToArray();
 
             StoreAndUpdateView();
         }

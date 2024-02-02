@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Numerics;
 using System.Reflection;
-
 using UnityEditor.UIElements;
-
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -28,7 +25,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             Action<ComponentPropertyBinding> moveBindingDown,
             Action<ComponentPropertyBinding> togglePropertyExpansion,
             Action<ComponentPropertyBinding> removeBinding
-        ) : base(displayText, binding)
+        )
+            : base(displayText, binding)
         {
             this.dataSourceType = dataSourceType;
             this.bindingChanged = bindingChanged;
@@ -106,7 +104,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                     DataBindingEditorStyles.bindingProperty
                 );
                 targetObjectSelectionElement.allowSceneObjects = true;
-                targetObjectSelectionElement.objectType = typeof(UnityEngine.GameObject);
+                targetObjectSelectionElement.objectType = typeof(GameObject);
                 targetObjectSelectionElement.value = Binding.TargetGameObject;
 
                 targetObjectSelectionElement.RegisterValueChangedCallback(
@@ -136,7 +134,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 Add(targetPathElement);
 
                 UpdateTargetComponentChoices();
-                UpdateTargetPathChoises(targetPathElement);
+                UpdateTargetPathChoices(targetPathElement);
             }
         }
 
@@ -167,15 +165,19 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             );
 
             var moveBindingUpButton = new Button(
-                moveBindingUp != null ? () => moveBindingUp(Binding) : (Action)null
-            );
-            moveBindingUpButton.text = DisplayText.MoveUpButtonText;
+                moveBindingUp != null ? () => moveBindingUp(Binding) : null
+            )
+            {
+                text = DisplayText.MoveUpButtonText
+            };
             AddHeaderButton(buttonContainer, moveBindingUpButton);
 
             var moveBindingDownButton = new Button(
-                moveBindingDown != null ? () => moveBindingDown(Binding) : (Action)null
-            );
-            moveBindingDownButton.text = DisplayText.MoveDownButtonText;
+                moveBindingDown != null ? () => moveBindingDown(Binding) : null
+            )
+            {
+                text = DisplayText.MoveDownButtonText
+            };
             AddHeaderButton(buttonContainer, moveBindingDownButton);
 
             var toggleBindingExpansionButton = new Button(() => togglePropertyExpansion(Binding));
@@ -189,8 +191,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
             AddHeaderButton(buttonContainer, toggleBindingExpansionButton);
 
-            var removeBindingButton = new Button(() => removeBinding(Binding));
-            removeBindingButton.text = "✕";
+            var removeBindingButton = new Button(() => removeBinding(Binding)) { text = "✕" };
             AddHeaderButton(buttonContainer, removeBindingButton);
 
             // if (renderCondensed || bindingState != ComponentPropertyBindingState.Complete)
@@ -221,7 +222,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 return errorLabel;
             }
 
-            if (bindingState == ComponentPropertyBindingState.TargetUnbound)
+            if (bindingState == ComponentPropertyBindingState.Unassignable)
             {
                 var errorLabel = new Label(DisplayText.BindingUnassignableMessageText);
                 errorLabel.AddToClassList(DataBindingEditorStyles.ErrorText);
@@ -239,7 +240,8 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             var sourceProperty = bindableDataSourceProperties.Single(
                 x => x.Name == Binding.SourcePath
             );
-            var friendlySourceTypeName = sourceProperty.PropertyType
+            var friendlySourceTypeName = sourceProperty
+                .PropertyType
                 .GetTypeInfo()
                 .GetFriendlyName();
 
@@ -265,10 +267,14 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
                 return ComponentPropertyBindingState.SourceUnbound;
             }
 
-            var targetProperty = Binding.TargetComponent
-                ?.GetType()
-                .GetProperties()
-                .FirstOrDefault(x => x.Name == binding.TargetPath);
+            var targetProperty =
+                Binding.TargetComponent != null
+                    ? Binding
+                        .TargetComponent
+                        .GetType()
+                        .GetProperties()
+                        .FirstOrDefault(x => x.Name == binding.TargetPath)
+                    : null;
 
             if (targetProperty == null)
             {
@@ -303,11 +309,17 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void HandleTargetComponentChanged(ChangeEvent<string> changeEvent)
         {
-            Binding.TargetComponent = Binding.TargetGameObject
-                ?.GetComponentsInChildren<Component>()
-                .FirstOrDefault((x) => MakeTargetComponentDisplayValue(x) == changeEvent.newValue);
+            Binding.TargetComponent =
+                Binding.TargetGameObject != null
+                    ? Binding
+                        .TargetGameObject
+                        .GetComponentsInChildren<Component>()
+                        .FirstOrDefault(
+                            (x) => MakeTargetComponentDisplayValue(x) == changeEvent.newValue
+                        )
+                    : null;
 
-            UpdateTargetPathChoises(targetComponentSelectionDropdownField);
+            UpdateTargetPathChoices(targetComponentSelectionDropdownField);
 
             MarkDirtyRepaint();
             bindingChanged();
@@ -323,12 +335,11 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
 
         private void UpdateTargetComponentChoices()
         {
-            var componentsOfGameObject = Array.Empty<Component>();
-
             if (Binding.TargetGameObject != null)
             {
-                componentsOfGameObject =
-                    Binding.TargetGameObject.GetComponentsInChildren<Component>(true);
+                var componentsOfGameObject = Binding
+                    .TargetGameObject
+                    .GetComponentsInChildren<Component>(true);
 
                 targetComponentSelectionDropdownField.choices = componentsOfGameObject
                     .Select(MakeTargetComponentDisplayValue)
@@ -339,7 +350,7 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             }
         }
 
-        private void UpdateTargetPathChoises(DropdownField targetPathDropdownField)
+        private void UpdateTargetPathChoices(DropdownField targetPathDropdownField)
         {
             var sourceProperty = Array.Find(
                 dataSourceType.GetProperties(),
@@ -349,19 +360,15 @@ namespace de.JochenHeckl.Unity.DataBinding.Editor
             if ((sourceProperty != null) && (Binding.TargetComponent != null))
             {
                 var targetProperties = Binding.TargetComponent.GetType().GetProperties();
-                var targetProperty = Array.Find(
-                    targetProperties,
-                    (x) => x.Name == Binding.TargetPath
-                );
 
                 targetPathDropdownField.choices = targetProperties
                     .Where(x => x.PropertyType.IsAssignableFrom(sourceProperty.PropertyType))
                     .Select(x => x.Name)
                     .ToList();
 
-                targetPathDropdownField.value = targetPathDropdownField.choices.Contains(
-                    Binding.TargetPath
-                )
+                targetPathDropdownField.value = targetPathDropdownField
+                    .choices
+                    .Contains(Binding.TargetPath)
                     ? Binding.TargetPath
                     : null;
             }

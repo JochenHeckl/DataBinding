@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-
 using UnityEngine;
 
 namespace de.JochenHeckl.Unity.DataBinding
@@ -9,40 +8,41 @@ namespace de.JochenHeckl.Unity.DataBinding
     [Serializable]
     public class ComponentPropertyBinding
     {
-
 #if UNITY_EDITOR
-        [SerializeField] public bool showExpanded;
+        [SerializeField]
+        public bool showExpanded;
 #endif
 
-        [SerializeField] private GameObject targetGameObject;
-        [SerializeField] private Component targetComponent;
-        [SerializeField] private string sourcePath;
-        [SerializeField] private string targetPath;
+        [SerializeField]
+        private GameObject targetGameObject;
 
-        private object _dataSource;
+        [SerializeField]
+        private Component targetComponent;
 
-        private MethodInfo[] _dataSourcePropertyAccessors;
-        private MethodInfo[] _targetPropertyAccessors;
+        [SerializeField]
+        private string sourcePath;
+
+        [SerializeField]
+        private string targetPath;
+
+        private object dataSource;
+
+        private MethodInfo[] dataSourcePropertyAccessors = Array.Empty<MethodInfo>();
+        private MethodInfo[] targetPropertyAccessors = Array.Empty<MethodInfo>();
 
         public object DataSource
         {
-            get
-            {
-                return _dataSource;
-            }
+            get => dataSource;
             set
             {
-                _dataSource = value;
+                dataSource = value;
                 BindSource();
             }
         }
 
         public string SourcePath
         {
-            get
-            {
-                return sourcePath;
-            }
+            get => sourcePath;
             set
             {
                 sourcePath = value;
@@ -52,10 +52,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public GameObject TargetGameObject
         {
-            get
-            {
-                return targetGameObject;
-            }
+            get => targetGameObject;
             set
             {
                 targetGameObject = value;
@@ -66,10 +63,7 @@ namespace de.JochenHeckl.Unity.DataBinding
         }
         public Component TargetComponent
         {
-            get
-            {
-                return targetComponent;
-            }
+            get => targetComponent;
             set
             {
                 targetComponent = value;
@@ -79,10 +73,7 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         public string TargetPath
         {
-            get
-            {
-                return targetPath;
-            }
+            get => targetPath;
             set
             {
                 targetPath = value;
@@ -92,49 +83,51 @@ namespace de.JochenHeckl.Unity.DataBinding
 
         private void BindSource()
         {
-            if ( _dataSource != null && !string.IsNullOrEmpty( sourcePath ) )
+            if (dataSource != null && !String.IsNullOrEmpty(sourcePath))
             {
-                _dataSourcePropertyAccessors = _dataSource
-                    .ResolvePublicPropertyPath( PathResolveOperation.GetValue, SourcePath )
+                dataSourcePropertyAccessors = dataSource
+                    .ResolvePublicPropertyPath(SourcePath, PathResolveOperation.GetValue)
                     .ToArray();
             }
             else
             {
-                _dataSourcePropertyAccessors = Array.Empty<MethodInfo>();
+                dataSourcePropertyAccessors = Array.Empty<MethodInfo>();
             }
         }
 
         private void BindTarget()
         {
-            if ( targetComponent != null && !string.IsNullOrEmpty( targetPath ) )
+            if (targetComponent != null && !String.IsNullOrEmpty(targetPath))
             {
-                _targetPropertyAccessors = targetComponent
-                    .ResolvePublicPropertyPath( PathResolveOperation.SetValue, targetPath )
+                targetPropertyAccessors = targetComponent
+                    .ResolvePublicPropertyPath(targetPath, PathResolveOperation.SetValue)
                     .ToArray();
             }
             else
             {
-                _targetPropertyAccessors = Array.Empty<MethodInfo>();
+                targetPropertyAccessors = Array.Empty<MethodInfo>();
             }
         }
 
         public void UpdateBinding()
         {
-            if ( _dataSourcePropertyAccessors == null )
+            if (dataSourcePropertyAccessors.Length == 0)
             {
                 return;
             }
 
-            if ( _targetPropertyAccessors == null )
+            if (targetPropertyAccessors.Length == 0)
             {
                 BindTarget();
             }
 
-            if ( _dataSourcePropertyAccessors.Any() && _targetPropertyAccessors.Any() )
+            if (targetPropertyAccessors.Length == 0)
             {
-                var value = _dataSourcePropertyAccessors.InvokeGetOperation( _dataSource );
-                _targetPropertyAccessors.InvokeSetOperation( targetComponent, value );
+                return;
             }
+
+            var value = dataSourcePropertyAccessors.InvokeGetAccessChain(dataSource);
+            targetPropertyAccessors.InvokeSetAccessChain(targetComponent, value);
         }
     }
 }
