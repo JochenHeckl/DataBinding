@@ -2,23 +2,21 @@
     "name": "de.JochenHeckl.Unity.DataBinding.Editor.Tests",
     "rootNamespace": "de.JochenHeckl.Unity.DataBinding.Editor.Tests",
     "references": [
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "de.Jochenheckl.Unity.DataBinding"
+        "de.Jochenheckl.Unity.DataBinding",
+        "de.Jochenheckl.Unity.DataBinding.Editor"
     ],
-        "includePlatforms": [
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
-    "precompiledReferences": [
-        "nunit.framework.dll"
-    ],
+    "precompiledReferences": [],
     "autoReferenced": false,
-    "defineConstraints": [
-        "UNITY_INCLUDE_TESTS"
-    ],
+    "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
 }
