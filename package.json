@@ -1,9 +1,9 @@
 {
-  "name": "de.jochenheckl.unity.databinding",
+  "name": "ic.databinding",
   "displayName": "DataBinding",
-  "version": "2.1.2",
+  "version": "3.0.0",
   "unity": "2021.2",
-  "description": "This package brings DataBinding to unity game objects.\n\nExpose a ViewModel and bind it to your user interface to keep you application code separate and clean.\n\nMake even the largest projects structured, streamlined and easy to maintain.",
+  "description": "DataBinding is a method of connecting a data model with user interface components, allowing changes in one to automatically reflect in the other.\n\nThis package supplies the means that will enable you to implement declarative user interfaces (== user interfaces that are a function of the underlying data that defines it). It's like WPF for Unity Game Objects.",
   "keywords": [
     "Data Binding",
     "DataBinding",
@@ -32,7 +32,7 @@
     "com.unity.test-framework": "1.4.3"
   },
   "testtables": [
-    "de.jochenheckl.unity.databinding"
+    "IC.databinding"
   ],
   "samples": [
     {
@@ -46,9 +46,9 @@
       "path": "Samples~/A look at ContainerBindings - Tutorial"
     },
     {
-      "displayName": "A look at ContainerBindings",
+      "displayName": "A look at ContainerBindings - Finished",
       "description": "The finished project you will end up with after completing the step by step tutorial.",
-      "path": "Samples~/A look at ContainerBindings"
+      "path": "Samples~/A look at ContainerBindings - Finished"
     },
     {
       "displayName": "How to react to user input - Tutorial",
@@ -56,9 +56,9 @@
       "path": "Samples~/How to react to user input - Tutorial"
     },
     {
-      "displayName": "How to react to user input",
+      "displayName": "How to react to user input - Finished",
       "description": "The finished project you will end up with after completing the step by step tutorial.",
-      "path": "Samples~/How to react to user input"
+      "path": "Samples~/How to react to user input - Finished"
     }
   ]
 }

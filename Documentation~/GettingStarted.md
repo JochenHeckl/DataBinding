@@ -37,7 +37,7 @@
   <summary>Show code</summary>
 
   ```csharp
-  using de.JochenHeckl.Unity.DataBinding;
+  using IC.DataBinding;
   using UnityEngine;
 
   public class CubeViewDataSource : DataSourceBase<CubeViewDataSource>
@@ -99,7 +99,7 @@
   <summary>Show code</summary>
 
   ```csharp
-  using de.JochenHeckl.Unity.DataBinding;
+  using IC.DataBinding;
   using UnityEngine;
 
   /// This is a simple bootstrapping behaviour.

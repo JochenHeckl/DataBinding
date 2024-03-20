@@ -1,0 +1,19 @@
+{
+    "name": "IC.DataBinding.Tests",
+    "rootNamespace": "IC.DataBinding.Tests",
+    "references": [
+        "IC.DataBinding"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],    
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

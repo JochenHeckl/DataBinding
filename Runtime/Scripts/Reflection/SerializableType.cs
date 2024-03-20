@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace de.JochenHeckl.Unity.DataBinding
+namespace IC.DataBinding
 {
     public class TypeFilterAttribute : PropertyAttribute
     {

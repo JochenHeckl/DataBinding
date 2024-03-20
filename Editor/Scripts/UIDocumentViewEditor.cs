@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using de.JochenHeckl.Unity.DataBinding.Editor;
+using IC.DataBinding.Editor;
 using UnityEditor;
 using UnityEngine.UIElements;
 
-namespace de.JochenHeckl.Unity.DataBinding.Experimental.Editor
+namespace IC.DataBinding.Experimental.Editor
 {
     [CustomEditor(typeof(UIDocumentView), true)]
     public class UIDocumentViewEditor : ViewEditorBase

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace de.JochenHeckl.Unity.DataBinding.Editor.Tests
+namespace IC.DataBinding.Editor.Tests
 {
     class EditorDataSourceTest
     {

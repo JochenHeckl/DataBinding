@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace de.JochenHeckl.Unity.DataBinding.Editor
+namespace IC.DataBinding.Editor
 {
     public static class DataBindingEditorMenu
     {

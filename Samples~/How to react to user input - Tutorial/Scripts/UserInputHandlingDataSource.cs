@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using static UnityEngine.UI.Dropdown;
 
-namespace de.JochenHeckl.Unity.DataBinding.Example
+namespace IC.DataBinding.Example
 {
     public class UserInputHandlingDataSource
         : DataSourceBase<UserInputHandlingDataSource>
