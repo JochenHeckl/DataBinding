@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace de.JochenHeckl.Unity.DataBinding.Examples.GettingStarted
+namespace IC.DataBinding.Examples.GettingStarted
 {
     public class DynamicMaterialColor : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 
 ### What is Unity DataBinding?
 
-Databinding is a method of connecting a data model with user interface components, allowing changes in one to automatically reflect in the other.
+DataBinding is a method of connecting a data model with user interface components, allowing changes in one to automatically reflect in the other.
 
 This package supplies the means that will enable you to implement declarative user interfaces (== user interfaces that are a function of the underlying data that defines it). It's like WPF for Unity Game Objects. 
 

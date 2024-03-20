@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace de.JochenHeckl.Unity.DataBinding
+namespace IC.DataBinding
 {
     [Serializable]
     public class ComponentPropertyBinding

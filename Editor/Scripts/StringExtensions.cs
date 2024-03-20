@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace de.JochenHeckl
+namespace IC.DataBinding
 {
     /// <summary>
     /// This implementation is based on (Damerau–Levenshtein distance)[https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance]

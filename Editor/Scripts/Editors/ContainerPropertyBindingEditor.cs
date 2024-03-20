@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 using UnityEditor.UIElements;
+
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace de.JochenHeckl.Unity.DataBinding.Editor
+namespace IC.DataBinding.Editor
 {
     internal class ContainerPropertyBindingEditor : BindingEditor<ContainerPropertyBinding>
     {

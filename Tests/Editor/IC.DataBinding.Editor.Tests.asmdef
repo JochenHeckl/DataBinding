@@ -1,0 +1,22 @@
+{
+    "name": "IC.DataBinding.Editor.Tests",
+    "rootNamespace": "IC.DataBinding.Editor.Tests",
+    "references": [
+        "IC.DataBinding",
+        "IC.DataBinding.Editor"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine.UIElements;
 
-namespace de.JochenHeckl.Unity.DataBinding.Editor
+namespace IC.DataBinding.Editor
 {
     [CustomEditor(typeof(View), true)]
     public class ViewEditor : ViewEditorBase

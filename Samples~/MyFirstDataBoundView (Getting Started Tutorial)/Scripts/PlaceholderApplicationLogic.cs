@@ -2,7 +2,7 @@ using System.Linq;
 
 using UnityEngine;
 
-namespace de.JochenHeckl.Unity.DataBinding.Examples.GettingStarted
+namespace IC.DataBinding.Examples.GettingStarted
 {
     /// <summary>
     /// This class is here as a replacement for whatever

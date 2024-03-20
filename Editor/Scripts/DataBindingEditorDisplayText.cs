@@ -1,4 +1,4 @@
-﻿namespace de.JochenHeckl.Unity.DataBinding.Editor
+﻿namespace IC.DataBinding.Editor
 {
     internal class DataBindingEditorDisplayText : IDataBindingEditorDisplayText
     {

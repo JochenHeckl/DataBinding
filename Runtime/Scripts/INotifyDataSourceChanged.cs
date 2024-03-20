@@ -1,6 +1,6 @@
 using System;
 
-namespace de.JochenHeckl.Unity.DataBinding
+namespace IC.DataBinding
 {
     public interface INotifyDataSourceChanged
 	{

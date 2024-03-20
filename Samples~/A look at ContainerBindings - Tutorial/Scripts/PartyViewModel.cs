@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace de.JochenHeckl.Unity.DataBinding.Examples.ContainerBindings.Tutorial
+namespace IC.DataBinding.Examples.ContainerBindings.Tutorial
 {
     public class PartyViewModel : DataSourceBase<PartyViewModel>
     {

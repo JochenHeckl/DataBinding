@@ -1,6 +1,6 @@
 using System;
 
-namespace de.JochenHeckl.Unity.DataBinding
+namespace IC.DataBinding
 {
     public class DataSourceBase<DataSourceType> : INotifyDataSourceChanged
 		where DataSourceType : DataSourceBase<DataSourceType>
