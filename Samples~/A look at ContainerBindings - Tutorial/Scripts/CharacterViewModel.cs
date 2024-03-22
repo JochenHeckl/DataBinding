@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IC.DataBinding.Examples.ContainerBindings.Tutorial
+namespace JH.DataBinding.Examples.ContainerBindings.Tutorial
 {
     public class CharacterViewModel : DataSourceBase<CharacterViewModel>
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace IC.DataBinding
+namespace JH.DataBinding
 {
     [Serializable]
     public class ContainerPropertyBinding

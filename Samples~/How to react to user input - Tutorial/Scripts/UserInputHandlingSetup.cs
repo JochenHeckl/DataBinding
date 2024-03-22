@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 using static System.Net.Mime.MediaTypeNames;
 
-namespace IC.DataBinding.Example.UserInputHandling.Tutorial
+namespace JH.DataBinding.Example.UserInputHandling.Tutorial
 {
     public class UserInputHandlingSetup : MonoBehaviour
     {

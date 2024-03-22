@@ -1,4 +1,4 @@
-﻿namespace IC.DataBinding.Editor
+﻿namespace JH.DataBinding.Editor
 {
     internal enum ComponentPropertyBindingState
     {

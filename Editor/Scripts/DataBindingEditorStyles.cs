@@ -1,12 +1,12 @@
 ﻿using UnityEditor;
 using UnityEngine.UIElements;
 
-namespace IC.DataBinding.Editor
+namespace JH.DataBinding.Editor
 {
     public static class DataBindingEditorStyles
     {
         private static readonly string _viewEditorStyleSheetFile =
-            "Packages/IC.DataBinding/Editor/UI/DataBinding.uss";
+            "Packages/JH.DataBinding/Editor/UI/DataBinding.uss";
 
         private static StyleSheet _sharedStyleSheetAsset;
         public const string viewEditorClassName = "viewEditor";

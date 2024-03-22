@@ -1,6 +1,6 @@
 using System;
 
-namespace IC.DataBinding
+namespace JH.DataBinding
 {
     public interface INotifyDataSourceChanged
 	{

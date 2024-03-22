@@ -1,4 +1,4 @@
-﻿namespace IC.DataBinding.Examples.ContainerBindings
+﻿namespace JH.DataBinding.Examples.ContainerBindings
 {
     public class AttributeViewModel : DataSourceBase<AttributeViewModel>
     {

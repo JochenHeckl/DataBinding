@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace IC.DataBinding
+namespace JH.DataBinding
 {
     public enum PathResolveOperation
     {

@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace IC.DataBinding.Examples.ContainerBindings
+namespace JH.DataBinding.Examples.ContainerBindings
 {
     public class Bootstrap : MonoBehaviour
     {

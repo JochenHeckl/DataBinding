@@ -1,8 +1,8 @@
 {
-    "name": "IC.DataBinding.Tests",
-    "rootNamespace": "IC.DataBinding.Tests",
+    "name": "JH.DataBinding.Tests",
+    "rootNamespace": "JH.DataBinding.Tests",
     "references": [
-        "IC.DataBinding"
+        "JH.DataBinding"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

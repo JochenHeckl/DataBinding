@@ -26,7 +26,7 @@ We assume you completed the "Getting Started" tutorial and have a basic understa
     ```csharp
     using System.Collections.Generic;
 
-    namespace IC.DataBinding.Examples.ContainerBindings
+    namespace JH.DataBinding.Examples.ContainerBindings
     {
         public class PartyViewModel : DataSourceBase<PartyViewModel>
         {

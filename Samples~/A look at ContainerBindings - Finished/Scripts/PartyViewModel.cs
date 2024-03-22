@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace IC.DataBinding.Examples.ContainerBindings
+namespace JH.DataBinding.Examples.ContainerBindings
 {
     public class PartyViewModel : DataSourceBase<PartyViewModel>
     {

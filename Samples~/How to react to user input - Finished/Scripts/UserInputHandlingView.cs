@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IC.DataBinding.Example.UserInputHandling
+namespace JH.DataBinding.Example.UserInputHandling
 {
     public class UserInputHandlingView : View
     {
