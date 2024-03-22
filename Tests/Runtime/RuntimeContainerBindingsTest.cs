@@ -7,7 +7,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace IC.DataBinding.Tests
+namespace JH.DataBinding.Tests
 {
     internal class RuntimeContainerBindingsTest
     {

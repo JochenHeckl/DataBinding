@@ -29,7 +29,7 @@ We assume you completed the ["Getting Started" tutorial](../README.md)  and have
     using System.Collections.Generic;
     using static UnityEngine.UI.Dropdown;
     
-    namespace IC.DataBinding.Example
+    namespace JH.DataBinding.Example
     {
         public class UserInputHandlingDataSource: DataSourceBase<UserInputHandlingDataSource>
         {
@@ -66,7 +66,7 @@ We assume you completed the ["Getting Started" tutorial](../README.md)  and have
 
     using static System.Net.Mime.MediaTypeNames;
 
-    namespace IC.DataBinding.Example
+    namespace JH.DataBinding.Example
     {
         public class UserInputHandlingSetup : MonoBehaviour
         {
@@ -158,7 +158,7 @@ We assume you completed the ["Getting Started" tutorial](../README.md)  and have
   ```csharp
     using System;
 
-    namespace IC.DataBinding.Example
+    namespace JH.DataBinding.Example
     {
         public class UserInputHandlingView : View
         {

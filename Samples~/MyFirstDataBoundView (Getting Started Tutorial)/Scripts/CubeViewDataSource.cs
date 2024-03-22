@@ -2,7 +2,7 @@ using System;
 
 using UnityEngine;
 
-namespace IC.DataBinding.Examples.GettingStarted
+namespace JH.DataBinding.Examples.GettingStarted
 {
     public class CubeViewDataSource : DataSourceBase<CubeViewDataSource>
     {

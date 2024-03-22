@@ -5,7 +5,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace IC.DataBinding.Editor
+namespace JH.DataBinding.Editor
 {
     internal class ComponentPropertyBindingEditor : BindingEditor<ComponentPropertyBinding>
     {

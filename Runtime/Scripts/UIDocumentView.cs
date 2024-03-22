@@ -4,7 +4,7 @@ using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace IC.DataBinding.Experimental
+namespace JH.DataBinding.Experimental
 {
     [DebuggerDisplay("UIDocumentView ({name}) : {DataSource}")]
     [RequireComponent(typeof(UIDocument))]

@@ -1,5 +1,5 @@
 {
-  "name": "ic.databinding",
+  "name": "jh.databinding",
   "displayName": "DataBinding",
   "version": "3.0.0",
   "unity": "2021.2",
@@ -32,7 +32,7 @@
     "com.unity.test-framework": "1.4.3"
   },
   "testtables": [
-    "IC.databinding"
+    "JH.databinding"
   ],
   "samples": [
     {

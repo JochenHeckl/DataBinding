@@ -1,8 +1,8 @@
-using IC.DataBinding;
+using JH.DataBinding;
 
 using UnityEngine;
 
-namespace IC.DataBinding.Examples.GettingStarted
+namespace JH.DataBinding.Examples.GettingStarted
 {
     public class MyFirstDataBoundViewSetup : MonoBehaviour
     {

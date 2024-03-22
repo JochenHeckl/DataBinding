@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using UnityEngine;
 
-namespace IC.DataBinding
+namespace JH.DataBinding
 {
     [DebuggerDisplay("View({name}) : {DataSource}")]
     public class View : MonoBehaviour

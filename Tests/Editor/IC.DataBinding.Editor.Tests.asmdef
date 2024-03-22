@@ -1,9 +1,9 @@
 {
-    "name": "IC.DataBinding.Editor.Tests",
-    "rootNamespace": "IC.DataBinding.Editor.Tests",
+    "name": "JH.DataBinding.Editor.Tests",
+    "rootNamespace": "JH.DataBinding.Editor.Tests",
     "references": [
-        "IC.DataBinding",
-        "IC.DataBinding.Editor"
+        "JH.DataBinding",
+        "JH.DataBinding.Editor"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

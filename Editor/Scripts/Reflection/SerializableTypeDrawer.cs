@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace IC.DataBinding.Editor
+namespace JH.DataBinding.Editor
 {
     public class SerializableTypeDrawer : PropertyDrawer
     {

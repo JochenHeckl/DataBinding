@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace IC.DataBinding
+namespace JH.DataBinding
 {
     [Serializable]
     public class SerializableTypes

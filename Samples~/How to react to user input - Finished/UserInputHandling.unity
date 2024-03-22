@@ -1659,7 +1659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dataSourceType:
-    assemblyQualifiedName: IC.DataBinding.Example.UserInputHandling.UserInputHandlingDataSource,
+    assemblyQualifiedName: JH.DataBinding.Example.UserInputHandling.UserInputHandlingDataSource,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   componentPropertyBindings:
   - showExpanded: 0

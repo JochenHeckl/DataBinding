@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.UIElements;
 
-namespace IC.DataBinding.Editor
+namespace JH.DataBinding.Editor
 {
     internal class BindingEditor<BindingType> : VisualElement
     {

@@ -1,6 +1,6 @@
 {
-    "name": "IC.DataBinding",
-    "rootNamespace": "IC.DataBinding",
+    "name": "JH.DataBinding",
+    "rootNamespace": "JH.DataBinding",
     "references": [
         "GUID:343deaaf83e0cee4ca978e7df0b80d21",
         "GUID:023ac9b81facd43ebbb2a6f1c6252835"
