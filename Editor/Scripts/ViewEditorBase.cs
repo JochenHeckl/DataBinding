@@ -50,16 +50,20 @@ namespace JH.DataBinding.Editor
         {
             var errorReport = new VisualElement();
 
-            var errorLabel = new Label(EditorDisplayText.EditorErrorMessageText);
-            errorLabel.AddToClassList(DataBindingEditorStyles.ErrorText);
+            var errorLabel = new TextElement();
+            errorLabel.text = EditorDisplayText.EditorErrorMessageText;
+            DataBindingEditorStyles.ErrorMessageStyle(errorLabel);
             errorReport.Add(errorLabel);
 
-            var reportBugLink = new Button(() => HandleReportError(exception));
-            errorLabel.AddToClassList(DataBindingEditorStyles.ErrorText);
-            errorLabel.Add(reportBugLink);
-
-            var message = new Label(exception.Message);
+            var message = new TextElement();
+            message.text = exception.Message;
+            DataBindingEditorStyles.ErrorMessageStyle(message);
             errorReport.Add(message);
+
+            var reportBugLink = new Button(() => HandleReportError(exception));
+            reportBugLink.text = EditorDisplayText.ReportErrorButtonText;
+            DataBindingEditorStyles.ErrorButtonStyle(reportBugLink);
+            errorReport.Add(reportBugLink);
 
             return errorReport;
         }
@@ -216,8 +220,8 @@ namespace JH.DataBinding.Editor
             dataSourceDropDown.RegisterValueChangedCallback(
                 (changeEvent) =>
                 {
-                    var newDataSourceType = ValidDataSources.FirstOrDefault(
-                        x => x.GetFriendlyName() == changeEvent.newValue
+                    var newDataSourceType = ValidDataSources.FirstOrDefault(x =>
+                        x.GetFriendlyName() == changeEvent.newValue
                     );
                     handleDataSourceTypeChanged(newDataSourceType);
                 }
@@ -299,8 +303,8 @@ namespace JH.DataBinding.Editor
                     SearchOption.AllDirectories
                 );
 
-                var sourceFile = allSourceFiles.FirstOrDefault(
-                    x => File.ReadAllText(x).Contains($"class {type.Name}")
+                var sourceFile = allSourceFiles.FirstOrDefault(x =>
+                    File.ReadAllText(x).Contains($"class {type.Name}")
                 );
 
                 var assetName = Path.GetFileNameWithoutExtension(sourceFile);

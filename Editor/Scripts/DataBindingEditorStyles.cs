@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace JH.DataBinding.Editor
@@ -44,6 +46,18 @@ namespace JH.DataBinding.Editor
 
                 return sharedStyleSheetAsset;
             }
+        }
+
+        internal static void ErrorMessageStyle(VisualElement visualElement)
+        {
+            visualElement.style.marginTop = 12;
+            visualElement.style.fontSize = 16;
+            visualElement.style.color = Color.red;
+        }
+
+        internal static void ErrorButtonStyle(VisualElement visualElement)
+        {
+            visualElement.style.alignSelf = Align.Center;
         }
     }
 }

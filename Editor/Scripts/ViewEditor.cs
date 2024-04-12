@@ -61,8 +61,10 @@ namespace JH.DataBinding.Editor
 
         private void HandleAddComponentPropertyBinding()
         {
-            view.componentPropertyBindings = view.componentPropertyBindings
-                .Append(new ComponentPropertyBinding() { DataSource = view.DataSource })
+            view.componentPropertyBindings = view
+                .componentPropertyBindings.Append(
+                    new ComponentPropertyBinding() { DataSource = view.DataSource }
+                )
                 .ToArray();
 
             StoreAndUpdateView();
@@ -112,8 +114,8 @@ namespace JH.DataBinding.Editor
 
         private void HandleRemoveBinding(ComponentPropertyBinding binding)
         {
-            view.componentPropertyBindings = view.componentPropertyBindings
-                .Where(x => x != binding)
+            view.componentPropertyBindings = view
+                .componentPropertyBindings.Where(x => x != binding)
                 .ToArray();
 
             StoreAndUpdateView();
@@ -131,8 +133,10 @@ namespace JH.DataBinding.Editor
 
         private void HandleAddContainerPropertyBinding()
         {
-            view.containerPropertyBindings = view.containerPropertyBindings
-                .Append(new ContainerPropertyBinding() { DataSource = view.DataSource })
+            view.containerPropertyBindings = view
+                .containerPropertyBindings.Append(
+                    new ContainerPropertyBinding() { DataSource = view.DataSource }
+                )
                 .ToArray();
 
             StoreAndUpdateView();
@@ -182,8 +186,8 @@ namespace JH.DataBinding.Editor
 
         private void HandleRemoveBinding(ContainerPropertyBinding binding)
         {
-            view.containerPropertyBindings = view.containerPropertyBindings
-                .Where(x => x != binding)
+            view.containerPropertyBindings = view
+                .containerPropertyBindings.Where(x => x != binding)
                 .ToArray();
 
             StoreAndUpdateView();
