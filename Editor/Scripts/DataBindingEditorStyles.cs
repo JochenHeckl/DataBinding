@@ -1,14 +1,16 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace JH.DataBinding.Editor
 {
     public static class DataBindingEditorStyles
     {
-        private static readonly string _viewEditorStyleSheetFile =
-            "Packages/JH.DataBinding/Editor/UI/DataBinding.uss";
+        private static readonly string viewEditorStyleSheetFile =
+            "Packages/de.jochenheckl.unity.databinding/Editor/UI/DataBinding.uss";
 
-        private static StyleSheet _sharedStyleSheetAsset;
+        private static StyleSheet sharedStyleSheetAsset;
         public const string viewEditorClassName = "viewEditor";
 
         public const string GenericRow = "genericRow";
@@ -16,7 +18,6 @@ namespace JH.DataBinding.Editor
         public const string SuccessText = "successText";
         public const string ErrorText = "errorText";
         public const string InfoText = "infoText";
-
 
         public const string addBindingActionButton = "addBindingActionButton";
         public const string bindingActionButton = "bindingActionButton";
@@ -36,15 +37,27 @@ namespace JH.DataBinding.Editor
         {
             get
             {
-                // if ( _sharedStyleSheetAsset == null )
+                if (sharedStyleSheetAsset == null)
                 {
-                    _sharedStyleSheetAsset = AssetDatabase.LoadAssetAtPath<StyleSheet>(
-                        _viewEditorStyleSheetFile
+                    sharedStyleSheetAsset = AssetDatabase.LoadAssetAtPath<StyleSheet>(
+                        viewEditorStyleSheetFile
                     );
                 }
 
-                return _sharedStyleSheetAsset;
+                return sharedStyleSheetAsset;
             }
+        }
+
+        internal static void ErrorMessageStyle(VisualElement visualElement)
+        {
+            visualElement.style.marginTop = 12;
+            visualElement.style.fontSize = 16;
+            visualElement.style.color = Color.red;
+        }
+
+        internal static void ErrorButtonStyle(VisualElement visualElement)
+        {
+            visualElement.style.alignSelf = Align.Center;
         }
     }
 }

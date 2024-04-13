@@ -53,5 +53,7 @@
             "Please specify an element template with a View component";
         public string ContainerPropertyBindingCondensedLabelFormat_Type_Source_Target_Template =>
             "<color=green>✔</color> <color=blue>{0}</color> <b>{1}</b> expands into <b>{2}</b> ({3})";
+
+        public string ReportErrorButtonText => "Report Error 🔗";
     }
 }
