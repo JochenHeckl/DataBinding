@@ -59,6 +59,11 @@
       "displayName": "How to react to user input - Finished",
       "description": "The finished project you will end up with after completing the step by step tutorial.",
       "path": "Samples~/How to react to user input - Finished"
+    },
+    {
+      "displayName": "EditableDropdown",
+      "description": "A simple view with an EditableDropdown.",
+      "path": "Samples~/EditableDropdown"
     }
   ]
 }
