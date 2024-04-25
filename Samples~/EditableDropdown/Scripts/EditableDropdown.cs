@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using TMPro;
+using Unity.Logging;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,7 +18,28 @@ namespace JH.DataBinding.Example.EditableDropdown
 
         public string Value
         {
-            set { inputField.text = value; }
+            set
+            {
+                Log.Debug("New Value: {Value}", value);
+
+                if (inputField.text != value)
+                {
+                    inputField.text = value;
+                }
+
+                var matchingIndex = dropdown.options.FindIndex((x) => x.text == value);
+
+                if (dropdown.value != matchingIndex)
+                {
+                    Log.Debug(
+                        "Updating dropdown value from {OldValue} to  {NewValue}.",
+                        dropdown.value,
+                        matchingIndex
+                    );
+
+                    dropdown.SetValueWithoutNotify(matchingIndex);
+                }
+            }
         }
 
         public string[] Options
