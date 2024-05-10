@@ -237,12 +237,11 @@ namespace JH.DataBinding.Editor
 
         private string MakeCondensedLabelText(ComponentPropertyBinding binding)
         {
-            var sourceProperty = bindableDataSourceProperties.Single(
-                x => x.Name == Binding.SourcePath
+            var sourceProperty = bindableDataSourceProperties.Single(x =>
+                x.Name == Binding.SourcePath
             );
             var friendlySourceTypeName = sourceProperty
-                .PropertyType
-                .GetTypeInfo()
+                .PropertyType.GetTypeInfo()
                 .GetFriendlyName();
 
             return String.Format(
@@ -258,8 +257,8 @@ namespace JH.DataBinding.Editor
             ComponentPropertyBinding binding
         )
         {
-            var sourceProperty = bindableDataSourceProperties.FirstOrDefault(
-                x => x.Name == binding.SourcePath
+            var sourceProperty = bindableDataSourceProperties.FirstOrDefault(x =>
+                x.Name == binding.SourcePath
             );
 
             if (sourceProperty == null)
@@ -270,8 +269,7 @@ namespace JH.DataBinding.Editor
             var targetProperty =
                 Binding.TargetComponent != null
                     ? Binding
-                        .TargetComponent
-                        .GetType()
+                        .TargetComponent.GetType()
                         .GetProperties()
                         .FirstOrDefault(x => x.Name == binding.TargetPath)
                     : null;
@@ -312,8 +310,7 @@ namespace JH.DataBinding.Editor
             Binding.TargetComponent =
                 Binding.TargetGameObject != null
                     ? Binding
-                        .TargetGameObject
-                        .GetComponentsInChildren<Component>()
+                        .TargetGameObject.GetComponentsInChildren<Component>()
                         .FirstOrDefault(
                             (x) => MakeTargetComponentDisplayValue(x) == changeEvent.newValue
                         )
@@ -337,9 +334,8 @@ namespace JH.DataBinding.Editor
         {
             if (Binding.TargetGameObject != null)
             {
-                var componentsOfGameObject = Binding
-                    .TargetGameObject
-                    .GetComponentsInChildren<Component>(true);
+                var componentsOfGameObject =
+                    Binding.TargetGameObject.GetComponentsInChildren<Component>(true);
 
                 targetComponentSelectionDropdownField.choices = componentsOfGameObject
                     .Select(MakeTargetComponentDisplayValue)
@@ -366,9 +362,9 @@ namespace JH.DataBinding.Editor
                     .Select(x => x.Name)
                     .ToList();
 
-                targetPathDropdownField.value = targetPathDropdownField
-                    .choices
-                    .Contains(Binding.TargetPath)
+                targetPathDropdownField.value = targetPathDropdownField.choices.Contains(
+                    Binding.TargetPath
+                )
                     ? Binding.TargetPath
                     : null;
             }
