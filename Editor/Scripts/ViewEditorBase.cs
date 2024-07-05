@@ -99,6 +99,8 @@ namespace JH.DataBinding.Editor
                     dataSource.Add(MakeOpenDataSourceButton(currentDataSourceType));
                 }
 
+                DataBindingEditorStyles.DataSourceStyle(dataSource);
+
                 return dataSource;
             }
         }

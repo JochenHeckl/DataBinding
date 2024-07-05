@@ -11,7 +11,7 @@ namespace JH.DataBinding.Editor
     {
         private DropdownField targetComponentSelectionDropdownField;
 
-        private readonly Type dataSourceType;
+        private new readonly Type dataSourceType;
         private readonly PropertyInfo[] bindableDataSourceProperties;
         private readonly Action bindingChanged;
 

@@ -48,6 +48,11 @@ namespace JH.DataBinding.Editor
             }
         }
 
+        internal static void DataSourceStyle(VisualElement visualElement)
+        {
+            visualElement.style.marginTop = 12;
+        }
+
         internal static void ErrorMessageStyle(VisualElement visualElement)
         {
             visualElement.style.marginTop = 12;
