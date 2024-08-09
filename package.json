@@ -1,7 +1,7 @@
 {
   "name": "de.jochenheckl.unity.databinding",
   "displayName": "DataBinding",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "unity": "2021.2",
   "description": "DataBinding is a method of connecting a data model with user interface components, allowing changes in one to automatically reflect in the other.\n\nThis package supplies the means that will enable you to implement declarative user interfaces (== user interfaces that are a function of the underlying data that defines it). It's like WPF for Unity Game Objects.",
   "keywords": [
@@ -64,6 +64,11 @@
       "displayName": "EditableDropdown",
       "description": "A simple view with an EditableDropdown.",
       "path": "Samples~/EditableDropdown"
+    },
+    {
+      "displayName": "GameObjectPropertyBindings",
+      "description": "A simple scene demonstrating how to bind GameObject properties.",
+      "path": "Samples~/GameObjectPropertyBindings"
     }
   ]
 }

@@ -1,0 +1,16 @@
+{
+    "name": "GameObjectPropertyBindings",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1ac1bd0cf575cfe4b8d295c36f1e0edd"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
