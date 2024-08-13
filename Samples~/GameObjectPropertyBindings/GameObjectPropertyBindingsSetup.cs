@@ -26,6 +26,7 @@ namespace JH.DataBinding.Samples.GameObjectPropertyBindings
                 dataSource.NotifyChanges(
                     (x) =>
                     {
+                        x.Name = "This name was set using DataBindings";
                         x.EnabledPostprocessing = Random.Range(0, 2) != 0;
                         x.ShowCube = Random.Range(0, 2) != 0;
                     }

@@ -574,6 +574,11 @@ MonoBehaviour:
     targetComponent: {fileID: 1160234428}
     sourcePath: EnabledPostprocessing
     targetPath: GameObjectEnabled
+  - showExpanded: 1
+    targetGameObject: {fileID: 8060529134991858869}
+    targetComponent: {fileID: 8060529134991858870}
+    sourcePath: Name
+    targetPath: GameObjectName
   containerPropertyBindings: []
 --- !u!33 &241103879053240444
 MeshFilter:
