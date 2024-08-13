@@ -6,7 +6,7 @@ namespace JH.DataBinding
 {
     public class GameObjectPropertyBindings : MonoBehaviour
     {
-        public int GameObjectName
+        public string GameObjectName
         {
             get { return gameObject.name; }
             set { gameObject.name = value; }
