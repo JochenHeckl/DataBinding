@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace JH.DataBinding.Editor
@@ -39,6 +40,7 @@ namespace JH.DataBinding.Editor
                     MakeDataSourceSection(view.dataSourceType, HandleDataSourceTypeChanged)
                 );
 
+                EditorRootElement.Add(MakeSubViews());
                 EditorRootElement.Add(MakeComponentPropertyBindings());
                 EditorRootElement.Add(MakeContainerPropertyBindings());
             }
@@ -47,6 +49,11 @@ namespace JH.DataBinding.Editor
                 EditorRootElement.Clear();
                 EditorRootElement.Add(MakeErrorReport(exception));
             }
+        }
+        
+        private VisualElement MakeSubViews()
+        {
+            return MakeSubViews(view.SubViews, o => view.SubViews = o);
         }
 
         private VisualElement MakeComponentPropertyBindings()

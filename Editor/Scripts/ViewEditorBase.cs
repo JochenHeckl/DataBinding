@@ -105,6 +105,31 @@ namespace JH.DataBinding.Editor
             }
         }
 
+        protected VisualElement MakeSubViews(
+            GameObject subVies, Action<GameObject> onValueChanged
+        )
+        {
+            var view = new VisualElement();
+            view.userData = subVies;
+            view.AddToClassList(DataBindingEditorStyles.GenericRow);
+            
+            var visualElement = new ObjectField("Sub Views")
+            {
+                objectType = typeof(GameObject),
+                value = subVies
+            };
+            visualElement.RegisterValueChangedCallback(_ =>
+            {
+                onValueChanged(visualElement.value as GameObject);
+            });
+
+            view.Add(
+                visualElement
+            );
+
+            return view;
+        }
+
         protected static VisualElement MakeBindingSection<BindingType>(
             string sectionHeaderText,
             Action handleAddBinding,

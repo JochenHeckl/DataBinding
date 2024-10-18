@@ -12,6 +12,8 @@ namespace JH.DataBinding
         public SerializableType dataSourceType;
 #endif // UNITY_EDITOR
 
+		public GameObject SubViews;
+
         [HideInInspector]
         public ComponentPropertyBinding[] componentPropertyBindings =
             Array.Empty<ComponentPropertyBinding>();
@@ -88,6 +90,16 @@ namespace JH.DataBinding
                 }
 
                 UpdateBindings();
+
+				if (SubViews != null)
+                {
+                    var subViews = SubViews.GetComponentsInChildren<View>();
+
+                    foreach (var subView in subViews)
+                    {
+                        subView.DataSource = value;
+                    }
+                }
             }
         }
 
