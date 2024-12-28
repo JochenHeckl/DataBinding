@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace JH.DataBinding.Editor
 
         public virtual void OnEnable()
         {
-            ValidDataSources ??= GetValidDataSourceTypes();
+            ValidDataSources ??= DataBindingCommonData.GetValidDataSourceTypes();
         }
 
         protected void InitDatabindingEditorRootElement()
