@@ -1,6 +1,8 @@
 name: Actions
 
-on: [push, pull_request, workflow_dispatch]
+# For now I just can not get Runtime Unittests to work with GameCI - Help appreciated.
+# on: [push, pull_request, workflow_dispatch] 
+on: [workflow_dispatch] 
 
 jobs:
   run_test:

@@ -4,9 +4,9 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace JH.DataBinding.Editor.Tests
+namespace JH.DataBinding.Tests
 {
-    class EditorDataSourceTest
+    class PlayerDataSourceTest
     {
         class TestElementTemplateDataSource : DataSourceBase<TestElementTemplateDataSource>
         {
