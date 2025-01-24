@@ -47,12 +47,24 @@ namespace JH.DataBinding.Tests
             };
 
             containerView.DataSource = testDataSource;
-            yield return new WaitForEndOfFrame();
-            Assert.AreEqual(2, containerGameObject.transform.childCount);
+
+            if (!Application.isBatchMode)
+            {
+                // WaitForEndOfFrame does throw in batch mode,
+                // so can not use it as of now.
+                yield return new WaitForEndOfFrame();
+                Assert.AreEqual(2, containerGameObject.transform.childCount);
+            }
 
             containerView.DataSource = null;
-            yield return new WaitForEndOfFrame();
-            Assert.AreEqual(0, containerGameObject.transform.childCount);
+
+            if (!Application.isBatchMode)
+            {
+                // WaitForEndOfFrame does throw in batch mode,
+                // so can not use it as of now.
+                yield return new WaitForEndOfFrame();
+                Assert.AreEqual(0, containerGameObject.transform.childCount);
+            }
         }
     }
 }

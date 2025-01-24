@@ -1,8 +1,6 @@
 name: Actions
 
-# For now I just can not get Runtime Unittests to work with GameCI - Help appreciated.
-# on: [push, pull_request, workflow_dispatch] 
-on: [workflow_dispatch] 
+on: [push, pull_request, workflow_dispatch] 
 
 jobs:
   run_test:
@@ -20,6 +18,11 @@ jobs:
         os:
           - ubuntu-latest
           # - windows-latest
+        projectPath:
+          - ./
+        testMode:
+          - playmode
+          # - editmode
     
     runs-on: ${{ matrix.os }}
 
@@ -30,15 +33,34 @@ jobs:
         with:
           lfs: false
 
+      # Cache Library
+      - uses: actions/cache@v4
+        with:
+          path: ${{ matrix.projectPath }}/Library
+          key: Library-${{ matrix.projectPath }}
+          restore-keys: |
+            Library-
+
       # Test
       - name: run tests
         uses: game-ci/unity-test-runner@v4
+        id: testRun
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           packageMode: true
-          testMode: playmode
+          projectPath: ${{ matrix.projectPath }}
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: ${{ matrix.unityVersion }}-${{ matrix.os }}-${{ matrix.testMode }}-artifacts
+          checkName: ${{ matrix.unityVersion }}-${{ matrix.os }}-${{ matrix.testMode }} Test Results
           unityVersion: ${{ matrix.unityVersion }}
           githubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      # Upload artifacts
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Test results for ${{ matrix.unityVersion }}-${{ matrix.os }}-${{ matrix.testMode }}
+          path: ${{ steps.testRun.outputs.artifactsPath }}
