@@ -1,9 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,11 +9,6 @@ namespace JH.DataBinding.Editor
 {
     public class ViewEditorBase : UnityEditor.Editor
     {
-        internal static readonly IDataBindingEditorDisplayText EditorDisplayText =
-            new DataBindingEditorDisplayText();
-
-        protected VisualElement EditorRootElement { get; private set; }
-
         protected Type[] ValidDataSources { get; private set; }
 
         public virtual void OnEnable()
@@ -23,35 +16,12 @@ namespace JH.DataBinding.Editor
             ValidDataSources ??= DataBindingCommonData.GetValidDataSourceTypes();
         }
 
-        protected void InitDatabindingEditorRootElement()
-        {
-            if (EditorRootElement == null)
-            {
-                EditorRootElement = new();
-
-                EditorRootElement.styleSheets.Add(DataBindingEditorStyles.StyleSheet);
-                EditorRootElement.AddToClassList(DataBindingEditorStyles.viewEditorClassName);
-            }
-            else
-            {
-                EditorRootElement.Clear();
-            }
-
-            if (target.GetType() != typeof(View))
-            {
-                var defaultInspector = new VisualElement();
-
-                InspectorElement.FillDefaultInspector(defaultInspector, serializedObject, this);
-                EditorRootElement.Add(defaultInspector);
-            }
-        }
-
         protected static VisualElement MakeErrorReport(Exception exception)
         {
             var errorReport = new VisualElement();
 
             var errorLabel = new TextElement();
-            errorLabel.text = EditorDisplayText.EditorErrorMessageText;
+            errorLabel.text = DataBindingCommonData.EditorDisplayText.EditorErrorMessageText;
             DataBindingEditorStyles.ErrorMessageStyle(errorLabel);
             errorReport.Add(errorLabel);
 
@@ -61,7 +31,7 @@ namespace JH.DataBinding.Editor
             errorReport.Add(message);
 
             var reportBugLink = new Button(() => HandleReportError(exception));
-            reportBugLink.text = EditorDisplayText.ReportErrorButtonText;
+            reportBugLink.text = DataBindingCommonData.EditorDisplayText.ReportErrorButtonText;
             DataBindingEditorStyles.ErrorButtonStyle(reportBugLink);
             errorReport.Add(reportBugLink);
 
@@ -70,39 +40,12 @@ namespace JH.DataBinding.Editor
 
         private static void HandleReportError(Exception exception)
         {
+            // TODO: Check for comiler errors before reporting to github.
+
             var link =
                 $"https://github.com/JochenHeckl/DataBinding/issues/new?assignees=&labels=&template=bug_report.md&title={exception.Message}";
 
             Application.OpenURL(link);
-        }
-
-        protected VisualElement MakeDataSourceSection(
-            SerializableType currentDataSourceType,
-            Action<Type> handleDataSourceTypeChanged
-        )
-        {
-            if (ValidDataSources.Length == 0)
-            {
-                return MakeMissingDataSourceLabel();
-            }
-            else
-            {
-                var dataSource = new VisualElement();
-                dataSource.AddToClassList(DataBindingEditorStyles.GenericRow);
-
-                dataSource.Add(
-                    MakeDataSourceDropDown(currentDataSourceType, handleDataSourceTypeChanged)
-                );
-
-                if (currentDataSourceType.Type != null)
-                {
-                    dataSource.Add(MakeOpenDataSourceButton(currentDataSourceType));
-                }
-
-                DataBindingEditorStyles.DataSourceStyle(dataSource);
-
-                return dataSource;
-            }
         }
 
         protected static VisualElement MakeBindingSection<BindingType>(
@@ -122,29 +65,62 @@ namespace JH.DataBinding.Editor
             headerLabel.AddToClassList(DataBindingEditorStyles.bindingGroupLabel);
             header.Add(headerLabel);
 
-            var addBindingButton = new Button(handleAddBinding) { text = "Add Binding" };
-
-            addBindingButton.AddToClassList(DataBindingEditorStyles.addBindingActionButton);
-            header.Add(addBindingButton);
+            // var addBindingButton = new Button(handleAddBinding) { text = "Add Binding" };
+            // addBindingButton.AddToClassList(DataBindingEditorStyles.addBindingActionButton);
+            // header.Add(addBindingButton);
 
             sectionRoot.Add(header);
 
-            var bindingsGroup = new VisualElement();
-            bindingsGroup.AddToClassList(DataBindingEditorStyles.bindingGroupList);
+            var listView = new ListView(
+                bindings.ToArray(),
+                -1,
+                MakePropertyBindingEditor,
+                (visualElement, index) =>
+                {
+                    visualElement.Clear();
+                    visualElement.Add(makeEditorVisualElement(bindings.ElementAt(index)));
+                }
+            );
 
-            foreach (var binding in bindings)
+            listView.allowAdd = true;
+            listView.allowRemove = true;
+
+            listView.virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
+            listView.showFoldoutHeader = false;
+            listView.showAddRemoveFooter = true;
+            listView.reorderMode = ListViewReorderMode.Animated;
+            listView.pickingMode = PickingMode.Position;
+            listView.reorderable = true;
+
+            listView.onAdd = x =>
             {
-                bindingsGroup.Add(makeEditorVisualElement(binding));
-            }
+                handleAddBinding();
+                x.RefreshItems();
+            };
 
-            if (!bindingsGroup.Children().Any())
-            {
-                bindingsGroup.Add(new Label($"There are no bindings in this section."));
-            }
+            sectionRoot.Add(listView);
 
-            sectionRoot.Add(bindingsGroup);
+            // var bindingsGroup = new VisualElement();
+            // bindingsGroup.AddToClassList(DataBindingEditorStyles.bindingGroupList);
+
+            // foreach (var binding in bindings)
+            // {
+            //     bindingsGroup.Add(makeEditorVisualElement(binding));
+            // }
+
+            // if (!bindingsGroup.Children().Any())
+            // {
+            //     bindingsGroup.Add(new Label($"There are no bindings in this section."));
+            // }
+
+            // sectionRoot.Add(bindingsGroup);
 
             return sectionRoot;
+        }
+
+        private static VisualElement MakePropertyBindingEditor()
+        {
+            return new VisualElement();
         }
 
         protected static IEnumerable<ElementType> MoveElementUp<ElementType>(
@@ -188,30 +164,13 @@ namespace JH.DataBinding.Editor
             return rearrangedSequence;
         }
 
-        private static Type[] GetValidDataSourceTypes()
-        {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            return assemblies
-                .Where(x => !x.IsDynamic)
-                .SelectMany(x => x.ExportedTypes)
-                .Where(DataSourceFilterFunc)
-                .ToArray();
-
-            bool DataSourceFilterFunc(Type x) =>
-                !x.IsAbstract
-                && !x.IsGenericType
-                && !x.IsInterface
-                && x.InheritsOrImplements(typeof(INotifyDataSourceChanged));
-        }
-
         private VisualElement MakeDataSourceDropDown(
             SerializableType dataSourceType,
             Action<Type> handleDataSourceTypeChanged
         )
         {
             var dataSourceDropDown = new DropdownField(
-                label: EditorDisplayText.DataSourceTypeText,
+                label: DataBindingCommonData.EditorDisplayText.DataSourceTypeText,
                 choices: ValidDataSources.Select(x => x.GetFriendlyName()).ToList(),
                 defaultValue: ValidDataSources
                     .FirstOrDefault(x => x == dataSourceType.Type)
@@ -247,79 +206,6 @@ namespace JH.DataBinding.Editor
                 .OrderBy(x => x.distance)
                 .Select(x => x.x)
                 .FirstOrDefault();
-        }
-
-        private static VisualElement MakeMissingDataSourceLabel()
-        {
-            var labelContainer = new Box();
-
-            var textErrorContent = new Label(EditorDisplayText.MissingDataSourcesErrorText);
-            textErrorContent.AddToClassList(DataBindingEditorStyles.ErrorText);
-            labelContainer.Add(textErrorContent);
-
-            var textInfoContent = new Label(EditorDisplayText.MissingDataSourcesInfoText);
-            textInfoContent.AddToClassList(DataBindingEditorStyles.InfoText);
-            labelContainer.Add(textInfoContent);
-
-            return labelContainer;
-        }
-
-        private static VisualElement MakeOpenDataSourceButton(SerializableType dataSourceType)
-        {
-            var dataSourceSourceFile = FindDataSourceSourceFile(dataSourceType.Type);
-
-            var button = new Button(() => OpenDataSourceEditor(dataSourceSourceFile))
-            {
-                text = EditorDisplayText.EditSourceText,
-                tooltip = EditorDisplayText.NoSourceCodeAvailableToolTip
-            };
-
-            button.SetEnabled(dataSourceSourceFile != null);
-            return button;
-        }
-
-        private static void OpenDataSourceEditor(string dataSourceSourceFile)
-        {
-            if (dataSourceSourceFile != null)
-            {
-                var scriptAsset = AssetDatabase.LoadAssetAtPath<MonoScript>(
-                    dataSourceSourceFile.Replace('/', Path.DirectorySeparatorChar)
-                );
-
-                if (scriptAsset != null)
-                {
-                    AssetDatabase.OpenAsset(scriptAsset);
-                }
-            }
-        }
-
-        private static string FindDataSourceSourceFile(Type type)
-        {
-            var assetGuid = AssetDatabase.FindAssets(type.Name).FirstOrDefault();
-
-            if (assetGuid == null)
-            {
-                var allSourceFiles = Directory.GetFiles(
-                    Application.dataPath,
-                    "*.cs",
-                    SearchOption.AllDirectories
-                );
-
-                var sourceFile = allSourceFiles.FirstOrDefault(x =>
-                    File.ReadAllText(x).Contains($"class {type.Name}")
-                );
-
-                var assetName = Path.GetFileNameWithoutExtension(sourceFile);
-
-                assetGuid = AssetDatabase.FindAssets(assetName).FirstOrDefault();
-            }
-
-            if (assetGuid != null)
-            {
-                return AssetDatabase.GUIDToAssetPath(assetGuid);
-            }
-
-            return null;
         }
     }
 }

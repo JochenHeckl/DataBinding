@@ -138,6 +138,23 @@ namespace JH.DataBinding.Editor
             }
         }
 
+        private void UpdateTargetComponentChoices(ComponentPropertyBinding binding)
+        {
+            if (binding.TargetGameObject != null)
+            {
+                var componentsOfGameObject =
+                    Binding.TargetGameObject.GetComponentsInChildren<Component>(true);
+
+                targetComponentSelectionDropdownField.choices = componentsOfGameObject
+                    .Select(MakeTargetComponentDisplayValue)
+                    .ToList();
+
+                targetComponentSelectionDropdownField.value = MakeTargetComponentDisplayValue(
+                    Binding.TargetComponent
+                );
+            }
+        }
+
         private VisualElement MakeBindingHeader(
             ComponentPropertyBindingState bindingState,
             Action<ComponentPropertyBinding> moveBindingUp,
@@ -168,7 +185,7 @@ namespace JH.DataBinding.Editor
                 moveBindingUp != null ? () => moveBindingUp(Binding) : null
             )
             {
-                text = DisplayText.MoveUpButtonText
+                text = DisplayText.MoveUpButtonText,
             };
             AddHeaderButton(buttonContainer, moveBindingUpButton);
 
@@ -176,7 +193,7 @@ namespace JH.DataBinding.Editor
                 moveBindingDown != null ? () => moveBindingDown(Binding) : null
             )
             {
-                text = DisplayText.MoveDownButtonText
+                text = DisplayText.MoveDownButtonText,
             };
             AddHeaderButton(buttonContainer, moveBindingDownButton);
 

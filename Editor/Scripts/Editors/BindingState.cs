@@ -2,6 +2,7 @@
 {
     internal enum ComponentPropertyBindingState
     {
+        MissingDataSourceAssignment,
         SourceUnbound,
         TargetUnbound,
         Unassignable,

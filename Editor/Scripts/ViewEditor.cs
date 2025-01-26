@@ -1,62 +1,100 @@
 using System;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace JH.DataBinding.Editor
 {
     [CustomEditor(typeof(View), true)]
-    public class ViewEditor : ViewEditorBase
+    public class ViewEditor : UnityEditor.Editor
     {
         private View view;
+        private VisualElement editorRootElement;
 
-        public override void OnEnable()
+        public virtual void OnEnable()
         {
-            base.OnEnable();
-
             view = target as View;
 
             if (view.dataSourceType.Type == null)
             {
-                view.dataSourceType.Type = GuessDataSourceTypeName(view.name, ValidDataSources);
+                var guessedDataSourceType = DataBindingCommonData.GuessDataSourceTypeName(
+                    view.name
+                );
+
+                if (guessedDataSourceType != null)
+                {
+                    Debug.Log(
+                        $"Guessing {guessedDataSourceType.Name} as data source type for view {view.name}."
+                    );
+
+                    HandleDataSourceTypeChanged(guessedDataSourceType);
+                }
             }
         }
 
         public override VisualElement CreateInspectorGUI()
         {
-            MakeEditorView();
+            editorRootElement = new VisualElement();
+            editorRootElement.styleSheets.Add(DataBindingEditorStyles.StyleSheet);
 
-            return EditorRootElement;
+            FillInRoot(editorRootElement);
+
+            editorRootElement.TrackSerializedObjectValue(serializedObject, HandleObjectChanged);
+
+            return editorRootElement;
         }
 
-        private void MakeEditorView()
+        private void HandleObjectChanged(SerializedObject _)
+        {
+            InvalidateEditor();
+        }
+
+        private void FillInRoot(VisualElement root)
         {
             try
             {
-                InitDatabindingEditorRootElement();
+                root.Clear();
 
-                EditorRootElement.Add(
-                    MakeDataSourceSection(view.dataSourceType, HandleDataSourceTypeChanged)
+                root.Add(new DataSourceSelection(target as View, HandleDataSourceTypeChanged));
+
+                var componentPropertyBindings = new ComponentPropertyBindingListView(
+                    serializedObject,
+                    InvalidateEditor
                 );
-
-                EditorRootElement.Add(MakeComponentPropertyBindings());
-                EditorRootElement.Add(MakeContainerPropertyBindings());
+                componentPropertyBindings.Bind(serializedObject);
+                root.Add(componentPropertyBindings);
             }
             catch (Exception exception)
             {
-                EditorRootElement.Clear();
-                EditorRootElement.Add(MakeErrorReport(exception));
+                root.Add(new InternalErrorReport(exception));
             }
         }
 
-        private VisualElement MakeComponentPropertyBindings()
+        private void InvalidateEditor()
         {
-            return MakeBindingSection(
-                EditorDisplayText.ComponentPropertyBindingsText,
-                HandleAddComponentPropertyBinding,
-                view.componentPropertyBindings,
-                MakeComponentPropertyBindingVisualElement
-            );
+            FillInRoot(editorRootElement);
+        }
+
+        private void BindItem(VisualElement element, int itemIndex)
+        {
+            element.Clear();
+        }
+
+        private void BindComponentPropertyListViewItem(
+            VisualElement visualElement,
+            int itemIndex
+        ) { }
+
+        private VisualElement MakeComponentPropertyListViewItem()
+        {
+            var container = new VisualElement();
+            container.style.flexShrink = 1;
+            container.style.flexGrow = 1;
+            container.style.whiteSpace = WhiteSpace.Normal;
+            container.name = "XXX";
+            return container;
         }
 
         private void HandleAddComponentPropertyBinding()
@@ -70,147 +108,38 @@ namespace JH.DataBinding.Editor
             StoreAndUpdateView();
         }
 
-        private VisualElement MakeComponentPropertyBindingVisualElement(
-            ComponentPropertyBinding binding
-        )
-        {
-            return new ComponentPropertyBindingEditor(
-                EditorDisplayText,
-                view.dataSourceType.Type,
-                binding,
-                StoreAndUpdateView,
-                x => x.showExpanded,
-                HandleMoveBindingUp,
-                HandleMoveBindingDown,
-                HandleTogglePropertyExpansion,
-                HandleRemoveBinding
-            );
-        }
+        // private void HandleDataSourceTypeChanged(Type newDataSourceType)
+        // {
+        //     if ((view != null) && (view.dataSourceType.Type != newDataSourceType))
+        //     {
+        //         view.dataSourceType.Type = newDataSourceType;
 
-        private void HandleMoveBindingUp(ComponentPropertyBinding binding)
-        {
-            view.componentPropertyBindings = MoveElementUp(view.componentPropertyBindings, binding)
-                .ToArray();
+        //         StoreAndUpdateView();
+        //     }
 
-            StoreAndUpdateView();
-        }
-
-        private void HandleMoveBindingDown(ComponentPropertyBinding binding)
-        {
-            view.componentPropertyBindings = MoveElementDown(
-                    view.componentPropertyBindings,
-                    binding
-                )
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private void HandleTogglePropertyExpansion(ComponentPropertyBinding binding)
-        {
-            binding.showExpanded = !binding.showExpanded;
-            StoreAndUpdateView();
-        }
-
-        private void HandleRemoveBinding(ComponentPropertyBinding binding)
-        {
-            view.componentPropertyBindings = view
-                .componentPropertyBindings.Where(x => x != binding)
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private VisualElement MakeContainerPropertyBindings()
-        {
-            return MakeBindingSection(
-                EditorDisplayText.ContainerPropertyBindingsText,
-                HandleAddContainerPropertyBinding,
-                view.containerPropertyBindings,
-                MakeContainerPropertyBindingVisualElement
-            );
-        }
-
-        private void HandleAddContainerPropertyBinding()
-        {
-            view.containerPropertyBindings = view
-                .containerPropertyBindings.Append(
-                    new ContainerPropertyBinding() { DataSource = view.DataSource }
-                )
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private VisualElement MakeContainerPropertyBindingVisualElement(
-            ContainerPropertyBinding binding
-        )
-        {
-            return new ContainerPropertyBindingEditor(
-                EditorDisplayText,
-                view.dataSourceType.Type,
-                binding,
-                StoreAndUpdateView,
-                x => x.showExpanded,
-                HandleMoveBindingUp,
-                HandleMoveBindingDown,
-                HandleTogglePropertyExpansion,
-                HandleRemoveBinding
-            );
-        }
-
-        private void HandleMoveBindingUp(ContainerPropertyBinding binding)
-        {
-            view.containerPropertyBindings = MoveElementUp(view.containerPropertyBindings, binding)
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private void HandleMoveBindingDown(ContainerPropertyBinding binding)
-        {
-            view.containerPropertyBindings = MoveElementDown(
-                    view.containerPropertyBindings,
-                    binding
-                )
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private void HandleTogglePropertyExpansion(ContainerPropertyBinding binding)
-        {
-            binding.showExpanded = !binding.showExpanded;
-            StoreAndUpdateView();
-        }
-
-        private void HandleRemoveBinding(ContainerPropertyBinding binding)
-        {
-            view.containerPropertyBindings = view
-                .containerPropertyBindings.Where(x => x != binding)
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private void HandleDataSourceTypeChanged(Type newDataSourceType)
-        {
-            if ((view != null) && (view.dataSourceType.Type != newDataSourceType))
-            {
-                view.dataSourceType.Type = newDataSourceType;
-
-                StoreAndUpdateView();
-            }
-        }
+        //     serializedObject.ApplyModifiedProperties();
+        // }
 
         private void StoreAndUpdateView()
         {
             EditorUtility.SetDirty(view);
             AssetDatabase.SaveAssetIfDirty(view);
 
-            MakeEditorView();
+            // MakeEditorView();
 
-            EditorRootElement.MarkDirtyRepaint();
+            // EditorRootElement.MarkDirtyRepaint();
+        }
+
+        private void HandleDataSourceTypeChanged(Type newType)
+        {
+            if (view.dataSourceType.Type != newType)
+            {
+                EditorUtility.SetDirty(view);
+                view.dataSourceType.Type = newType;
+                serializedObject.ApplyModifiedProperties();
+
+                InvalidateEditor();
+            }
         }
     }
 }

@@ -12,11 +12,11 @@ namespace JH.DataBinding
         public SerializableType dataSourceType;
 #endif // UNITY_EDITOR
 
-        [HideInInspector]
+        // [HideInInspector]
         public ComponentPropertyBinding[] componentPropertyBindings =
             Array.Empty<ComponentPropertyBinding>();
 
-        [HideInInspector]
+        // [HideInInspector]
         public ContainerPropertyBinding[] containerPropertyBindings =
             Array.Empty<ContainerPropertyBinding>();
 
