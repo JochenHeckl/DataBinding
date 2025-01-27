@@ -8,6 +8,7 @@ namespace JH.DataBinding.Editor
         public static void ApplyBindingContainerStyle(this VisualElement visualElement)
         {
             visualElement.style.flexDirection = FlexDirection.Column;
+            visualElement.style.marginTop = 4;
         }
 
         public static void ApplyBindingContainerItemStyle(this VisualElement visualElement) { }

@@ -26,6 +26,9 @@ namespace JH.DataBinding.Editor
         public string BindingMissingDataSourceAssignment =>
             "Assign a DataSource to the hosting view.";
 
+        public string BindingNoBindableProperties =>
+            "The DataSource does not have bindable properties.";
+
         public string BindingSourceUnboundMessageText => "Select the binding source path";
         public string BindingTargetUnboundMessageText =>
             "<size=+2><color=red>The Binding target is incomplete</color></size>";

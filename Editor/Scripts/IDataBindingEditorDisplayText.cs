@@ -11,6 +11,7 @@
         string EditorErrorMessageText { get; }
         string ComponentPropertyBindingsText { get; }
         string BindingMissingDataSourceAssignment { get; }
+        string BindingNoBindableProperties { get; }
         string BindingSourceUnboundMessageText { get; }
         string BindingTargetUnboundMessageText { get; }
         string BindingUnassignableMessageText { get; }

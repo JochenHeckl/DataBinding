@@ -3,6 +3,7 @@
     internal enum ComponentPropertyBindingState
     {
         MissingDataSourceAssignment,
+        NoBindableProperties,
         SourceUnbound,
         TargetUnbound,
         Unassignable,
@@ -11,6 +12,8 @@
 
     internal enum ContainerPropertyBindingState
     {
+        MissingDataSourceAssignment,
+        NoBindableProperties,
         SourceUnbound,
         TargetUnbound,
         ElementTemplateMissing,

@@ -4,17 +4,17 @@ using UnityEngine.UIElements;
 
 namespace JH.DataBinding.Editor
 {
-    class ComponentPropertyBindingListView : ListView
+    class ContainerPropertyBindingListView : ListView
     {
-        public ComponentPropertyBindingListView()
+        public ContainerPropertyBindingListView()
         {
             // TODO: think abou how to apply styles in general
             this.ApplyBindingContainerStyle();
 
             virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
-            bindingPath = nameof(View.componentPropertyBindings);
+            bindingPath = nameof(View.containerPropertyBindings);
 
-            headerTitle = DataBindingCommonData.EditorDisplayText.ComponentPropertyBindingsText;
+            headerTitle = DataBindingCommonData.EditorDisplayText.ContainerPropertyBindingsText;
             showFoldoutHeader = true;
             bindingSourceSelectionMode = BindingSourceSelectionMode.AutoAssign;
             reorderable = true;

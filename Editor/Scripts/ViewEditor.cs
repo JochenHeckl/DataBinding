@@ -46,11 +46,6 @@ namespace JH.DataBinding.Editor
             return editorRootElement;
         }
 
-        private void HandleObjectChanged(SerializedObject _)
-        {
-            InvalidateEditor();
-        }
-
         private void FillInRoot(VisualElement root)
         {
             try
@@ -59,12 +54,13 @@ namespace JH.DataBinding.Editor
 
                 root.Add(new DataSourceSelection(target as View, HandleDataSourceTypeChanged));
 
-                var componentPropertyBindings = new ComponentPropertyBindingListView(
-                    serializedObject,
-                    InvalidateEditor
-                );
+                var componentPropertyBindings = new ComponentPropertyBindingListView();
                 componentPropertyBindings.Bind(serializedObject);
                 root.Add(componentPropertyBindings);
+
+                var containerPropertyBindings = new ContainerPropertyBindingListView();
+                containerPropertyBindings.Bind(serializedObject);
+                root.Add(containerPropertyBindings);
             }
             catch (Exception exception)
             {
@@ -72,62 +68,9 @@ namespace JH.DataBinding.Editor
             }
         }
 
-        private void InvalidateEditor()
+        private void HandleObjectChanged(SerializedObject _)
         {
             FillInRoot(editorRootElement);
-        }
-
-        private void BindItem(VisualElement element, int itemIndex)
-        {
-            element.Clear();
-        }
-
-        private void BindComponentPropertyListViewItem(
-            VisualElement visualElement,
-            int itemIndex
-        ) { }
-
-        private VisualElement MakeComponentPropertyListViewItem()
-        {
-            var container = new VisualElement();
-            container.style.flexShrink = 1;
-            container.style.flexGrow = 1;
-            container.style.whiteSpace = WhiteSpace.Normal;
-            container.name = "XXX";
-            return container;
-        }
-
-        private void HandleAddComponentPropertyBinding()
-        {
-            view.componentPropertyBindings = view
-                .componentPropertyBindings.Append(
-                    new ComponentPropertyBinding() { DataSource = view.DataSource }
-                )
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        // private void HandleDataSourceTypeChanged(Type newDataSourceType)
-        // {
-        //     if ((view != null) && (view.dataSourceType.Type != newDataSourceType))
-        //     {
-        //         view.dataSourceType.Type = newDataSourceType;
-
-        //         StoreAndUpdateView();
-        //     }
-
-        //     serializedObject.ApplyModifiedProperties();
-        // }
-
-        private void StoreAndUpdateView()
-        {
-            EditorUtility.SetDirty(view);
-            AssetDatabase.SaveAssetIfDirty(view);
-
-            // MakeEditorView();
-
-            // EditorRootElement.MarkDirtyRepaint();
         }
 
         private void HandleDataSourceTypeChanged(Type newType)
@@ -138,7 +81,7 @@ namespace JH.DataBinding.Editor
                 view.dataSourceType.Type = newType;
                 serializedObject.ApplyModifiedProperties();
 
-                InvalidateEditor();
+                FillInRoot(editorRootElement);
             }
         }
     }

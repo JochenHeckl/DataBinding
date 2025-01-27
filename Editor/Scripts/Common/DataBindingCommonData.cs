@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -67,7 +68,7 @@ namespace JH.DataBinding.Editor
             return null;
         }
 
-        public static (
+        internal static (
             ComponentPropertyBindingState bindingState,
             PropertyInfo[] bindableProperties
         ) DetermineComponentPropertyBindingState(SerializedProperty serializedProperty)
@@ -86,7 +87,7 @@ namespace JH.DataBinding.Editor
             return DetermineComponentPropertyBindingState(binding, view.dataSourceType.Type);
         }
 
-        public static (
+        internal static (
             ComponentPropertyBindingState bindingState,
             PropertyInfo[] bindableProperties
         ) DetermineComponentPropertyBindingState(
@@ -96,17 +97,23 @@ namespace JH.DataBinding.Editor
         {
             if (binding == null)
             {
-                throw new InvalidOperationException(
-                    "Provided serialized property is not of type ComponentPropertyBinding."
-                );
+                throw new ArgumentNullException(nameof(binding));
             }
-
-            var bindableDataSourceProperties = GetBindableDataSourceProperties(dataSourceType);
 
             if (dataSourceType == null)
             {
                 return (
                     ComponentPropertyBindingState.MissingDataSourceAssignment,
+                    Array.Empty<PropertyInfo>()
+                );
+            }
+
+            var bindableDataSourceProperties = GetBindableDataSourceProperties(dataSourceType);
+
+            if (bindableDataSourceProperties.Length == 0)
+            {
+                return (
+                    ComponentPropertyBindingState.NoBindableProperties,
                     bindableDataSourceProperties
                 );
             }
@@ -141,12 +148,107 @@ namespace JH.DataBinding.Editor
             return (ComponentPropertyBindingState.Complete, bindableDataSourceProperties);
         }
 
-        public static PropertyInfo[] GetBindableDataSourceProperties(Type dataSourceType)
+        internal static (
+            ContainerPropertyBindingState bindingState,
+            PropertyInfo[] bindableProperties
+        ) DetermineContainerPropertyBindingState(SerializedProperty serializedProperty)
+        {
+            var binding = serializedProperty.boxedValue as ContainerPropertyBinding;
+
+            var view = serializedProperty.serializedObject.targetObject as View;
+
+            if (view == null)
+            {
+                throw new InvalidOperationException(
+                    "The provided ContainerPropertyBinding must be part of a view to dermine the binding state."
+                );
+            }
+
+            return DetermineContainerPropertyBindingState(binding, view.dataSourceType.Type);
+        }
+
+        internal static (
+            ContainerPropertyBindingState bindingState,
+            PropertyInfo[] bindableDataSourceProperties
+        ) DetermineContainerPropertyBindingState(
+            ContainerPropertyBinding binding,
+            Type dataSourceType
+        )
+        {
+            if (binding == null)
+            {
+                throw new ArgumentNullException(nameof(binding));
+            }
+
+            if (dataSourceType == null)
+            {
+                return (
+                    ContainerPropertyBindingState.MissingDataSourceAssignment,
+                    Array.Empty<PropertyInfo>()
+                );
+            }
+
+            var bindableDataSourceProperties = GetBindableDataSourceEnumerableProperties(
+                dataSourceType
+            );
+
+            if (bindableDataSourceProperties.Length == 0)
+            {
+                return (
+                    ContainerPropertyBindingState.NoBindableProperties,
+                    bindableDataSourceProperties
+                );
+            }
+
+            var sourceProperty = bindableDataSourceProperties.FirstOrDefault(x =>
+                x.Name == binding.SourcePath
+            );
+
+            if (sourceProperty == null)
+            {
+                return (ContainerPropertyBindingState.SourceUnbound, bindableDataSourceProperties);
+            }
+
+            if (binding.TargetContainer == null)
+            {
+                return (ContainerPropertyBindingState.TargetUnbound, bindableDataSourceProperties);
+            }
+
+            if (binding.ElementTemplate == null)
+            {
+                return (
+                    ContainerPropertyBindingState.ElementTemplateMissing,
+                    bindableDataSourceProperties
+                );
+            }
+
+            if (binding.ElementTemplate.GetComponent<View>() == null)
+            {
+                return (
+                    ContainerPropertyBindingState.ElementTemplateIsNotAssignable,
+                    bindableDataSourceProperties
+                );
+            }
+
+            return (ContainerPropertyBindingState.Complete, bindableDataSourceProperties);
+        }
+
+        internal static PropertyInfo[] GetBindableDataSourceProperties(Type dataSourceType)
         {
             return dataSourceType.GetProperties().Where(x => x.CanRead).ToArray();
         }
 
-        public static PropertyInfo[] GetBindableComponentProperties(
+        internal static PropertyInfo[] GetBindableDataSourceEnumerableProperties(
+            Type dataSourceType
+        )
+        {
+            return dataSourceType
+                .GetProperties()
+                .Where(x => x.CanRead && typeof(IEnumerable).IsAssignableFrom(x.PropertyType))
+                .ToArray();
+        }
+
+        internal static PropertyInfo[] GetBindableComponentProperties(
             Component component,
             Type sourcePropertyType
         )
@@ -160,7 +262,7 @@ namespace JH.DataBinding.Editor
             return assignableProperties;
         }
 
-        public static string GetComponentDisplayName(Component component)
+        internal static string GetComponentDisplayName(Component component)
         {
             return $"{component.GetType().Name} ({component.name})";
         }
