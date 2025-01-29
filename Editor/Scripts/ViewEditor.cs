@@ -2,8 +2,6 @@ using System;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
-using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace JH.DataBinding.Editor
 {
@@ -17,7 +15,7 @@ namespace JH.DataBinding.Editor
         {
             view = target as View;
 
-            if (view.dataSourceType.Type == null)
+            if (view.dataSourceType?.Type == null)
             {
                 var guessedDataSourceType = DataBindingCommonData.GuessDataSourceTypeName(
                     view.name

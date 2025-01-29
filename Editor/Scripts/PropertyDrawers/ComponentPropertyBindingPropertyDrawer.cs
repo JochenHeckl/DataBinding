@@ -30,6 +30,8 @@ namespace JH.DataBinding.Editor
             root.Clear();
 
             propertyField = new PropertyField(property, MakeLabelHeaderText(property));
+            propertyField.name = nameof(ComponentPropertyBinding);
+
             root.Add(propertyField);
             root.MarkDirtyRepaint();
         }

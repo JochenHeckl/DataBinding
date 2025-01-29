@@ -20,14 +20,4 @@
         ElementTemplateIsNotAssignable,
         Complete,
     }
-
-    internal enum VisualElementPropertyBindingState
-    {
-        RootVisualElementUnboud,
-        SourceUnbound,
-        TargetElementUnbound,
-        TargetPropertyUnbound,
-        Unassignable,
-        Complete,
-    }
 }

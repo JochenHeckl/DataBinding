@@ -264,7 +264,14 @@ namespace JH.DataBinding.Editor
 
         internal static string GetComponentDisplayName(Component component)
         {
-            return $"{component.GetType().Name} ({component.name})";
+            if (component != null)
+            {
+                return $"{component.GetType().Name} ({component.name})";
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

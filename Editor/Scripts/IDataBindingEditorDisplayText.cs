@@ -2,7 +2,7 @@
 {
     public interface IDataBindingEditorDisplayText
     {
-        string HeavyCheckmark { get; }
+        string HeavyCheckMark { get; }
         string MissingDataSourcesErrorText { get; }
         string DataSourceTypeText { get; }
         string EditSourceText { get; }
