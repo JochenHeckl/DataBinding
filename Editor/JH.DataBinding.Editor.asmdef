@@ -2,9 +2,9 @@
     "name": "JH.DataBinding.Editor",
     "rootNamespace": "JH.DataBinding.Editor",
     "references": [
-        "GUID:343deaaf83e0cee4ca978e7df0b80d21",
-        "GUID:023ac9b81facd43ebbb2a6f1c6252835",
-        "GUID:1ac1bd0cf575cfe4b8d295c36f1e0edd"
+        "UnityEngine.UI",
+        "UnityEditor.UI",
+        "JH.DataBinding"
     ],
     "includePlatforms": [
         "Editor"
