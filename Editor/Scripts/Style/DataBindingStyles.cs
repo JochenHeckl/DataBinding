@@ -11,20 +11,6 @@ namespace JH.DataBinding.Editor
             visualElement.style.marginTop = 4;
         }
 
-        public static void ApplyBindingContainerItemStyle(this VisualElement visualElement) { }
-
-        public static void ApplyErrorTextStyle(this VisualElement visualElement)
-        {
-            visualElement.style.fontSize = 16;
-            visualElement.style.Padding(12);
-            visualElement.style.Margin(12);
-            visualElement.style.BorderColor(new Color(.6f, .2f, .2f));
-            visualElement.style.BorderWidth(2);
-            visualElement.style.BorderRadius(8);
-            visualElement.style.textOverflow = TextOverflow.Ellipsis;
-            visualElement.style.whiteSpace = WhiteSpace.PreWrap;
-        }
-
         public static void ApplyDataSourceSelectionStyle(this VisualElement visualElement)
         {
             visualElement.style.fontSize = 16;

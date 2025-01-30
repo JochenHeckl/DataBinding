@@ -36,7 +36,7 @@ namespace JH.DataBinding.Editor
         public override VisualElement CreateInspectorGUI()
         {
             editorRootElement = new VisualElement();
-            editorRootElement.styleSheets.Add(DataBindingEditorStyles.StyleSheet);
+            editorRootElement.styleSheets.Add(DataBindingEditorStyle.StyleSheet);
 
             FillInRoot(editorRootElement);
 

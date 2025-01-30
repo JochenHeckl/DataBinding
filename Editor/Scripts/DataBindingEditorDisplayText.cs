@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace JH.DataBinding.Editor
 {
@@ -6,15 +7,16 @@ namespace JH.DataBinding.Editor
     {
         public string HeavyCheckMark => "✔";
         public string MissingDataSourcesErrorText =>
-            $"No <b>data source</b> was found in this project.{Environment.NewLine}{Environment.NewLine}Please define at least one class that implements <b>INotifyDataSourceChanged</b> that you want this View to bind to.{Environment.NewLine}{Environment.NewLine}The simplest way to create a <b>data source</b> is by deriving from <b>DataSourceBase</b>";
+            $"No <b>data source</b> was found in this project.{Environment.NewLine}{Environment.NewLine}Please define at least one class that implements <b>INotifyDataSourceChanged</b> that you want this View to bind to.{Environment.NewLine}{Environment.NewLine}The simplest way to create a <b>data source</b> is by deriving from <b>DataSourceBase</b>.";
 
         public string DataSourceTypeText => "DataSource Type";
 
-        public string EditSourceText => "Edit DataSource";
+        public string NewDataSourceText => "New";
 
-        public string NoSourceCodeAvailableText => "!";
-        public string NoSourceCodeAvailableToolTip =>
-            "To enable tooling to find your DataSource, name the source file according to the class name (class AAA => AAA.cs).";
+        public string NewDataSourceTooltip => "Create a new empty datasource.";
+        public string EditDataSourceText => "Edit";
+
+        public string EditDataSourceTooltip => "Edit the sourcecode of the selected Datasource.";
 
         public string SourcePathText => "Source Path";
 
@@ -58,5 +60,12 @@ namespace JH.DataBinding.Editor
             "<color=green>✔</color> <color=lightblue>{0}</color> <b>{1}</b> expands into <b>{2}</b> ({3})";
 
         public string ReportErrorButtonText => "Report Error 🔗";
+
+        public string CreateDefaultDataSourceText => "Create default DataSource";
+
+        public string DefaultDataSourceTemplate =>
+            File.ReadAllText(
+                "Packages/de.jochenheckl.unity.databinding/Editor/DefaultDataSourceTemplate.txt"
+            );
     }
 }

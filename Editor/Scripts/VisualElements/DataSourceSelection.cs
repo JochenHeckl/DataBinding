@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace JH.DataBinding.Editor
@@ -17,15 +18,34 @@ namespace JH.DataBinding.Editor
             if (validDataSources.Length == 0)
             {
                 var labelContainer = new VisualElement();
+                labelContainer.AddToClassList(DataBindingEditorStyle.errorMessageContainer);
 
                 var textErrorContent = new Label(
                     DataBindingCommonData.EditorDisplayText.MissingDataSourcesErrorText
                 );
 
-                textErrorContent.ApplyErrorTextStyle();
+                textErrorContent.AddToClassList(DataBindingEditorStyle.errorMessageText);
+
                 labelContainer.Add(textErrorContent);
 
+                var createDataSourceButton = new Button(() =>
+                {
+                    CreateDefaultDataSource(view.name);
+                    updateDataSourceType(null);
+                });
+
+                createDataSourceButton.text = DataBindingCommonData
+                    .EditorDisplayText
+                    .CreateDefaultDataSourceText;
+
+                createDataSourceButton.AddToClassList(
+                    DataBindingEditorStyle.createDefaultDataSourceButton
+                );
+
+                labelContainer.Add(createDataSourceButton);
+
                 Add(labelContainer);
+
                 return;
             }
 
@@ -48,15 +68,52 @@ namespace JH.DataBinding.Editor
                 view.dataSourceType.Type
             );
 
-            var button = new Button(() => OpenDataSourceEditor(dataSourceSourceFile))
+            var buttonGroup = new VisualElement();
+            buttonGroup.AddToClassList(DataBindingEditorStyle.dataSourceSelectionButtonGroup);
+
+            var newButton = new Button(() => CreateNewDataSource(view.name))
             {
-                text = DataBindingCommonData.EditorDisplayText.EditSourceText,
-                tooltip = DataBindingCommonData.EditorDisplayText.NoSourceCodeAvailableToolTip,
+                text = DataBindingCommonData.EditorDisplayText.NewDataSourceText,
+                tooltip = DataBindingCommonData.EditorDisplayText.NewDataSourceTooltip,
             };
 
-            button.SetEnabled(dataSourceSourceFile != null);
+            buttonGroup.Add(newButton);
 
-            Add(button);
+            var editButton = new Button(() => OpenDataSourceEditor(dataSourceSourceFile))
+            {
+                text = DataBindingCommonData.EditorDisplayText.EditDataSourceText,
+                tooltip = DataBindingCommonData.EditorDisplayText.EditDataSourceTooltip,
+            };
+
+            editButton.SetEnabled(dataSourceSourceFile != null);
+
+            buttonGroup.Add(editButton);
+
+            Add(buttonGroup);
+        }
+
+        private void CreateNewDataSource(string name) { }
+
+        private void CreateDefaultDataSource(string name)
+        {
+            var directory = GetSelectedDirectoryOrFallback();
+
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var codeTemplate = DataBindingCommonData.EditorDisplayText.DefaultDataSourceTemplate;
+            var code = codeTemplate.Replace("{name}", name);
+
+            var dataSourceSourceFilename = $"{name}DataSource.cs";
+            var path = Path.Combine(directory, dataSourceSourceFilename);
+
+            if (!File.Exists(path))
+            {
+                File.WriteAllText(path, code);
+                OpenDataSourceEditor(path);
+            }
         }
 
         private static void OpenDataSourceEditor(string dataSourceSourceFile)
@@ -72,6 +129,23 @@ namespace JH.DataBinding.Editor
                     AssetDatabase.OpenAsset(scriptAsset);
                 }
             }
+        }
+
+        private static string GetSelectedDirectoryOrFallback()
+        {
+            string path = AssetDatabase.GetAssetPath(Selection.activeObject);
+
+            if (string.IsNullOrEmpty(path))
+            {
+                return Path.Combine(Application.dataPath, "DataSource");
+            }
+
+            if (Path.HasExtension(path))
+            {
+                path = Path.GetDirectoryName(path);
+            }
+
+            return path;
         }
     }
 }

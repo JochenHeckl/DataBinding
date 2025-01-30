@@ -3,15 +3,22 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-
 namespace JH.DataBinding.Editor
 {
-    public static class DataBindingEditorStyles
+    public static class DataBindingEditorStyle
     {
         private static readonly string viewEditorStyleSheetFile =
             "Packages/de.jochenheckl.unity.databinding/Editor/DataBinding.uss";
 
         private static StyleSheet sharedStyleSheetAsset;
+
+        public const string errorMessageContainer = nameof(errorMessageContainer);
+        public const string errorMessageText = nameof(errorMessageText);
+
+        public const string createDefaultDataSourceButton = nameof(createDefaultDataSourceButton);
+
+        public const string dataSourceSelectionButtonGroup = nameof(dataSourceSelectionButtonGroup);
+
         public const string viewEditorClassName = "viewEditor";
 
         public const string GenericRow = "genericRow";

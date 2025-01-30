@@ -61,6 +61,9 @@ namespace JH.DataBinding.Editor
                 case ComponentPropertyBindingState.MissingDataSourceAssignment:
                     return displayText.BindingMissingDataSourceAssignment;
 
+                case ComponentPropertyBindingState.NoBindableProperties:
+                    return displayText.BindingNoBindableProperties;
+
                 case ComponentPropertyBindingState.SourceUnbound:
                     return displayText.BindingSourceUnboundMessageText;
 
@@ -89,11 +92,10 @@ namespace JH.DataBinding.Editor
                     );
 
                     return condensedLabelString;
-            }
 
-            throw new InvalidProgramException(
-                "Please upgrade to CoreCLR, so my compiler can deal with this."
-            );
+                default:
+                    return $"Unknown {nameof(ComponentPropertyBindingState)} detected.";
+            }
         }
     }
 }

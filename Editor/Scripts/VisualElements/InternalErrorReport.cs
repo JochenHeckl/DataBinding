@@ -8,7 +8,7 @@ namespace JH.DataBinding.Editor
     {
         internal InternalErrorReport(Exception exception)
         {
-            this.ApplyErrorTextStyle();
+            // AddToClassList();
 
             var errorLabel = new TextElement();
             errorLabel.text = DataBindingCommonData.EditorDisplayText.EditorErrorMessageText;

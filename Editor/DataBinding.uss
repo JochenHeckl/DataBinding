@@ -1,4 +1,35 @@
-.viewEditor {
+:root {
+    --errorRed: rgb(160, 32, 32);
+    --fontSizeLarger: 104%
+}
+
+.errorMessageContainer {
+    flex-grow: 0;
+    padding: 12px;
+    margin: 12px;
+    border-color: var(--errorRed);
+    border-radius: 8px;
+    border-width: 2px;
+}
+
+.errorMessageText {
+    font-size: var(--fontSizeLarger);
+    white-space: normal;
+}
+
+.createDefaultDataSourceButton
+{
+    margin: 24px;
+    font-size: var(--fontSizeLarger);
+    white-space: normal;
+}
+
+.dataSourceSelectionButtonGroup
+{
+    flex-direction: row;
+}
+
+/* .viewEditor {
 
 }
 
@@ -106,4 +137,4 @@
 
 .bindingProperty{
     margin-right: 2px;
-}
+} */

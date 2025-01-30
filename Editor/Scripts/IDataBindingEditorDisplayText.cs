@@ -5,8 +5,10 @@
         string HeavyCheckMark { get; }
         string MissingDataSourcesErrorText { get; }
         string DataSourceTypeText { get; }
-        string EditSourceText { get; }
-        string NoSourceCodeAvailableToolTip { get; }
+        string NewDataSourceText { get; }
+        string NewDataSourceTooltip { get; }
+        string EditDataSourceText { get; }
+        string EditDataSourceTooltip { get; }
         string SourcePathText { get; }
         string EditorErrorMessageText { get; }
         string ComponentPropertyBindingsText { get; }
@@ -28,5 +30,7 @@
         string BindingElementTemplateIsNotAssignableMessageText { get; }
         string ContainerPropertyBindingCondensedLabelFormat_Type_Source_Target_Template { get; }
         string ReportErrorButtonText { get; }
+        string CreateDefaultDataSourceText { get; }
+        string DefaultDataSourceTemplate { get; }
     }
 }
