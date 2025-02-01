@@ -11,15 +11,6 @@ namespace JH.DataBinding.Editor
             visualElement.style.marginTop = 4;
         }
 
-        public static void ApplyDataSourceSelectionStyle(this VisualElement visualElement)
-        {
-            visualElement.style.fontSize = 16;
-            visualElement.style.Margin(4);
-            visualElement.style.flexDirection = FlexDirection.Row;
-            visualElement.style.flexWrap = Wrap.NoWrap;
-            visualElement.style.justifyContent = Justify.SpaceBetween;
-        }
-
         public static void ApplyInternalErrorSectionStyle(this VisualElement visualElement)
         {
             visualElement.style.fontSize = 14;

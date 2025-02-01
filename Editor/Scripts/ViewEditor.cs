@@ -63,6 +63,7 @@ namespace JH.DataBinding.Editor
             }
             catch (Exception exception)
             {
+                Debug.LogError(exception.Message);
                 root.Add(new InternalErrorReport(exception));
             }
         }

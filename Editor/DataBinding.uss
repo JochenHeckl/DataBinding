@@ -24,6 +24,15 @@
     white-space: normal;
 }
 
+.dataSourceSelection
+{
+    font-size: var(--fontSizeLarger);
+    margin: 4px;
+    flex-direction: Row;
+    flex-wrap: NoWrap;
+    justify-content: SpaceBetween;
+}
+
 .dataSourceSelectionButtonGroup
 {
     flex-direction: row;

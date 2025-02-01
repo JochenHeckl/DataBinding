@@ -17,6 +17,7 @@ namespace JH.DataBinding.Editor
 
         public const string createDefaultDataSourceButton = nameof(createDefaultDataSourceButton);
 
+        public const string dataSourceSelection = nameof(dataSourceSelection);
         public const string dataSourceSelectionButtonGroup = nameof(dataSourceSelectionButtonGroup);
 
         public const string viewEditorClassName = "viewEditor";

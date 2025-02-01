@@ -52,7 +52,7 @@ namespace JH.DataBinding.Editor
             var dataSourceDropDown = new DropdownField(
                 label: DataBindingCommonData.EditorDisplayText.DataSourceTypeText,
                 choices: validDataSources.Select(x => x.GetFriendlyName()).ToList(),
-                defaultValue: view.dataSourceType.Type.Name
+                defaultValue: view.dataSourceType.Type.GetFriendlyName()
             );
 
             dataSourceDropDown.RegisterValueChangedCallback(changeEvent =>
