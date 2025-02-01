@@ -10,6 +10,12 @@ namespace JH.DataBinding.Editor
 {
     internal static class DataBindingCommonData
     {
+        public static string DefaultDataSourceTemplateNamePlaceHolder => "{{name}}";
+        public static string DefaultDataSourceTemplate =>
+            File.ReadAllText(
+                "Packages/de.jochenheckl.unity.databinding/Editor/DefaultDataSourceTemplate.txt"
+            );
+
         public static string dataSourceTypeInspectorFilter { get; set; } = string.Empty;
 
         internal static readonly IDataBindingEditorDisplayText EditorDisplayText =
@@ -23,6 +29,7 @@ namespace JH.DataBinding.Editor
                 .Where(x => !x.IsDynamic)
                 .SelectMany(x => x.ExportedTypes)
                 .Where(DataSourceFilterFunc)
+                .OrderBy(x => x.GetFriendlyName())
                 .ToArray();
 
             bool DataSourceFilterFunc(Type x) =>

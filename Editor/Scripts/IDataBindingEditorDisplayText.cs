@@ -2,14 +2,20 @@
 {
     public interface IDataBindingEditorDisplayText
     {
-        string HeavyCheckMark { get; }
-        string MissingDataSourcesErrorText { get; }
+        string AssetPathLabel { get; }
+        string CreateNewDataSourceTitle { get; }
+        string CreateDataSourceTypeToolTipText { get; }
         string DataSourceTypeInspectorFilterLabel { get; }
         string DataSourceTypeText { get; }
+        string EditDataSourceTooltip { get; }
+        string EditDataSourceText { get; }
+        string HeavyCheckMark { get; }
+        string InvalidPathContent { get; }
+        string InvalidPathTitle { get; }
+        string MissingDataSourcesErrorText { get; }
         string NewDataSourceText { get; }
         string NewDataSourceTooltip { get; }
-        string EditDataSourceText { get; }
-        string EditDataSourceTooltip { get; }
+        string OKLabel { get; }
         string SourcePathText { get; }
         string EditorErrorMessageText { get; }
         string ComponentPropertyBindingsText { get; }
@@ -25,13 +31,12 @@
         string ContainerPropertyBindingsText { get; }
         string MoveUpButtonText { get; }
         string MoveDownButtonText { get; }
-        string ExpandButtonText { get; }
+        string OpenFileBrowserButtonText { get; }
         string CondenseButtonText { get; }
         string BindingElementTemplateMissingMessageText { get; }
         string BindingElementTemplateIsNotAssignableMessageText { get; }
         string ContainerPropertyBindingCondensedLabelFormat_Type_Source_Target_Template { get; }
         string ReportErrorButtonText { get; }
         string CreateDefaultDataSourceText { get; }
-        string DefaultDataSourceTemplate { get; }
     }
 }

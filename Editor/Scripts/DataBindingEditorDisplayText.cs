@@ -5,7 +5,17 @@ namespace JH.DataBinding.Editor
 {
     internal class DataBindingEditorDisplayText : IDataBindingEditorDisplayText
     {
+        public string AssetPathLabel => "Asset Path";
+        public string CreateNewDataSourceTitle => "Create new DataSource";
+        public string CreateDataSourceTypeToolTipText =>
+            "Enter the name of the DataSource to create.";
+
         public string HeavyCheckMark => "✔";
+
+        public string InvalidPathContent =>
+            "Please select a path inside the project tree structure.";
+
+        public string InvalidPathTitle => "Invalid Path";
         public string MissingDataSourcesErrorText =>
             $"No <b>data source</b> was found in this project.{Environment.NewLine}{Environment.NewLine}Please define at least one class that implements <b>INotifyDataSourceChanged</b> that you want this View to bind to.{Environment.NewLine}{Environment.NewLine}The simplest way to create a <b>data source</b> is by deriving from <b>DataSourceBase</b>.";
 
@@ -15,6 +25,9 @@ namespace JH.DataBinding.Editor
         public string NewDataSourceText => "New";
 
         public string NewDataSourceTooltip => "Create a new empty datasource.";
+
+        public string OKLabel => "OK";
+
         public string EditDataSourceText => "Edit";
 
         public string EditDataSourceTooltip => "Edit the sourcecode of the selected Datasource.";
@@ -49,7 +62,7 @@ namespace JH.DataBinding.Editor
         public string MoveUpButtonText => "▲";
         public string MoveDownButtonText => "▼";
 
-        public string ExpandButtonText => "…";
+        public string OpenFileBrowserButtonText => "…";
 
         public string CondenseButtonText => "↸";
 
@@ -63,10 +76,5 @@ namespace JH.DataBinding.Editor
         public string ReportErrorButtonText => "Report Error 🔗";
 
         public string CreateDefaultDataSourceText => "Create default DataSource";
-
-        public string DefaultDataSourceTemplate =>
-            File.ReadAllText(
-                "Packages/de.jochenheckl.unity.databinding/Editor/DefaultDataSourceTemplate.txt"
-            );
     }
 }

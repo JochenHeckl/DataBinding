@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -16,7 +16,9 @@ namespace JH.DataBinding.Editor
             );
 
             var options = sourceProperties
-                .Where(x => typeof(IEnumerable).IsAssignableFrom(x.PropertyType))
+                .Where(x =>
+                    typeof(IEnumerable<INotifyDataSourceChanged>).IsAssignableFrom(x.PropertyType)
+                )
                 .Select(x => x.Name)
                 .ToList();
 
