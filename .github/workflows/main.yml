@@ -14,7 +14,6 @@ jobs:
         unityVersion:
           - 6000.0.32f1
           - 2023.2.20f1
-          - 2022.3.55f1
         os:
           - ubuntu-latest
           # - windows-latest
