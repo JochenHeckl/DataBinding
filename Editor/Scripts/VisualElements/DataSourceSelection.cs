@@ -11,8 +11,6 @@ namespace JH.DataBinding.Editor
     {
         internal DataSourceSelection(View view, Action<Type> updateDataSourceType)
         {
-            this.ApplyDataSourceSelectionStyle();
-
             var validDataSources = DataBindingCommonData.GetValidDataSourceTypes();
 
             if (validDataSources.Length == 0)
