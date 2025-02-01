@@ -10,6 +10,8 @@ namespace JH.DataBinding.Editor
 {
     internal static class DataBindingCommonData
     {
+        public static string dataSourceTypeInspectorFilter { get; set; } = string.Empty;
+
         internal static readonly IDataBindingEditorDisplayText EditorDisplayText =
             new DataBindingEditorDisplayText();
 

@@ -9,6 +9,7 @@ namespace JH.DataBinding.Editor
         public string MissingDataSourcesErrorText =>
             $"No <b>data source</b> was found in this project.{Environment.NewLine}{Environment.NewLine}Please define at least one class that implements <b>INotifyDataSourceChanged</b> that you want this View to bind to.{Environment.NewLine}{Environment.NewLine}The simplest way to create a <b>data source</b> is by deriving from <b>DataSourceBase</b>.";
 
+        public string DataSourceTypeInspectorFilterLabel => "DataSource Type Filter";
         public string DataSourceTypeText => "DataSource Type";
 
         public string NewDataSourceText => "New";

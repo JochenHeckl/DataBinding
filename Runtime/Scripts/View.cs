@@ -8,7 +8,6 @@ namespace JH.DataBinding
     public class View : MonoBehaviour
     {
 #if UNITY_EDITOR
-        [HideInInspector]
         public SerializableType dataSourceType;
 #endif // UNITY_EDITOR
 

@@ -3,6 +3,56 @@
     --fontSizeLarger: 104%
 }
 
+.createDefaultDataSourceButton
+{
+    margin: 24px;
+    font-size: var(--fontSizeLarger);
+    white-space: normal;
+}
+
+.dataSourceSelectionButton
+{
+    min-width: 92px;
+    min-height: 22px;
+}
+
+.dataSourceSelectionButtonGroup
+{
+    flex-grow: 0;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.dataSourceFilterInput
+{
+    flex-grow: 1;
+    margin-right : 4;
+}
+
+.dataSourceSelectionDataSourceDropDown
+{
+    flex-grow: 1;
+    margin-right : 4;
+}
+
+.dataSourceSelectionFilterSection
+{
+    font-size: var(--fontSizeLarger);
+    margin-top: 4px;
+    flex-direction: Row;
+    flex-wrap: NoWrap;
+    justify-content: space-between;
+}
+
+.dataSourceSelectionSelectionSection
+{
+    font-size: var(--fontSizeLarger);
+    margin-top: 4px;
+    flex-direction: Row;
+    flex-wrap: NoWrap;
+    justify-content: space-between;
+}
+
 .errorMessageContainer {
     flex-grow: 0;
     padding: 12px;
@@ -15,27 +65,6 @@
 .errorMessageText {
     font-size: var(--fontSizeLarger);
     white-space: normal;
-}
-
-.createDefaultDataSourceButton
-{
-    margin: 24px;
-    font-size: var(--fontSizeLarger);
-    white-space: normal;
-}
-
-.dataSourceSelection
-{
-    font-size: var(--fontSizeLarger);
-    margin: 4px;
-    flex-direction: Row;
-    flex-wrap: NoWrap;
-    justify-content: SpaceBetween;
-}
-
-.dataSourceSelectionButtonGroup
-{
-    flex-direction: row;
 }
 
 /* .viewEditor {

@@ -4,6 +4,7 @@
     {
         string HeavyCheckMark { get; }
         string MissingDataSourcesErrorText { get; }
+        string DataSourceTypeInspectorFilterLabel { get; }
         string DataSourceTypeText { get; }
         string NewDataSourceText { get; }
         string NewDataSourceTooltip { get; }
