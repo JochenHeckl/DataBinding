@@ -50,9 +50,14 @@ namespace JH.DataBinding.Editor
                         .GetBindableComponentProperties(x, sourceType.PropertyType)
                         .Any()
                 )
-                .ToDictionary(x => DataBindingCommonData.GetComponentDisplayName(x), x => x);
+                .Select(x => new
+                {
+                    component = x,
+                    displayName = DataBindingCommonData.GetComponentDisplayName(x),
+                })
+                .ToArray();
 
-            var stringOptions = options.Keys.ToList();
+            var stringOptions = options.Select(x => x.displayName).ToList();
 
             var rootVisualElement = new DropdownField(
                 property.displayName,
@@ -66,9 +71,11 @@ namespace JH.DataBinding.Editor
 
             rootVisualElement.AddToClassList("unity-base-field__aligned");
 
-            rootVisualElement.RegisterValueChangedCallback(x =>
+            rootVisualElement.RegisterValueChangedCallback(changeEvent =>
             {
-                property.objectReferenceValue = options[x.newValue];
+                property.objectReferenceValue = options
+                    .FirstOrDefault(x => x.displayName == changeEvent.newValue)
+                    .component;
                 property.serializedObject.ApplyModifiedProperties();
             });
 
