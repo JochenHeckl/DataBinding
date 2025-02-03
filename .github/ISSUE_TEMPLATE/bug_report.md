@@ -23,16 +23,11 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
+**Please complete the following information:**
  - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
  - Version [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
-
+ - Unity Version [e.g. 2023.1.2]
+ - Your package-lock.json version of this package [e.g. "de.jochenheckl.unity.databinding": { .., "hash": "9a919a9920afd00938a0b2776b565492e161c3a9" }]
+ 
 **Additional context**
 Add any other context about the problem here.

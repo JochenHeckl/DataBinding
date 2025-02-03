@@ -42,3 +42,13 @@ graph LR
   <img src="Documentation~/Images/\ALookAtContainerBindings/ContainerBindings.png" width="400" height="240">
 
   Concerning user interface tool sets:  When it comes to handling not just static but dynamic content is where the wheat is separated from the chaff. Starting with some basic prefabs you will put together a nice little party panel for your characters in this tutorial.
+
+
+  ### Planned next steps:
+  - A 'Create New DataSource' button right next to the 'Edit DataSource' button, that creates a new simple datasource named after the GameObject's name the view is placed on.
+  - Look into a Generic View<> component that limits the types of the datasourcedropdown to types derived from the generic type
+  - Filtering and sorting (alphabetical name asc/desc, alphabetical fully qualified name asc/desc, alphabetical fully qualified name reversed asc/desc) of datasources to ease datasource selection in projects with a large amount of datasources.
+  - Improve automatic tests
+  - Add samples for new features
+  - Update existing samples 
+  - 

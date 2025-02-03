@@ -1,7 +1,7 @@
 {
   "name": "de.jochenheckl.unity.databinding",
   "displayName": "DataBinding",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "unity": "2021.2",
   "description": "DataBinding is a method of connecting a data model with user interface components, allowing changes in one to automatically reflect in the other.\n\nThis package supplies the means that will enable you to implement declarative user interfaces (== user interfaces that are a function of the underlying data that defines it). It's like WPF for Unity Game Objects.",
   "keywords": [
@@ -22,6 +22,7 @@
     "Declarative UI",
     "SOLID"
   ],
+  "category": "Editor Extensions",
   "author": {
     "name": "Jochen Heckl",
     "email": "jochen.heckl@gmail.com",
@@ -29,7 +30,7 @@
   },
   "licensesUrl": "https://raw.githubusercontent.com/JochenHeckl/DataBinding/main/LICENSE.md",
   "dependencies": {
-    "com.unity.test-framework": "1.4.3"
+    "com.unity.test-framework": "1.4.5"
   },
   "testtables": [
     "JH.DataBinding"

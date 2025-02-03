@@ -1,0 +1,8 @@
+using JH.DataBinding;
+
+public class {{name}}DataSource : DataSourceBase<{{name}DataSource>
+{
+    public bool BoolProperty { get; set; }
+    public int IntProperty { get; set; }
+    public string StringProperty { get; set; }
+}

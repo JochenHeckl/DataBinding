@@ -1,216 +1,268 @@
 using System;
+using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace JH.DataBinding.Editor
 {
     [CustomEditor(typeof(View), true)]
-    public class ViewEditor : ViewEditorBase
+    public class ViewEditor : UnityEditor.Editor
     {
         private View view;
+        private VisualElement editorRootElement;
 
-        public override void OnEnable()
+        public virtual void OnEnable()
         {
-            base.OnEnable();
-
             view = target as View;
 
-            if (view.dataSourceType.Type == null)
+            if (view.dataSourceType?.Type == null)
             {
-                view.dataSourceType.Type = GuessDataSourceTypeName(view.name, ValidDataSources);
+                var guessedDataSourceType = DataBindingCommonData.GuessDataSourceTypeName(
+                    view.name
+                );
+
+                if (guessedDataSourceType != null)
+                {
+                    Debug.Log(
+                        $"Guessing {guessedDataSourceType.Name} as data source type for view {view.name}."
+                    );
+
+                    HandleDataSourceTypeChanged(guessedDataSourceType);
+                }
             }
         }
 
         public override VisualElement CreateInspectorGUI()
         {
-            MakeEditorView();
+            editorRootElement = new VisualElement();
+            editorRootElement.styleSheets.Add(DataBindingEditorStyle.StyleSheet);
 
-            return EditorRootElement;
+            FillInRoot(editorRootElement);
+
+            editorRootElement.TrackSerializedObjectValue(serializedObject, HandleObjectChanged);
+
+            return editorRootElement;
         }
 
-        private void MakeEditorView()
+        private void FillInRoot(VisualElement root)
         {
             try
             {
-                InitDatabindingEditorRootElement();
+                root.Clear();
 
-                EditorRootElement.Add(
-                    MakeDataSourceSection(view.dataSourceType, HandleDataSourceTypeChanged)
-                );
+                var dataSourceSelection = new VisualElement();
+                FillInDataSourceSelection(dataSourceSelection);
+                root.Add(dataSourceSelection);
 
-                EditorRootElement.Add(MakeComponentPropertyBindings());
-                EditorRootElement.Add(MakeContainerPropertyBindings());
+                var componentPropertyBindings = new ComponentPropertyBindingListView();
+                componentPropertyBindings.Bind(serializedObject);
+                root.Add(componentPropertyBindings);
+
+                var containerPropertyBindings = new ContainerPropertyBindingListView();
+                containerPropertyBindings.Bind(serializedObject);
+                root.Add(containerPropertyBindings);
             }
             catch (Exception exception)
             {
-                EditorRootElement.Clear();
-                EditorRootElement.Add(MakeErrorReport(exception));
+                Debug.LogError(exception.Message);
+                root.Add(new InternalErrorReport(exception));
             }
         }
 
-        private VisualElement MakeComponentPropertyBindings()
+        private void FillInDataSourceSelection(VisualElement dataSourceSelectionRoot)
         {
-            return MakeBindingSection(
-                EditorDisplayText.ComponentPropertyBindingsText,
-                HandleAddComponentPropertyBinding,
-                view.componentPropertyBindings,
-                MakeComponentPropertyBindingVisualElement
-            );
-        }
+            var validDataSources = DataBindingCommonData.GetValidDataSourceTypes();
 
-        private void HandleAddComponentPropertyBinding()
-        {
-            view.componentPropertyBindings = view
-                .componentPropertyBindings.Append(
-                    new ComponentPropertyBinding() { DataSource = view.DataSource }
+            var filteredDataSources = validDataSources
+                .Where(x =>
+                    x.GetFriendlyName()
+                        .IndexOf(
+                            DataBindingCommonData.dataSourceTypeInspectorFilter,
+                            StringComparison.OrdinalIgnoreCase
+                        ) != -1
                 )
                 .ToArray();
 
-            StoreAndUpdateView();
-        }
-
-        private VisualElement MakeComponentPropertyBindingVisualElement(
-            ComponentPropertyBinding binding
-        )
-        {
-            return new ComponentPropertyBindingEditor(
-                EditorDisplayText,
-                view.dataSourceType.Type,
-                binding,
-                StoreAndUpdateView,
-                x => x.showExpanded,
-                HandleMoveBindingUp,
-                HandleMoveBindingDown,
-                HandleTogglePropertyExpansion,
-                HandleRemoveBinding
-            );
-        }
-
-        private void HandleMoveBindingUp(ComponentPropertyBinding binding)
-        {
-            view.componentPropertyBindings = MoveElementUp(view.componentPropertyBindings, binding)
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private void HandleMoveBindingDown(ComponentPropertyBinding binding)
-        {
-            view.componentPropertyBindings = MoveElementDown(
-                    view.componentPropertyBindings,
-                    binding
-                )
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private void HandleTogglePropertyExpansion(ComponentPropertyBinding binding)
-        {
-            binding.showExpanded = !binding.showExpanded;
-            StoreAndUpdateView();
-        }
-
-        private void HandleRemoveBinding(ComponentPropertyBinding binding)
-        {
-            view.componentPropertyBindings = view
-                .componentPropertyBindings.Where(x => x != binding)
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private VisualElement MakeContainerPropertyBindings()
-        {
-            return MakeBindingSection(
-                EditorDisplayText.ContainerPropertyBindingsText,
-                HandleAddContainerPropertyBinding,
-                view.containerPropertyBindings,
-                MakeContainerPropertyBindingVisualElement
-            );
-        }
-
-        private void HandleAddContainerPropertyBinding()
-        {
-            view.containerPropertyBindings = view
-                .containerPropertyBindings.Append(
-                    new ContainerPropertyBinding() { DataSource = view.DataSource }
-                )
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private VisualElement MakeContainerPropertyBindingVisualElement(
-            ContainerPropertyBinding binding
-        )
-        {
-            return new ContainerPropertyBindingEditor(
-                EditorDisplayText,
-                view.dataSourceType.Type,
-                binding,
-                StoreAndUpdateView,
-                x => x.showExpanded,
-                HandleMoveBindingUp,
-                HandleMoveBindingDown,
-                HandleTogglePropertyExpansion,
-                HandleRemoveBinding
-            );
-        }
-
-        private void HandleMoveBindingUp(ContainerPropertyBinding binding)
-        {
-            view.containerPropertyBindings = MoveElementUp(view.containerPropertyBindings, binding)
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private void HandleMoveBindingDown(ContainerPropertyBinding binding)
-        {
-            view.containerPropertyBindings = MoveElementDown(
-                    view.containerPropertyBindings,
-                    binding
-                )
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private void HandleTogglePropertyExpansion(ContainerPropertyBinding binding)
-        {
-            binding.showExpanded = !binding.showExpanded;
-            StoreAndUpdateView();
-        }
-
-        private void HandleRemoveBinding(ContainerPropertyBinding binding)
-        {
-            view.containerPropertyBindings = view
-                .containerPropertyBindings.Where(x => x != binding)
-                .ToArray();
-
-            StoreAndUpdateView();
-        }
-
-        private void HandleDataSourceTypeChanged(Type newDataSourceType)
-        {
-            if ((view != null) && (view.dataSourceType.Type != newDataSourceType))
+            if (validDataSources.Length == 0)
             {
-                view.dataSourceType.Type = newDataSourceType;
-
-                StoreAndUpdateView();
+                FillInMissingDataSource(dataSourceSelectionRoot);
+                return;
             }
+
+            FillInDataSourceSelectionFilterSection(dataSourceSelectionRoot);
+
+            FillInDataSourceSelectionSelectionSection(dataSourceSelectionRoot, filteredDataSources);
         }
 
-        private void StoreAndUpdateView()
+        private void FillInDataSourceSelectionFilterSection(VisualElement dataSourceSelectionRoot)
         {
-            EditorUtility.SetDirty(view);
-            AssetDatabase.SaveAssetIfDirty(view);
+            var filterSection = new VisualElement();
+            filterSection.AddToClassList(DataBindingEditorStyle.dataSourceSelectionFilterSection);
 
-            MakeEditorView();
+            var filterInput = new TextField(
+                DataBindingCommonData.EditorDisplayText.DataSourceTypeInspectorFilterLabel
+            )
+            {
+                value = DataBindingCommonData.dataSourceTypeInspectorFilter,
+            };
 
-            EditorRootElement.MarkDirtyRepaint();
+            filterInput.AddToClassList("unity-base-field__aligned");
+
+            filterInput.RegisterCallback<FocusOutEvent>(_ =>
+            {
+                if (DataBindingCommonData.dataSourceTypeInspectorFilter != filterInput.value)
+                {
+                    DataBindingCommonData.dataSourceTypeInspectorFilter = filterInput.value;
+                    FillInRoot(editorRootElement);
+                }
+            });
+
+            filterInput.RegisterCallback<KeyDownEvent>(keyDown =>
+            {
+                if (keyDown.keyCode == KeyCode.Return || keyDown.keyCode == KeyCode.KeypadEnter)
+                {
+                    DataBindingCommonData.dataSourceTypeInspectorFilter = filterInput.value;
+                    FillInRoot(editorRootElement);
+                }
+            });
+
+            filterInput.AddToClassList(DataBindingEditorStyle.dataSourceFilterInput);
+            filterSection.Add(filterInput);
+
+            var buttonGroup = new VisualElement();
+            buttonGroup.AddToClassList(DataBindingEditorStyle.dataSourceSelectionButtonGroup);
+
+            var newButton = new Button(
+                () => DataBindingEditorOperations.CreateNewDataSource(view.name)
+            )
+            {
+                text = DataBindingCommonData.EditorDisplayText.NewDataSourceText,
+                tooltip = DataBindingCommonData.EditorDisplayText.NewDataSourceTooltip,
+            };
+
+            newButton.AddToClassList(DataBindingEditorStyle.dataSourceSelectionButton);
+
+            buttonGroup.Add(newButton);
+
+            filterSection.Add(buttonGroup);
+
+            dataSourceSelectionRoot.Add(filterSection);
+        }
+
+        private void FillInDataSourceSelectionSelectionSection(
+            VisualElement dataSourceSelectionRoot,
+            Type[] validDataSources
+        )
+        {
+            var selectionSection = new VisualElement();
+            selectionSection.AddToClassList(
+                DataBindingEditorStyle.dataSourceSelectionSelectionSection
+            );
+
+            var choises = validDataSources.Select(x => x.GetFriendlyName()).ToList();
+            var currentValue = view.dataSourceType.Type.GetFriendlyName();
+            var filterConditionedDefault = choises.Contains(currentValue)
+                ? currentValue
+                : choises.First();
+
+            var dataSourceDropDown = new DropdownField(
+                label: DataBindingCommonData.EditorDisplayText.DataSourceTypeText,
+                choices: choises,
+                defaultValue: filterConditionedDefault
+            );
+
+            // dataSourceDropDown.ClearClassList();
+            dataSourceDropDown.AddToClassList("unity-base-field__aligned");
+            dataSourceDropDown.AddToClassList(
+                DataBindingEditorStyle.dataSourceSelectionDataSourceDropDown
+            );
+
+            dataSourceDropDown.RegisterValueChangedCallback(changeEvent =>
+            {
+                HandleDataSourceTypeChanged(
+                    validDataSources.FirstOrDefault(x => x.Name == changeEvent.newValue)
+                );
+            });
+
+            selectionSection.Add(dataSourceDropDown);
+
+            var buttonGroup = new VisualElement();
+            buttonGroup.AddToClassList(DataBindingEditorStyle.dataSourceSelectionButtonGroup);
+
+            var dataSourceSourceFile = DataBindingCommonData.FindDataSourceSourceFile(
+                view.dataSourceType.Type
+            );
+
+            var editButton = new Button(
+                () => DataBindingEditorOperations.OpenDataSourceEditor(dataSourceSourceFile)
+            )
+            {
+                text = DataBindingCommonData.EditorDisplayText.EditDataSourceText,
+                tooltip = DataBindingCommonData.EditorDisplayText.EditDataSourceTooltip,
+            };
+
+            editButton.AddToClassList(DataBindingEditorStyle.dataSourceSelectionButton);
+
+            editButton.SetEnabled(File.Exists(dataSourceSourceFile));
+
+            buttonGroup.Add(editButton);
+
+            selectionSection.Add(buttonGroup);
+
+            dataSourceSelectionRoot.Add(selectionSection);
+        }
+
+        private void FillInMissingDataSource(VisualElement dataSourceSelectionRoot)
+        {
+            var labelContainer = new VisualElement();
+            labelContainer.AddToClassList(DataBindingEditorStyle.errorMessageContainer);
+
+            var textErrorContent = new Label(
+                DataBindingCommonData.EditorDisplayText.MissingDataSourcesErrorText
+            );
+
+            textErrorContent.AddToClassList(DataBindingEditorStyle.errorMessageText);
+
+            labelContainer.Add(textErrorContent);
+
+            var createDataSourceButton = new Button(() =>
+            {
+                DataBindingEditorOperations.CreateNewDataSource(view.name);
+                HandleDataSourceTypeChanged(null);
+            });
+
+            createDataSourceButton.text = DataBindingCommonData
+                .EditorDisplayText
+                .CreateDefaultDataSourceText;
+
+            createDataSourceButton.AddToClassList(
+                DataBindingEditorStyle.createDefaultDataSourceButton
+            );
+
+            labelContainer.Add(createDataSourceButton);
+
+            dataSourceSelectionRoot.Add(labelContainer);
+        }
+
+        private void HandleObjectChanged(SerializedObject serializedObject)
+        {
+            serializedObject.ApplyModifiedProperties();
+            FillInRoot(editorRootElement);
+        }
+
+        private void HandleDataSourceTypeChanged(Type newType)
+        {
+            if (view.dataSourceType.Type != newType)
+            {
+                EditorUtility.SetDirty(view);
+                view.dataSourceType.Type = newType;
+                serializedObject.ApplyModifiedProperties();
+
+                FillInRoot(editorRootElement);
+            }
         }
     }
 }

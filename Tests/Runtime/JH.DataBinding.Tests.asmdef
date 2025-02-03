@@ -1,0 +1,19 @@
+{
+    "name": "JH.DataBinding.Tests",
+    "rootNamespace": "JH.DataBinding.Tests",
+    "references": [
+        "JH.DataBinding"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],    
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
