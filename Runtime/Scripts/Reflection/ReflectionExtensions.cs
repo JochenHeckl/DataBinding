@@ -8,7 +8,7 @@ namespace JH.DataBinding
     public enum PathResolveOperation
     {
         GetValue,
-        SetValue
+        SetValue,
     }
 
     public static class ReflectionExtensions

@@ -1,0 +1,22 @@
+{
+    "name": "JH.DataBinding.Editor.Tests",
+    "rootNamespace": "JH.DataBinding.Editor.Tests",
+    "references": [
+        "JH.DataBinding",
+        "JH.DataBinding.Editor"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

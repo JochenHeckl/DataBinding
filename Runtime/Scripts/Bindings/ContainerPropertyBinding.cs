@@ -9,19 +9,15 @@ namespace JH.DataBinding
     [Serializable]
     public class ContainerPropertyBinding
     {
-#if UNITY_EDITOR
         [SerializeField]
-        public bool showExpanded;
-#endif
+        [EnumerableBindingSourcePath]
+        private string sourcePath;
 
         [SerializeField]
         private Transform targetContainer;
 
         [SerializeField]
         private View elementTemplate;
-
-        [SerializeField]
-        private string sourcePath;
 
         private object dataSource;
 
@@ -111,9 +107,9 @@ namespace JH.DataBinding
         private void RemoveSuperfluousChildren(int numberOfChildrenToKeep)
         {
             for (
-              var childIndex = numberOfChildrenToKeep;
-              childIndex < TargetContainer.childCount;
-              ++childIndex
+                var childIndex = numberOfChildrenToKeep;
+                childIndex < TargetContainer.childCount;
+                ++childIndex
             )
             {
                 UnityEngine.Object.Destroy(TargetContainer.GetChild(childIndex).gameObject);

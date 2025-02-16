@@ -2,27 +2,26 @@ using System;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace JH.DataBinding
 {
     [Serializable]
     public class ComponentPropertyBinding
     {
-#if UNITY_EDITOR
         [SerializeField]
-        public bool showExpanded;
-#endif
+        [BindingSourcePath]
+        private string sourcePath;
 
         [SerializeField]
         private GameObject targetGameObject;
 
         [SerializeField]
+        [BindingTargetComponent]
         private Component targetComponent;
 
         [SerializeField]
-        private string sourcePath;
-
-        [SerializeField]
+        [BindingTargetPath]
         private string targetPath;
 
         private object dataSource;
@@ -35,8 +34,12 @@ namespace JH.DataBinding
             get => dataSource;
             set
             {
-                dataSource = value;
-                BindSource();
+                if (dataSource != value)
+                {
+                    dataSource = value;
+
+                    BindSource();
+                }
             }
         }
 
@@ -45,8 +48,12 @@ namespace JH.DataBinding
             get => sourcePath;
             set
             {
-                sourcePath = value;
-                BindSource();
+                if (sourcePath != value)
+                {
+                    sourcePath = value;
+
+                    BindSource();
+                }
             }
         }
 
@@ -55,10 +62,13 @@ namespace JH.DataBinding
             get => targetGameObject;
             set
             {
-                targetGameObject = value;
-                targetComponent = null;
+                if (targetGameObject != value)
+                {
+                    targetGameObject = value;
+                    targetComponent = null;
 
-                BindTarget();
+                    BindTarget();
+                }
             }
         }
         public Component TargetComponent
@@ -66,8 +76,13 @@ namespace JH.DataBinding
             get => targetComponent;
             set
             {
-                targetComponent = value;
-                BindTarget();
+                if (targetComponent != value)
+                {
+                    targetComponent = value;
+                    targetGameObject = value.gameObject;
+
+                    BindTarget();
+                }
             }
         }
 
@@ -76,8 +91,12 @@ namespace JH.DataBinding
             get => targetPath;
             set
             {
-                targetPath = value;
-                BindTarget();
+                if (targetPath != value)
+                {
+                    targetPath = value;
+
+                    BindTarget();
+                }
             }
         }
 

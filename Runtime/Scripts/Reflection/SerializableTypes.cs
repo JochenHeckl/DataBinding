@@ -8,33 +8,33 @@ namespace JH.DataBinding
     [Serializable]
     public class SerializableTypes
     {
-        public Type this [ int i ]
+        public Type this[int i]
         {
             get
             {
-                if ( !String.IsNullOrEmpty( assemblyQualifiedName[i] ) )
+                if (!String.IsNullOrEmpty(assemblyQualifiedName[i]))
                 {
-                    return Type.GetType( assemblyQualifiedName[i] );
+                    return Type.GetType(assemblyQualifiedName[i]);
                 }
 
                 return null;
             }
             set
             {
-                if ( value != null )
+                if (value != null)
                 {
-                    assemblyQualifiedName[ i ] = value.AssemblyQualifiedName;
+                    assemblyQualifiedName[i] = value.AssemblyQualifiedName;
                 }
                 else
                 {
-                    assemblyQualifiedName[ i ] = string.Empty;
+                    assemblyQualifiedName[i] = string.Empty;
                 }
             }
         }
 
         public IEnumerable<Type> Types
         {
-            get { return assemblyQualifiedName.Select( x => Type.GetType( x ) ); }
+            get { return assemblyQualifiedName.Select(x => Type.GetType(x)); }
         }
 
         [SerializeField]
