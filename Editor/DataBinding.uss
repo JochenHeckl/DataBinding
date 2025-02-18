@@ -26,12 +26,14 @@
 .dataSourceFilterInput
 {
     flex-grow: 1;
+    flex-shrink: 1;
     margin-right : 4;
 }
 
 .dataSourceSelectionDataSourceDropDown
 {
     flex-grow: 1;
+    flex-shrink: 1;
     margin-right : 4;
 }
 
