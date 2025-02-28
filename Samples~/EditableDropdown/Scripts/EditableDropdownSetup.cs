@@ -1,5 +1,3 @@
-using System;
-using Unity.Collections;
 using UnityEngine;
 
 namespace JH.DataBinding.Example.EditableDropdown
@@ -8,15 +6,15 @@ namespace JH.DataBinding.Example.EditableDropdown
     {
         public View view;
 
-        private ExampleDataSource dataSource;
+        private EditableDropdownDataSource dataSource;
 
         void Start()
         {
-            dataSource = new ExampleDataSource()
+            dataSource = new EditableDropdownDataSource()
             {
                 InputValueChanged = HandleInputValueChanged,
                 DropdownOptions = new string[] { "Apple", "Pear", "Orange", "Plum" },
-                InputValue = "Pear"
+                InputValue = "Pear",
             };
 
             view.DataSource = dataSource;
