@@ -8,10 +8,23 @@ namespace JH.DataBinding.Editor
     {
         internal static void CreateNewDataSource(string currentViewName)
         {
-            string selectedPath = EditorUtility.OpenFilePanelWithFilters(
+            var pathToOpen = Application.dataPath;
+            Object selectedObject = Selection.activeObject;
+
+            if (selectedObject != null)
+            {
+                var selectedObjectPath = AssetDatabase.GetAssetPath(selectedObject);
+
+                if (!string.IsNullOrEmpty(selectedObjectPath))
+                {
+                    pathToOpen = Path.GetDirectoryName(selectedObjectPath);
+                }
+            }
+
+            string selectedPath = EditorUtility.OpenFilePanel(
                 "Select Asset Location",
-                Path.Combine("Assets", $"{currentViewName}DataSource.cs"),
-                new string[] { "CSharp Script", "cs", "All Files", "*" }
+                Path.Combine(pathToOpen, $"{currentViewName}DataSource.cs"),
+                "cs"
             );
 
             if (!string.IsNullOrEmpty(selectedPath))
