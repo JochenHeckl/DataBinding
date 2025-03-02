@@ -76,6 +76,12 @@ namespace JH.DataBinding.Editor
         {
             var validDataSources = DataBindingCommonData.GetValidDataSourceTypes();
 
+            if (validDataSources.Length == 0)
+            {
+                FillInMissingDataSource(dataSourceSelectionRoot);
+                return;
+            }
+
             var filteredDataSources = validDataSources
                 .Where(x =>
                     x.GetFriendlyName()
@@ -85,12 +91,6 @@ namespace JH.DataBinding.Editor
                         ) != -1
                 )
                 .ToArray();
-
-            if (validDataSources.Length == 0)
-            {
-                FillInMissingDataSource(dataSourceSelectionRoot);
-                return;
-            }
 
             FillInDataSourceSelectionFilterSection(dataSourceSelectionRoot);
 
@@ -114,15 +114,6 @@ namespace JH.DataBinding.Editor
             filterInput.RegisterCallback<FocusOutEvent>(_ =>
             {
                 if (DataBindingCommonData.dataSourceTypeInspectorFilter != filterInput.value)
-                {
-                    DataBindingCommonData.dataSourceTypeInspectorFilter = filterInput.value;
-                    FillInRoot(editorRootElement);
-                }
-            });
-
-            filterInput.RegisterCallback<KeyDownEvent>(keyDown =>
-            {
-                if (keyDown.keyCode == KeyCode.Return || keyDown.keyCode == KeyCode.KeypadEnter)
                 {
                     DataBindingCommonData.dataSourceTypeInspectorFilter = filterInput.value;
                     FillInRoot(editorRootElement);
@@ -157,6 +148,15 @@ namespace JH.DataBinding.Editor
             Type[] validDataSources
         )
         {
+            if (validDataSources.Length == 0)
+            {
+                var label = new Label(DataBindingCommonData.EditorDisplayText.NoDataSourcesText);
+                label.AddToClassList(DataBindingEditorStyle.errorMessageContainer);
+
+                dataSourceSelectionRoot.Add(label);
+                return;
+            }
+
             var selectionSection = new VisualElement();
             selectionSection.AddToClassList(
                 DataBindingEditorStyle.dataSourceSelectionSelectionSection
@@ -166,7 +166,7 @@ namespace JH.DataBinding.Editor
             var currentValue = view.dataSourceType.Type.GetFriendlyName();
             var filterConditionedDefault = choises.Contains(currentValue)
                 ? currentValue
-                : choises.First();
+                : choises.FirstOrDefault();
 
             var dataSourceDropDown = new DropdownField(
                 label: DataBindingCommonData.EditorDisplayText.DataSourceTypeText,

@@ -38,5 +38,6 @@
         string ContainerPropertyBindingCondensedLabelFormat_Type_Source_Target_Template { get; }
         string ReportErrorButtonText { get; }
         string CreateDefaultDataSourceText { get; }
+        string NoDataSourcesText { get; }
     }
 }

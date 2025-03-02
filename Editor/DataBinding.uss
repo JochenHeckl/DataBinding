@@ -26,12 +26,14 @@
 .dataSourceFilterInput
 {
     flex-grow: 1;
+    flex-shrink: 1;
     margin-right : 4;
 }
 
 .dataSourceSelectionDataSourceDropDown
 {
     flex-grow: 1;
+    flex-shrink: 1;
     margin-right : 4;
 }
 
@@ -55,8 +57,8 @@
 
 .errorMessageContainer {
     flex-grow: 0;
-    padding: 12px;
-    margin: 12px;
+    padding: 8px;
+    margin: 8px;
     border-color: var(--errorRed);
     border-radius: 8px;
     border-width: 2px;
