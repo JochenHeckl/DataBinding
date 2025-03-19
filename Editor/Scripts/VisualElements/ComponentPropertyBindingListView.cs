@@ -8,7 +8,7 @@ namespace JH.DataBinding.Editor
     {
         public ComponentPropertyBindingListView()
         {
-            // TODO: think abou how to apply styles in general
+            // TODO: think about how to apply styles in general
             this.ApplyBindingContainerStyle();
 
             virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
@@ -16,15 +16,17 @@ namespace JH.DataBinding.Editor
 
             headerTitle = DataBindingCommonData.EditorDisplayText.ComponentPropertyBindingsText;
             showFoldoutHeader = true;
-            bindingSourceSelectionMode = BindingSourceSelectionMode.AutoAssign;
             reorderable = true;
             reorderMode = ListViewReorderMode.Animated;
             selectionType = SelectionType.Single;
             showBoundCollectionSize = true;
             showAddRemoveFooter = true;
             showBorder = true;
+#if UNITY_2023_3_OR_NEWER
+            bindingSourceSelectionMode = BindingSourceSelectionMode.AutoAssign;
             allowAdd = true;
             allowRemove = true;
+#endif // UNITY_2023_3_OR_NEWER
         }
     }
 }
