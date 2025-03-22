@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,30 +22,22 @@ namespace JH.DataBinding.Editor
                 }
             }
 
-            string selectedPath = EditorUtility.OpenFilePanel(
+            var viewNameWithoutSpaces = new string(
+                currentViewName.ToCharArray().Where(x => !char.IsWhiteSpace(x)).ToArray()
+            );
+
+            string selectedPath = EditorUtility.SaveFilePanelInProject(
                 "Select Asset Location",
-                Path.Combine(pathToOpen, $"{currentViewName}DataSource.cs"),
-                "cs"
+                $"{viewNameWithoutSpaces}DataSource.cs",
+                "cs",
+                pathToOpen
             );
 
             if (!string.IsNullOrEmpty(selectedPath))
             {
-                if (!selectedPath.StartsWith(Application.dataPath))
-                {
-                    EditorUtility.DisplayDialog(
-                        DataBindingCommonData.EditorDisplayText.InvalidPathTitle,
-                        DataBindingCommonData.EditorDisplayText.InvalidPathContent,
-                        DataBindingCommonData.EditorDisplayText.OKLabel
-                    );
-
-                    return;
-                }
-
-                var dedicatedClassName = Path.GetFileNameWithoutExtension(selectedPath);
-
                 var dataSourceCode = DataBindingCommonData.DefaultDataSourceTemplate.Replace(
                     DataBindingCommonData.DefaultDataSourceTemplateNamePlaceHolder,
-                    dedicatedClassName
+                    viewNameWithoutSpaces
                 );
 
                 File.WriteAllText(selectedPath, dataSourceCode);
