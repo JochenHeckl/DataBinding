@@ -8,14 +8,13 @@ namespace JH.DataBinding
     public class View : MonoBehaviour
     {
 #if UNITY_EDITOR
+        [DataSourceType]
         public SerializableType dataSourceType;
 #endif // UNITY_EDITOR
 
-        // [HideInInspector]
         public ComponentPropertyBinding[] componentPropertyBindings =
             Array.Empty<ComponentPropertyBinding>();
 
-        // [HideInInspector]
         public ContainerPropertyBinding[] containerPropertyBindings =
             Array.Empty<ContainerPropertyBinding>();
 

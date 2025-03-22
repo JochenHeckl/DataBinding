@@ -12,7 +12,7 @@
 
 .dataSourceSelectionButton
 {
-    min-width: 92px;
+    min-width: 64px;
     min-height: 22px;
 }
 
