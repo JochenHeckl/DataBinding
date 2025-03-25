@@ -105,7 +105,6 @@ namespace JH.DataBinding.Editor
 
             filterInput.AddToClassList("unity-base-field__aligned");
 
-            // filterInput.RegisterCallback<FocusOutEvent>(_ =>
             filterInput.RegisterValueChangedCallback(_ =>
             {
                 if (DataBindingCommonData.dataSourceTypeInspectorFilter != filterInput.value)
@@ -187,7 +186,6 @@ namespace JH.DataBinding.Editor
                 defaultValue: filterConditionedDefault
             );
 
-            // dataSourceDropDown.ClearClassList();
             dataSourceDropDown.AddToClassList("unity-base-field__aligned");
             dataSourceDropDown.AddToClassList(
                 DataBindingEditorStyle.dataSourceSelectionDataSourceDropDown
