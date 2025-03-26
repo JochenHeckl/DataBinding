@@ -62,7 +62,7 @@ namespace JH.DataBinding
                 return "None";
             }
 
-            string friendlyName = type.Name;
+            string friendlyName = TypeAliases.TryGetValue(type, out var alias) ? alias : type.Name;
 
             if (type.IsGenericType)
             {
@@ -74,7 +74,8 @@ namespace JH.DataBinding
 
                 for (int i = 0; i < typeParameters.Length; ++i)
                 {
-                    string typeParamName = typeParameters[i].Name;
+                    Type typeParam = typeParameters[i];
+                    string typeParamName = TypeAliases.TryGetValue(typeParam, out alias) ? alias : typeParam.Name;
                     friendlyName += (i == 0 ? typeParamName : "," + typeParamName);
                 }
 
@@ -283,5 +284,23 @@ namespace JH.DataBinding
 
             return type;
         }
+
+        private static readonly Dictionary<Type, string> TypeAliases = new()
+        {
+            {typeof(sbyte), "sbyte"},
+            {typeof(byte), "byte"},
+            {typeof(short), "short"},
+            {typeof(ushort), "ushort"},
+            {typeof(int), "int"},
+            {typeof(uint), "uint"},
+            {typeof(long), "long"},
+            {typeof(ulong), "ulong"},
+            {typeof(float), "float"},
+            {typeof(double), "double"},
+            {typeof(bool), "bool"},
+            {typeof(char), "char"},
+            {typeof(string), "string"},
+            {typeof(object), "object"},
+        };
     }
 }
