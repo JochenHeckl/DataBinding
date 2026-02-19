@@ -66,7 +66,7 @@ namespace JH.DataBinding
 
             if (type.IsGenericType)
             {
-                friendlyName = friendlyName.Split('`').First();
+                friendlyName = friendlyName.Split('`')[0];
 
                 friendlyName += "<";
 
@@ -75,7 +75,9 @@ namespace JH.DataBinding
                 for (int i = 0; i < typeParameters.Length; ++i)
                 {
                     Type typeParam = typeParameters[i];
-                    string typeParamName = TypeAliases.TryGetValue(typeParam, out alias) ? alias : typeParam.Name;
+                    string typeParamName = TypeAliases.TryGetValue(typeParam, out alias)
+                        ? alias
+                        : typeParam.Name;
                     friendlyName += (i == 0 ? typeParamName : "," + typeParamName);
                 }
 
@@ -103,7 +105,7 @@ namespace JH.DataBinding
             var pathFragments = path.Split('.');
             var fragmentInstance = instance;
 
-            foreach (var fragmentPath in pathFragments.Take(pathFragments.Count() - 1))
+            foreach (var fragmentPath in pathFragments.Take(pathFragments.Length - 1))
             {
                 if (fragmentInstance == null)
                 {
@@ -187,6 +189,14 @@ namespace JH.DataBinding
 
         public static object InvokeGetAccessChain(this MethodInfo[] accessors, object instance)
         {
+            if (accessors.Length == 0)
+            {
+                throw new ArgumentException(
+                    "Accessors array must contain at least one element.",
+                    nameof(accessors)
+                );
+            }
+
             if (instance == null)
             {
                 return null;
@@ -199,7 +209,7 @@ namespace JH.DataBinding
                 currentInstance = getter.Invoke(currentInstance, null);
             }
 
-            return accessors.Last().Invoke(currentInstance, null);
+            return accessors[^1].Invoke(currentInstance, null);
         }
 
         public static void InvokeSetAccessChain(
@@ -208,6 +218,14 @@ namespace JH.DataBinding
             params object[] values
         )
         {
+            if (accessors.Length == 0)
+            {
+                throw new ArgumentException(
+                    "Accessors array must contain at least one element.",
+                    nameof(accessors)
+                );
+            }
+
             if (instance == null)
             {
                 throw new ArgumentNullException(nameof(instance));
@@ -220,7 +238,7 @@ namespace JH.DataBinding
                 currentInstance = getter.Invoke(currentInstance, null);
             }
 
-            var setter = accessors.Last();
+            var setter = accessors[^1];
             setter.Invoke(currentInstance, values);
         }
 
@@ -232,7 +250,10 @@ namespace JH.DataBinding
 
             while (currentDerived != typeof(object))
             {
-                if (baseType == currentDerived || HasAnyInterfaces(currentDerived, baseType))
+                if (
+                    baseType == currentDerived
+                    || currentDerived.ImplementsGenericInterfaceDefinition(baseType)
+                )
                 {
                     return true;
                 }
@@ -250,57 +271,47 @@ namespace JH.DataBinding
             return false;
         }
 
-        private static bool HasAnyInterfaces(Type type, Type interfaceType)
+        private static bool ImplementsGenericInterfaceDefinition(this Type type, Type interfaceType)
         {
-            return type.GetInterfaces()
-                .Any(childInterface =>
-                {
-                    if (childInterface == interfaceType)
-                    {
-                        return true;
-                    }
+            foreach (var implementedInterface in type.GetInterfaces())
+            {
+                var candidate = implementedInterface.IsGenericType
+                    ? implementedInterface.GetGenericTypeDefinition()
+                    : implementedInterface;
 
-                    var currentInterface = childInterface.IsGenericType
-                        ? childInterface.GetGenericTypeDefinition()
-                        : childInterface;
+                if (candidate == interfaceType)
+                    return true;
+            }
 
-                    return currentInterface == interfaceType;
-                });
+            return false;
         }
 
         private static Type ResolveGenericTypeDefinition(Type type)
         {
-            var shouldUseGenericType = true;
-
-            if (type.IsGenericType && type.GetGenericTypeDefinition() != type)
+            if (type is null)
             {
-                shouldUseGenericType = false;
+                throw new ArgumentNullException(nameof(type), "Given type must not be null.");
             }
 
-            if (type.IsGenericType && shouldUseGenericType)
-            {
-                type = type.GetGenericTypeDefinition();
-            }
-
-            return type;
+            return type.IsGenericType ? type.GetGenericTypeDefinition() : type;
         }
 
         private static readonly Dictionary<Type, string> TypeAliases = new()
         {
-            {typeof(sbyte), "sbyte"},
-            {typeof(byte), "byte"},
-            {typeof(short), "short"},
-            {typeof(ushort), "ushort"},
-            {typeof(int), "int"},
-            {typeof(uint), "uint"},
-            {typeof(long), "long"},
-            {typeof(ulong), "ulong"},
-            {typeof(float), "float"},
-            {typeof(double), "double"},
-            {typeof(bool), "bool"},
-            {typeof(char), "char"},
-            {typeof(string), "string"},
-            {typeof(object), "object"},
+            { typeof(sbyte), "sbyte" },
+            { typeof(byte), "byte" },
+            { typeof(short), "short" },
+            { typeof(ushort), "ushort" },
+            { typeof(int), "int" },
+            { typeof(uint), "uint" },
+            { typeof(long), "long" },
+            { typeof(ulong), "ulong" },
+            { typeof(float), "float" },
+            { typeof(double), "double" },
+            { typeof(bool), "bool" },
+            { typeof(char), "char" },
+            { typeof(string), "string" },
+            { typeof(object), "object" },
         };
     }
 }

@@ -77,6 +77,11 @@ namespace JH.DataBinding
                 && (TargetContainer != null)
             )
             {
+                if (dataSource is null)
+                {
+                    return;
+                }
+
                 var boundInstances = (
                     (
                         dataSourcePropertyAccessors.InvokeGetAccessChain(dataSource)

@@ -17,16 +17,16 @@ namespace JH.DataBinding.Examples.ContainerBindings.Tutorial
         {
             var partyViewModel = new PartyViewModel()
             {
-                Characters = Enumerable.Range(1, 4).Select(x => MakeCharacterData(x)).ToArray()
+                Characters = Enumerable.Range(1, 4).Select(x => MakeCharacterData(x)).ToArray(),
             };
 
-            partyView = GameObject.Instantiate<View>(partyViewTemplate, partyViewContainer);
+            partyView = Instantiate(partyViewTemplate, partyViewContainer);
             partyView.DataSource = partyViewModel;
         }
 
         private CharacterViewModel MakeCharacterData(int characterCreationIndex)
         {
-            var charcterClasses = new string[] { "Mage", "Priest", "Rogue", "Warrior", };
+            var charcterClasses = new string[] { "Mage", "Priest", "Rogue", "Warrior" };
 
             var characterLevel = Random.Range(1, 10);
 
@@ -37,7 +37,7 @@ namespace JH.DataBinding.Examples.ContainerBindings.Tutorial
                 Level = characterLevel,
                 LevelProgress = Random.Range(0f, 1f),
                 Attributes = MakeAttributes(characterLevel),
-                CharacterImage = theOneAndOnlyCharacterImage
+                CharacterImage = theOneAndOnlyCharacterImage,
             };
         }
 
@@ -54,14 +54,11 @@ namespace JH.DataBinding.Examples.ContainerBindings.Tutorial
             };
 
             return attributes
-                .Select(
-                    x =>
-                        new AttributeViewModel()
-                        {
-                            Name = x,
-                            Value = Random.Range(1, 6 + characterLevel / 6)
-                        }
-                )
+                .Select(x => new AttributeViewModel()
+                {
+                    Name = x,
+                    Value = Random.Range(1, 6 + characterLevel / 6),
+                })
                 .ToArray();
         }
     }
