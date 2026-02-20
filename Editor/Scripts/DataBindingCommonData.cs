@@ -25,18 +25,18 @@ namespace JH.DataBinding.Editor
         {
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
+            bool DataSourceFilterFunc(Type x) =>
+                !x.IsAbstract
+                && !x.IsGenericType
+                && !x.IsInterface
+                && x.InheritsOrImplements(typeof(INotifyDataSourceChanged));
+
             return assemblies
                 .Where(x => !x.IsDynamic)
                 .SelectMany(x => x.ExportedTypes)
                 .Where(DataSourceFilterFunc)
                 .OrderBy(x => x.GetFriendlyName())
                 .ToArray();
-
-            bool DataSourceFilterFunc(Type x) =>
-                !x.IsAbstract
-                && !x.IsGenericType
-                && !x.IsInterface
-                && x.InheritsOrImplements(typeof(INotifyDataSourceChanged));
         }
 
         internal static Type GuessDataSourceTypeName(string viewName)

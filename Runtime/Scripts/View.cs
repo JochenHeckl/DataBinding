@@ -20,13 +20,13 @@ namespace JH.DataBinding
 
         private INotifyDataSourceChanged dataSource;
 
-        public void OnEnable()
+        public virtual void OnEnable()
         {
             BindBindingDataSources(dataSource);
             UpdateBindings();
         }
 
-        public void OnDestroy()
+        public virtual void OnDestroy()
         {
             if (DataSource != null)
             {
