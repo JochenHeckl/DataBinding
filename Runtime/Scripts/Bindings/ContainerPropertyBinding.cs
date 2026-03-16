@@ -111,13 +111,9 @@ namespace JH.DataBinding
 
         private void RemoveSuperfluousChildren(int numberOfChildrenToKeep)
         {
-            for (
-                var childIndex = numberOfChildrenToKeep;
-                childIndex < TargetContainer.childCount;
-                ++childIndex
-            )
+            while (TargetContainer.childCount > numberOfChildrenToKeep)
             {
-                UnityEngine.Object.Destroy(TargetContainer.GetChild(childIndex).gameObject);
+                UnityEngine.Object.DestroyImmediate(TargetContainer.GetChild(0).gameObject);
             }
         }
     }
