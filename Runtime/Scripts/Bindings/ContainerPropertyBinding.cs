@@ -101,9 +101,9 @@ namespace JH.DataBinding
             }
         }
 
-        private void AddMissingChildren(int numRequiredChildren)
+        private void AddMissingChildren(int numberOfRequiredChildren)
         {
-            while (TargetContainer.childCount < numRequiredChildren)
+            while (TargetContainer.childCount < numberOfRequiredChildren)
             {
                 UnityEngine.Object.Instantiate(ElementTemplate, TargetContainer);
             }
