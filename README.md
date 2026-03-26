@@ -1,10 +1,13 @@
-## Unity DataBinding
+# Unity DataBinding
 
-### What is Unity DataBinding?
+Bind your GameObjects directly to your data models — clean, reactive, and maintainable.
 
-DataBinding is a method of connecting a data model with user interface components, allowing changes in one to automatically reflect in the other.
+Updating GameObjects manually is:
+- repetitive
+- error-prone
+- hard to maintain
 
-This package supplies the means that will enable you to implement declarative user interfaces (== user interfaces that are a function of the underlying data that defines it). It's like WPF for Unity Game Objects. 
+This package lets you declare type safe and validated bindings instead of writing glue code. It's like WPF for Unity GameObjects. 
 
 ```mermaid
 ---
@@ -44,8 +47,7 @@ graph LR
   Concerning user interface tool sets:  When it comes to handling not just static but dynamic content is where the wheat is separated from the chaff. Starting with some basic prefabs you will put together a nice little party panel for your characters in this tutorial.
 
 
-  ### Planned next steps:
-  - Look into a Generic View<> component that limits the types of the datasourcedropdown to types derived from the generic type
-  - Improve automatic tests
-  - Add samples for new features
-  - Update existing samples 
+### Planned next steps:
+- Improve automatic tests
+- Add samples for new features
+- Update existing samples 
