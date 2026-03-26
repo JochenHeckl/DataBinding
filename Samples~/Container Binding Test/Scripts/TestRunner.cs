@@ -10,6 +10,8 @@ namespace JH.DataBinding.Examples.ContainerBindingTest
     public int maxItemCount = 10;
     public int maxDistance = 5;
 
+    public float unbindingChanceNorm = 0.2f;
+
     public int UpdateIntervalSec = 3;
 
     private ContainerViewDataSource dataSource;
@@ -28,14 +30,24 @@ namespace JH.DataBinding.Examples.ContainerBindingTest
         if( Time.time >= nextUpdateSec )
         {
           nextUpdateSec = Time.time + UpdateIntervalSec;
-          
+
           RandomizeItems();
         }
     }
 
     private void RandomizeItems()
     {
-      dataSource.NotifyChanges(PopulateItems);
+      if( Random.value < unbindingChanceNorm )
+      {
+        // 20% chance to clearing the datasource, which will cause the container view to clear all items.
+        containerView.DataSource = null;
+        return;
+      }
+      else
+      {
+        containerView.DataSource = dataSource;
+        dataSource.NotifyChanges(PopulateItems);
+      }
     }
 
     private void PopulateItems(ContainerViewDataSource dataSource)
