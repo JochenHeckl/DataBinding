@@ -1,9 +1,9 @@
 {
   "name": "de.jochenheckl.unity.databinding",
   "displayName": "DataBinding",
-  "version": "3.4.2",
-  "unity": "2023.3",
-  "description": "DataBinding is a method of connecting a data model with user interface components, allowing changes in one to automatically reflect in the other.\n\nThis package supplies the means that will enable you to implement declarative user interfaces (== user interfaces that are a function of the underlying data that defines it). It's like WPF for Unity Game Objects.",
+  "version": "3.4.3",
+  "unity": "2023.2",
+  "description": "Bind your GameObjects directly to your data models — clean, reactive, and maintainable.\n\nDeclare type-safe bindings between data source properties and GameObject components instead of writing repetitive glue code. Supports single-property bindings and dynamic collection bindings that automatically instantiate or destroy child elements as your data changes. It's like WPF for Unity GameObjects.",
   "keywords": [
     "Data Binding",
     "DataBinding",
