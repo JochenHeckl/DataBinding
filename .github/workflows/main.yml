@@ -12,8 +12,9 @@ jobs:
     strategy:
       matrix:
         unityVersion:
-          - 6000.0.32f1
-          - 2023.2.20f1
+          - 6000.4.0f1
+          - 6000.3.7f1
+          - 2023.2.22f1
         os:
           - ubuntu-latest
           # - windows-latest
