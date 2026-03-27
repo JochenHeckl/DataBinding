@@ -70,6 +70,11 @@
       "displayName": "GameObjectPropertyBindings",
       "description": "A simple scene demonstrating how to bind GameObject properties.",
       "path": "Samples~/GameObjectPropertyBindings"
+    },
+    {
+      "displayName": "Container Binding Test",
+      "description": "A simple scene stress testing container bindings.",
+      "path": "Samples~/Container Binding Test"
     }
   ]
 }
