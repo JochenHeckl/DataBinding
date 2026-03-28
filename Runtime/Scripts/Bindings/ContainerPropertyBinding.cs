@@ -112,20 +112,18 @@ namespace JH.DataBinding
 
     private void RemoveSuperfluousChildren(int numberOfChildrenToKeep)
     {
-      for (
-        var childIndex = numberOfChildrenToKeep;
-        childIndex < TargetContainer.childCount;
-        ++childIndex
-      )
+      while (TargetContainer.childCount > numberOfChildrenToKeep)
       {
-        var childView = TargetContainer.GetChild(childIndex).GetComponent<View>();
+        var child = TargetContainer.GetChild(TargetContainer.childCount - 1);
+        var childView = child.GetComponent<View>();
 
         if (childView != null)
         {
           childView.DataSource = null;
         }
 
-        UnityEngine.Object.Destroy(TargetContainer.GetChild(childIndex).gameObject);
+        child.SetParent(null);
+        UnityEngine.Object.Destroy(child.gameObject);
       }
     }
   }

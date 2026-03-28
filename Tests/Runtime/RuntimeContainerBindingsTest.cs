@@ -67,5 +67,56 @@ namespace JH.DataBinding.Tests
         Assert.AreEqual(0, containerGameObject.transform.childCount);
       }
     }
+
+    [UnityTest]
+    public IEnumerator PreoccupiedContainer_WhenDatasourceWithTwoItemsAssigned_HasTwoChildrenInNextFrame()
+    {
+      var elementTemplateGameObject = new GameObject("ElementTemplate");
+      var elementTemplateView = elementTemplateGameObject.AddComponent<View>();
+
+      var containerGameObject = new GameObject("Container");
+      var containerView = containerGameObject.AddComponent<View>();
+
+      var preoccupiedItem = new GameObject("PreoccupiedItem");
+      preoccupiedItem.AddComponent<View>();
+      preoccupiedItem.transform.SetParent(containerGameObject.transform);
+
+      containerView.containerPropertyBindings = new ContainerPropertyBinding[]
+      {
+        new ContainerPropertyBinding()
+        {
+          SourcePath = nameof(TestContainerBindingsDataSource.Positions),
+          TargetContainer = containerGameObject.transform,
+          ElementTemplate = elementTemplateView,
+        },
+      };
+
+      if (!Application.isBatchMode)
+      {
+        // WaitForEndOfFrame does throw in batch mode,
+        // so can not use it as of now.
+        yield return new WaitForEndOfFrame();
+
+        Assert.AreEqual(1, containerGameObject.transform.childCount);
+      }
+
+      containerView.DataSource = new TestContainerBindingsDataSource()
+      {
+        Positions = new TestElementTemplateDataSource[]
+        {
+          new TestElementTemplateDataSource() { Position = new Vector3(1f, 0f, 0f) },
+          new TestElementTemplateDataSource() { Position = new Vector3(2f, 0f, 0f) },
+        },
+      };
+
+      if (!Application.isBatchMode)
+      {
+        // WaitForEndOfFrame does throw in batch mode,
+        // so can not use it as of now.
+        yield return new WaitForEndOfFrame();
+
+        Assert.AreEqual(2, containerGameObject.transform.childCount);
+      }
+    }
   }
 }
