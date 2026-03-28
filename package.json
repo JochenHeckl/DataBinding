@@ -1,7 +1,7 @@
 {
   "name": "de.jochenheckl.unity.databinding",
   "displayName": "DataBinding",
-  "version": "3.4.3",
+  "version": "3.4.4",
   "unity": "2023.2",
   "description": "Bind your GameObjects directly to your data models — clean, reactive, and maintainable.\n\nDeclare type-safe bindings between data source properties and GameObject components instead of writing repetitive glue code. Supports single-property bindings and dynamic collection bindings that automatically instantiate or destroy child elements as your data changes. It's like WPF for Unity GameObjects.",
   "keywords": [
