@@ -67,5 +67,45 @@ namespace JH.DataBinding.Tests
         Assert.AreEqual(0, containerGameObject.transform.childCount);
       }
     }
+
+    [UnityTest]
+    public IEnumerator PreoccupiedContainerWithOneItem_WhenDatasourceWithTwoItemsAssigned_HasTwoChildrenInNextFrame()
+    {
+      var elementTemplate = new GameObject("Element Template");
+      var elementTemplateView = elementTemplate.AddComponent<View>();
+
+      var container = new GameObject("Container");
+      var containerView = container.AddComponent<View>();
+
+      var initialItem = new GameObject("Initial Item");
+      initialItem.AddComponent<View>();
+      initialItem.transform.SetParent(container.transform);
+
+      containerView.containerPropertyBindings = new ContainerPropertyBinding[]
+      {
+        new ContainerPropertyBinding()
+        {
+          SourcePath = nameof(TestContainerBindingsDataSource.Positions),
+          TargetContainer = container.transform,
+          ElementTemplate = elementTemplateView,
+        },
+      };
+
+      yield return null;
+
+      Assert.AreEqual(1, container.transform.childCount);
+
+      containerView.DataSource = new TestContainerBindingsDataSource()
+      {
+        Positions = new TestElementTemplateDataSource[]
+        {
+          new TestElementTemplateDataSource() { Position = new Vector3(1f, 0f, 0f) },
+          new TestElementTemplateDataSource() { Position = new Vector3(2f, 0f, 0f) },
+        },
+      };
+
+      yield return null;
+      Assert.AreEqual(2, container.transform.childCount);
+    }
   }
 }

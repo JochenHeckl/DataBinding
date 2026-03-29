@@ -113,6 +113,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2422713419258261283}
   - component: {fileID: 2977825723856222633}
+  - component: {fileID: 788027409336865544}
   m_Layer: 0
   m_Name: Item
   m_TagString: Untagged
@@ -169,3 +170,15 @@ MonoBehaviour:
     targetComponent: {fileID: 1790043128195222550}
     targetPath: Color
   containerPropertyBindings: []
+--- !u!114 &788027409336865544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5603229560191133485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43550c86df518fd409abcee9bde0c8e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LifetimeTracker
