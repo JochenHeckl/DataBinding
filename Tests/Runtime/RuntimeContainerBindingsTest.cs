@@ -69,36 +69,31 @@ namespace JH.DataBinding.Tests
     }
 
     [UnityTest]
-    public IEnumerator PreoccupiedContainer_WhenDatasourceWithTwoItemsAssigned_HasTwoChildrenInNextFrame()
+    public IEnumerator PreoccupiedContainerWithOneItem_WhenDatasourceWithTwoItemsAssigned_HasTwoChildrenInNextFrame()
     {
-      var elementTemplateGameObject = new GameObject("ElementTemplate");
-      var elementTemplateView = elementTemplateGameObject.AddComponent<View>();
+      var elementTemplate = new GameObject("Element Template");
+      var elementTemplateView = elementTemplate.AddComponent<View>();
 
-      var containerGameObject = new GameObject("Container");
-      var containerView = containerGameObject.AddComponent<View>();
+      var container = new GameObject("Container");
+      var containerView = container.AddComponent<View>();
 
-      var preoccupiedItem = new GameObject("PreoccupiedItem");
-      preoccupiedItem.AddComponent<View>();
-      preoccupiedItem.transform.SetParent(containerGameObject.transform);
+      var initialItem = new GameObject("Initial Item");
+      initialItem.AddComponent<View>();
+      initialItem.transform.SetParent(container.transform);
 
       containerView.containerPropertyBindings = new ContainerPropertyBinding[]
       {
         new ContainerPropertyBinding()
         {
           SourcePath = nameof(TestContainerBindingsDataSource.Positions),
-          TargetContainer = containerGameObject.transform,
+          TargetContainer = container.transform,
           ElementTemplate = elementTemplateView,
         },
       };
 
-      if (!Application.isBatchMode)
-      {
-        // WaitForEndOfFrame does throw in batch mode,
-        // so can not use it as of now.
-        yield return new WaitForEndOfFrame();
+      yield return null;
 
-        Assert.AreEqual(1, containerGameObject.transform.childCount);
-      }
+      Assert.AreEqual(1, container.transform.childCount);
 
       containerView.DataSource = new TestContainerBindingsDataSource()
       {
@@ -109,14 +104,8 @@ namespace JH.DataBinding.Tests
         },
       };
 
-      if (!Application.isBatchMode)
-      {
-        // WaitForEndOfFrame does throw in batch mode,
-        // so can not use it as of now.
-        yield return new WaitForEndOfFrame();
-
-        Assert.AreEqual(2, containerGameObject.transform.childCount);
-      }
+      yield return null;
+      Assert.AreEqual(2, container.transform.childCount);
     }
   }
 }

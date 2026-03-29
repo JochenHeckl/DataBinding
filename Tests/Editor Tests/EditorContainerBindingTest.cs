@@ -16,38 +16,36 @@ namespace JH.DataBinding.Editor.Tests
     }
 
     [UnityTest]
-    public IEnumerator PreoccupiedContainer_WhenDatasourceWithTwoItemsAssigned_HasTwoChildrenInNextFrame()
+    public IEnumerator PreoccupiedContainerWithOneItem_WhenDatasourceWithTwoItemsAssigned_HasTwoChildrenInNextFrame()
     {
-      var elementTemplateGameObject = new GameObject("ElementTemplate");
-      var elementTemplateView = elementTemplateGameObject.AddComponent<View>();
+      var elementTemplate = new GameObject("Element Template");
+      var elementTemplateView = elementTemplate.AddComponent<View>();
 
-      var containerGameObject = new GameObject("Container");
-      var containerView = containerGameObject.AddComponent<View>();
+      var container = new GameObject("Container");
+      var containerView = container.AddComponent<View>();
 
-      var preoccupiedItem = new GameObject("PreoccupiedItem");
-      preoccupiedItem.AddComponent<View>();
-      preoccupiedItem.transform.SetParent(containerGameObject.transform);
+      var initialItem = new GameObject("Initial Item");
+      initialItem.AddComponent<View>();
+      initialItem.transform.SetParent(container.transform);
 
       containerView.containerPropertyBindings = new ContainerPropertyBinding[]
       {
         new ContainerPropertyBinding()
         {
           SourcePath = nameof(ContainerDataSource.Items),
-          TargetContainer = containerGameObject.transform,
+          TargetContainer = container.transform,
           ElementTemplate = elementTemplateView,
         },
       };
 
-      var dataSource = new ContainerDataSource()
-      {
-        Items = new ItemDataSource[] { new ItemDataSource(), new ItemDataSource() },
-      };
+      Assert.AreEqual(1, container.transform.childCount);
 
+      var dataSource = new ContainerDataSource() { Items = new ItemDataSource[] { new(), new() } };
       containerView.DataSource = dataSource;
 
-      yield return null;
+      Assert.AreEqual(2, container.transform.childCount);
 
-      Assert.AreEqual(2, containerGameObject.transform.childCount);
+      yield return null;
     }
   }
 }
