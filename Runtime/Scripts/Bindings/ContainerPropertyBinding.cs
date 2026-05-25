@@ -106,7 +106,10 @@ namespace JH.DataBinding
     {
       while (TargetContainer.childCount < numberOfRequiredChildren)
       {
-        UnityEngine.Object.Instantiate(ElementTemplate, TargetContainer);
+        var instance = UnityEngine.Object.Instantiate(ElementTemplate, TargetContainer);
+        instance.transform.localScale = Vector3.one;
+        instance.transform.localPosition = Vector3.zero;
+        instance.transform.localRotation = Quaternion.identity;
       }
     }
 
