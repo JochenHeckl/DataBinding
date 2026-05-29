@@ -98,12 +98,26 @@ namespace JH.DataBinding
     {
       foreach (var binding in componentPropertyBindings)
       {
-        binding.DataSource = bindingDataSource;
+        try
+        {
+          binding.DataSource = bindingDataSource;
+        }
+        catch (Exception e)
+        {
+          UnityEngine.Debug.LogException(e, gameObject);
+        }
       }
 
       foreach (var binding in containerPropertyBindings)
       {
-        binding.DataSource = bindingDataSource;
+        try
+        {
+          binding.DataSource = bindingDataSource;
+        }
+        catch (Exception e)
+        {
+          UnityEngine.Debug.LogException(e, gameObject);
+        }
       }
     }
 

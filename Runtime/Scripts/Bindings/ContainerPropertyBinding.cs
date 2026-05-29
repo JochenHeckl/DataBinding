@@ -122,7 +122,9 @@ namespace JH.DataBinding
           childView.DataSource = null;
         }
 
+        child.gameObject.SetActive(false);
         child.SetParent(null);
+
         UnityEngine.Object.Destroy(child.gameObject);
       }
     }
